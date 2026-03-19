@@ -221,6 +221,7 @@ export type Database = {
           original_price: number | null
           price: number
           ships_within: string | null
+          size: string | null
           slug: string
           tag: string | null
           updated_at: string
@@ -241,6 +242,7 @@ export type Database = {
           original_price?: number | null
           price: number
           ships_within?: string | null
+          size?: string | null
           slug: string
           tag?: string | null
           updated_at?: string
@@ -261,6 +263,7 @@ export type Database = {
           original_price?: number | null
           price?: number
           ships_within?: string | null
+          size?: string | null
           slug?: string
           tag?: string | null
           updated_at?: string
