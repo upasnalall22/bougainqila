@@ -8,6 +8,7 @@ import ShopAll from "./pages/ShopAll.tsx";
 import HomeLiving from "./pages/HomeLiving.tsx";
 import GiftShop from "./pages/GiftShop.tsx";
 import Journal from "./pages/Journal.tsx";
+import InstaFeed from "./pages/InstaFeed.tsx";
 import OurStory from "./pages/OurStory.tsx";
 import Connect from "./pages/Connect.tsx";
 import NotFound from "./pages/NotFound.tsx";
@@ -27,6 +28,7 @@ const App = () => (
           <Route path="/home-living/:category" element={<HomeLiving />} />
           <Route path="/gift-shop" element={<GiftShop />} />
           <Route path="/journal" element={<Journal />} />
+          <Route path="/insta-feed" element={<InstaFeed />} />
           <Route path="/our-story" element={<OurStory />} />
           <Route path="/connect" element={<Connect />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

@@ -15,6 +15,7 @@ const navLinks = [
   { label: "Home & Living", to: "/home-living", hasMega: true },
   { label: "The Gift Shop", to: "/gift-shop" },
   { label: "Journal", to: "/journal" },
+  { label: "Insta Feed", to: "/insta-feed" },
   { label: "Our Story", to: "/our-story" },
   { label: "Connect", to: "/connect" },
 ];
