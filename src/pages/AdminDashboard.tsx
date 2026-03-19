@@ -200,24 +200,45 @@ function CategoriesTab() {
 }
 
 // ─── Journal Tab ──────────────────────────────────────────────
+const TEMPLATES = [
+  { value: "classic", label: "Classic", desc: "Full-width cover, text below" },
+  { value: "gallery", label: "Gallery", desc: "Cover + image grid" },
+  { value: "editorial", label: "Editorial", desc: "Side-by-side images & text" },
+];
+
 function JournalTab() {
   const queryClient = useQueryClient();
   const { data: posts, isLoading } = useJournalPosts(false);
   const [editing, setEditing] = useState<string | null>(null);
   const [form, setForm] = useState({
-    title: "", slug: "", excerpt: "", body: "", category: "", cover_image_url: "", published: false, meta_title: "", meta_description: "",
+    title: "", slug: "", excerpt: "", body: "", category: "", cover_image_url: "", published: false, meta_title: "", meta_description: "", template: "classic",
   });
+  const [postImages, setPostImages] = useState<Array<{ id?: string; image_url: string; caption: string }>>([]);
 
   const saveMutation = useMutation({
     mutationFn: async () => {
       const slug = form.slug || form.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
       const payload = { ...form, slug, published_at: form.published ? new Date().toISOString() : null };
+      let postId = editing;
       if (editing) {
         const { error } = await supabase.from("journal_posts").update(payload).eq("id", editing);
         if (error) throw error;
       } else {
-        const { error } = await supabase.from("journal_posts").insert(payload);
+        const { data, error } = await supabase.from("journal_posts").insert(payload).select("id").single();
         if (error) throw error;
+        postId = data.id;
+      }
+
+      // Sync images: delete old, insert new
+      if (postId) {
+        await (supabase as any).from("journal_post_images").delete().eq("post_id", postId);
+        const imagesToInsert = postImages
+          .filter((img) => img.image_url)
+          .map((img, i) => ({ post_id: postId, image_url: img.image_url, caption: img.caption || null, display_order: i }));
+        if (imagesToInsert.length > 0) {
+          const { error: imgErr } = await (supabase as any).from("journal_post_images").insert(imagesToInsert);
+          if (imgErr) throw imgErr;
+        }
       }
     },
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["journal-posts"] }); setEditing(null); resetForm(); },
@@ -231,15 +252,36 @@ function JournalTab() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["journal-posts"] }),
   });
 
-  const resetForm = () => setForm({ title: "", slug: "", excerpt: "", body: "", category: "", cover_image_url: "", published: false, meta_title: "", meta_description: "" });
+  const resetForm = () => {
+    setForm({ title: "", slug: "", excerpt: "", body: "", category: "", cover_image_url: "", published: false, meta_title: "", meta_description: "", template: "classic" });
+    setPostImages([]);
+  };
 
-  const startEdit = (p: any) => {
+  const startEdit = async (p: any) => {
     setEditing(p.id);
     setForm({
       title: p.title || "", slug: p.slug || "", excerpt: p.excerpt || "", body: p.body || "",
       category: p.category || "", cover_image_url: p.cover_image_url || "", published: p.published,
-      meta_title: p.meta_title || "", meta_description: p.meta_description || "",
+      meta_title: p.meta_title || "", meta_description: p.meta_description || "", template: p.template || "classic",
     });
+    // Load existing images
+    const { data: imgs } = await (supabase as any).from("journal_post_images").select("*").eq("post_id", p.id).order("display_order");
+    setPostImages((imgs || []).map((img: any) => ({ id: img.id, image_url: img.image_url, caption: img.caption || "" })));
+  };
+
+  const addImage = () => {
+    if (postImages.length >= 5) return;
+    setPostImages([...postImages, { image_url: "", caption: "" }]);
+  };
+
+  const removeImage = (idx: number) => {
+    setPostImages(postImages.filter((_, i) => i !== idx));
+  };
+
+  const updateImage = (idx: number, field: "image_url" | "caption", value: string) => {
+    const updated = [...postImages];
+    updated[idx] = { ...updated[idx], [field]: value };
+    setPostImages(updated);
   };
 
   return (
@@ -252,11 +294,58 @@ function JournalTab() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <CmsTextField label="Category" value={form.category} onChange={(v) => setForm({ ...form, category: v })} />
-          <div /> {/* spacer */}
+          <div>
+            <label className="text-xs tracking-widest uppercase text-muted-foreground block mb-1">Template</label>
+            <div className="flex gap-2">
+              {TEMPLATES.map((t) => (
+                <button
+                  key={t.value}
+                  type="button"
+                  onClick={() => setForm({ ...form, template: t.value })}
+                  className={`flex-1 border rounded-sm px-3 py-2 text-xs transition-colors ${
+                    form.template === t.value
+                      ? "border-primary bg-primary/10 text-foreground"
+                      : "border-border text-muted-foreground hover:border-primary/50"
+                  }`}
+                >
+                  <span className="font-medium block">{t.label}</span>
+                  <span className="text-[10px] opacity-70">{t.desc}</span>
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
         <div className="mb-4">
           <CmsImageUpload label="Cover Image" folder="journal" value={form.cover_image_url} onChange={(url) => setForm({ ...form, cover_image_url: url })} />
         </div>
+
+        {/* Additional images (up to 5) */}
+        <div className="mb-4">
+          <div className="flex items-center justify-between mb-2">
+            <label className="text-xs tracking-widest uppercase text-muted-foreground">Additional Images ({postImages.length}/5)</label>
+            {postImages.length < 5 && (
+              <button type="button" onClick={addImage} className="text-xs text-primary hover:underline inline-flex items-center gap-1">
+                <Plus className="w-3 h-3" /> Add Image
+              </button>
+            )}
+          </div>
+          {postImages.map((img, idx) => (
+            <div key={idx} className="border border-border rounded-sm p-3 mb-2">
+              <div className="flex items-start gap-2">
+                <div className="flex-1">
+                  <CmsImageUpload label={`Image ${idx + 1}`} folder="journal" value={img.image_url} onChange={(url) => updateImage(idx, "image_url", url)} />
+                  <div className="mt-2">
+                    <CmsTextField label="Caption" value={img.caption} onChange={(v) => updateImage(idx, "caption", v)} />
+                  </div>
+                </div>
+                <button type="button" onClick={() => removeImage(idx)} className="text-muted-foreground hover:text-destructive mt-5">
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+
         <div className="mb-4">
           <CmsTextField label="Excerpt" value={form.excerpt} onChange={(v) => setForm({ ...form, excerpt: v })} multiline />
         </div>
@@ -291,7 +380,7 @@ function JournalTab() {
                 {p.cover_image_url && <img src={p.cover_image_url} alt="" className="h-12 w-12 rounded-sm object-cover border border-border" />}
                 <div>
                   <p className="text-sm font-medium text-foreground">{p.title}</p>
-                  <p className="text-xs text-muted-foreground">{p.category} · {p.published ? "Published" : "Draft"}</p>
+                  <p className="text-xs text-muted-foreground">{p.category} · {p.published ? "Published" : "Draft"} · {p.template || "classic"}</p>
                 </div>
               </div>
               <div className="flex gap-2">
