@@ -49,8 +49,8 @@ const Navbar = () => {
           <img src={logo} alt="BougenQila" className="h-14 md:h-16 w-auto object-contain" />
         </Link>
 
-        {/* Desktop Nav */}
-        <nav className="hidden lg:flex items-center gap-5 text-[11px] tracking-[0.2em] uppercase text-muted-foreground">
+        {/* Desktop Nav - Centered */}
+        <nav className="hidden lg:flex items-center justify-center flex-1 gap-6 text-[11px] tracking-[0.2em] uppercase text-muted-foreground font-medium">
           {navLinks.map((link) =>
             link.hasMega ? (
               <div
