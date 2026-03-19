@@ -34,6 +34,7 @@ interface CartContextValue {
   addToCart: (productId: string, quantity?: number) => Promise<void>;
   updateQuantity: (itemId: string, quantity: number) => Promise<void>;
   removeItem: (itemId: string) => Promise<void>;
+  clearCart: () => Promise<void>;
   totalItems: number;
   subtotal: number;
 }
