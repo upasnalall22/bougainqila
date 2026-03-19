@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Plus, Trash2, Edit, Upload, X, Save } from "lucide-react";
+import { Plus, Trash2, Edit, Upload, X, Save, FileUp, Download } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import type { Tables } from "@/integrations/supabase/types";
@@ -36,12 +36,40 @@ const emptyProduct = {
   meta_description: "",
 };
 
+function parseCSV(text: string): Record<string, string>[] {
+  const lines = text.split(/\r?\n/).filter((l) => l.trim());
+  if (lines.length < 2) return [];
+  const headers = lines[0].split(",").map((h) => h.trim().toLowerCase().replace(/\s+/g, "_"));
+  return lines.slice(1).map((line) => {
+    const values: string[] = [];
+    let current = "";
+    let inQuotes = false;
+    for (const ch of line) {
+      if (ch === '"') { inQuotes = !inQuotes; continue; }
+      if (ch === "," && !inQuotes) { values.push(current.trim()); current = ""; continue; }
+      current += ch;
+    }
+    values.push(current.trim());
+    const row: Record<string, string> = {};
+    headers.forEach((h, i) => { row[h] = values[i] || ""; });
+    return row;
+  });
+}
+
+const CSV_TEMPLATE_HEADERS = [
+  "name", "slug", "description", "materials_used", "size", "price",
+  "original_price", "category", "stock_quantity", "ships_within",
+  "tag", "featured", "best_seller", "meta_title", "meta_description"
+];
+
 const AdminProducts = () => {
   const queryClient = useQueryClient();
   const [editing, setEditing] = useState<string | null>(null);
   const [form, setForm] = useState(emptyProduct);
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [newColor, setNewColor] = useState({ name: "", hex: "#8B4513" });
+  const csvInputRef = useRef<HTMLInputElement>(null);
+  const [csvStatus, setCsvStatus] = useState<{ uploading: boolean; result: string | null }>({ uploading: false, result: null });
 
   const { data: products, isLoading } = useQuery({
     queryKey: ["admin-products"],
@@ -134,6 +162,58 @@ const AdminProducts = () => {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["admin-products"] }),
   });
 
+  const handleCSVUpload = async (file: File) => {
+    setCsvStatus({ uploading: true, result: null });
+    try {
+      const text = await file.text();
+      const rows = parseCSV(text);
+      if (rows.length === 0) { setCsvStatus({ uploading: false, result: "CSV is empty or has no data rows." }); return; }
+
+      const products = rows.map((r) => {
+        const slug = (r.slug || r.name || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+        const stockQty = parseInt(r.stock_quantity || "0", 10) || 0;
+        return {
+          name: r.name,
+          slug,
+          description: r.description || null,
+          design_craft: r.materials_used || r.design_craft || null,
+          size: r.size || null,
+          price: parseFloat(r.price) || 0,
+          original_price: r.original_price ? parseFloat(r.original_price) : null,
+          category: r.category || "windchimes",
+          stock_quantity: stockQty,
+          in_stock: stockQty > 0,
+          ships_within: r.ships_within || "3-5 business days",
+          tag: r.tag || null,
+          featured: r.featured?.toLowerCase() === "true",
+          best_seller: r.best_seller?.toLowerCase() === "true",
+          meta_title: r.meta_title || null,
+          meta_description: r.meta_description || null,
+        };
+      }).filter((p) => p.name && p.price > 0);
+
+      if (products.length === 0) { setCsvStatus({ uploading: false, result: "No valid products found. Ensure 'name' and 'price' columns exist." }); return; }
+
+      const { error } = await supabase.from("products").insert(products);
+      if (error) throw error;
+
+      queryClient.invalidateQueries({ queryKey: ["admin-products"] });
+      setCsvStatus({ uploading: false, result: `Successfully imported ${products.length} product(s).` });
+    } catch (err: any) {
+      setCsvStatus({ uploading: false, result: `Error: ${err.message}` });
+    }
+  };
+
+  const downloadTemplate = () => {
+    const csv = CSV_TEMPLATE_HEADERS.join(",") + "\n" +
+      "Example Product,,A beautiful handcrafted item,Wood and brass,10cm x 15cm,1499,1999,windchimes,10,3-5 business days,New,false,false,,\n";
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = "products_template.csv"; a.click();
+    URL.revokeObjectURL(url);
+  };
+
   const startEdit = (product: any) => {
     setEditing(product.id);
     setForm({
@@ -176,6 +256,47 @@ const AdminProducts = () => {
         <h1 className="text-2xl md:text-3xl font-light text-foreground mb-8" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
           Product Management
         </h1>
+
+        {/* CSV Bulk Upload */}
+        <div className="bg-card border border-border rounded-sm p-6 mb-6">
+          <h2 className="text-sm tracking-[0.2em] uppercase text-muted-foreground mb-4">Bulk Import via CSV</h2>
+          <p className="text-xs text-muted-foreground mb-4">
+            Upload a CSV file to import multiple products at once. Download the template to see the required format.
+          </p>
+          <div className="flex flex-wrap gap-3 items-center">
+            <button
+              onClick={downloadTemplate}
+              className="border border-border px-4 py-2 text-xs tracking-[0.15em] uppercase rounded-sm hover:bg-muted transition-colors inline-flex items-center gap-2"
+            >
+              <Download className="w-3.5 h-3.5" />
+              Download Template
+            </button>
+            <input
+              ref={csvInputRef}
+              type="file"
+              accept=".csv"
+              className="hidden"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) handleCSVUpload(file);
+                e.target.value = "";
+              }}
+            />
+            <button
+              onClick={() => csvInputRef.current?.click()}
+              disabled={csvStatus.uploading}
+              className="bg-primary text-primary-foreground px-4 py-2 text-xs tracking-[0.15em] uppercase rounded-sm hover:opacity-90 transition-opacity disabled:opacity-50 inline-flex items-center gap-2"
+            >
+              <FileUp className="w-3.5 h-3.5" />
+              {csvStatus.uploading ? "Importing..." : "Upload CSV"}
+            </button>
+          </div>
+          {csvStatus.result && (
+            <p className={`text-xs mt-3 ${csvStatus.result.startsWith("Error") ? "text-destructive" : "text-green-600"}`}>
+              {csvStatus.result}
+            </p>
+          )}
+        </div>
 
         {/* Form */}
         <div className="bg-card border border-border rounded-sm p-6 mb-10">
