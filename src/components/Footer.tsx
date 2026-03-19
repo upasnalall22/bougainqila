@@ -26,6 +26,7 @@ const Footer = () => {
               <li><Link to="/connect" className="opacity-70 hover:opacity-100 transition-opacity">Contact</Link></li>
               <li><Link to="/refund-policy" className="opacity-70 hover:opacity-100 transition-opacity">Refund Policy</Link></li>
               <li><Link to="/terms" className="opacity-70 hover:opacity-100 transition-opacity">Terms & Conditions</Link></li>
+              <li><Link to="/cookie-policy" className="opacity-70 hover:opacity-100 transition-opacity">Cookie Policy</Link></li>
             </ul>
           </div>
 
