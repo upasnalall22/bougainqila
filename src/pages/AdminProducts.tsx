@@ -236,7 +236,7 @@ const AdminProducts = () => {
             />
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-4">
             <div>
               <label className="text-xs tracking-widest uppercase text-muted-foreground block mb-1">Price (₹) *</label>
               <input
@@ -252,6 +252,16 @@ const AdminProducts = () => {
                 type="number"
                 value={form.original_price || ""}
                 onChange={(e) => setForm({ ...form, original_price: e.target.value ? Number(e.target.value) : null })}
+                className="w-full border border-border bg-background px-3 py-2 text-sm rounded-sm focus:outline-none focus:ring-1 focus:ring-primary"
+              />
+            </div>
+            <div>
+              <label className="text-xs tracking-widest uppercase text-muted-foreground block mb-1">Stock Qty *</label>
+              <input
+                type="number"
+                min={0}
+                value={form.stock_quantity}
+                onChange={(e) => setForm({ ...form, stock_quantity: Number(e.target.value) })}
                 className="w-full border border-border bg-background px-3 py-2 text-sm rounded-sm focus:outline-none focus:ring-1 focus:ring-primary"
               />
             </div>
