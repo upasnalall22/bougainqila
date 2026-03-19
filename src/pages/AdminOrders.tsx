@@ -453,6 +453,9 @@ const AdminOrders = () => {
                       </div>
                       <div className="flex-1">
                         <p className="text-sm">{item.product_name}</p>
+                        {item.products?.slug && (
+                          <p className="text-[10px] text-muted-foreground font-mono">Code: {item.products.slug}</p>
+                        )}
                         <p className="text-xs text-muted-foreground">Qty: {item.quantity} × ₹{item.unit_price}</p>
                       </div>
                       <p className="text-sm font-medium">₹{item.total_price}</p>
