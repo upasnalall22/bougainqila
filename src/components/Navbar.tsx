@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import logo from "@/assets/logo.png";
 import { useCart } from "@/hooks/useCart";
+import AnnouncementTicker from "@/components/AnnouncementTicker";
 
 const subCategories = [
   { label: "Windchimes", to: "/home-living/windchimes" },
