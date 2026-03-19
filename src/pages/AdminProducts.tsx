@@ -19,6 +19,7 @@ const categories = [
 const emptyProduct = {
   name: "",
   slug: "",
+  product_code: "",
   description: "",
   design_craft: "",
   size: "",
