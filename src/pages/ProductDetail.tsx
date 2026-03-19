@@ -16,6 +16,7 @@ const trustBadges = [
 
 const ProductDetail = () => {
   const { slug } = useParams<{ slug: string }>();
+  const { addToCart } = useCart();
   const { data: product, isLoading } = useProduct(slug || "");
   const { data: relatedProducts } = useRelatedProducts(
     product?.category || "",
