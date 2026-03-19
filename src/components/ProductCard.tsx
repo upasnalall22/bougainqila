@@ -1,9 +1,22 @@
 import { Heart } from "lucide-react";
 import { useState } from "react";
-import type { Product } from "@/data/products";
+import { useCart } from "@/hooks/useCart";
 
-const ProductCard = ({ product }: { product: Product }) => {
+interface ProductCardProps {
+  product: {
+    id: string;
+    name: string;
+    description: string;
+    price: number;
+    image: string;
+    category: string;
+    tag?: string;
+  };
+}
+
+const ProductCard = ({ product }: ProductCardProps) => {
   const [wishlisted, setWishlisted] = useState(false);
+  const { addToCart } = useCart();
 
   return (
     <div className="group">
@@ -20,7 +33,7 @@ const ProductCard = ({ product }: { product: Product }) => {
           </span>
         )}
         <button
-          onClick={() => setWishlisted(!wishlisted)}
+          onClick={(e) => { e.preventDefault(); setWishlisted(!wishlisted); }}
           className="absolute top-3 right-3 w-8 h-8 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center hover:bg-background transition-colors"
           aria-label="Add to wishlist"
         >
@@ -43,10 +56,16 @@ const ProductCard = ({ product }: { product: Product }) => {
 
       {/* Buttons */}
       <div className="flex gap-2">
-        <button className="flex-1 border border-border text-foreground text-[10px] tracking-[0.1em] uppercase py-2 rounded-sm hover:bg-muted transition-colors">
+        <button
+          onClick={(e) => { e.preventDefault(); addToCart(product.id); }}
+          className="flex-1 border border-border text-foreground text-[10px] tracking-[0.1em] uppercase py-2 rounded-sm hover:bg-muted transition-colors"
+        >
           Add to Cart
         </button>
-        <button className="flex-1 bg-primary text-primary-foreground text-[10px] tracking-[0.1em] uppercase py-2 rounded-sm hover:opacity-90 transition-opacity">
+        <button
+          onClick={(e) => { e.preventDefault(); addToCart(product.id); }}
+          className="flex-1 bg-primary text-primary-foreground text-[10px] tracking-[0.1em] uppercase py-2 rounded-sm hover:opacity-90 transition-opacity"
+        >
           Buy Now
         </button>
       </div>

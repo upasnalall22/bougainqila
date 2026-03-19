@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
 import { useProduct, useRelatedProducts } from "@/hooks/useProducts";
+import { useCart } from "@/hooks/useCart";
 
 const trustBadges = [
   { icon: Truck, label: "Hassle-free Shipping" },
@@ -15,6 +16,7 @@ const trustBadges = [
 
 const ProductDetail = () => {
   const { slug } = useParams<{ slug: string }>();
+  const { addToCart } = useCart();
   const { data: product, isLoading } = useProduct(slug || "");
   const { data: relatedProducts } = useRelatedProducts(
     product?.category || "",
@@ -180,7 +182,10 @@ const ProductDetail = () => {
             </div>
 
             {/* Add to Cart */}
-            <button className="w-full bg-primary text-primary-foreground py-3.5 text-xs tracking-[0.2em] uppercase rounded-sm hover:opacity-90 transition-opacity mb-3">
+            <button
+              onClick={() => addToCart(product.id, quantity)}
+              className="w-full bg-primary text-primary-foreground py-3.5 text-xs tracking-[0.2em] uppercase rounded-sm hover:opacity-90 transition-opacity mb-3"
+            >
               Add to Cart
             </button>
 

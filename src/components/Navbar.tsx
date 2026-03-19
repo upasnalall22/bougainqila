@@ -2,6 +2,7 @@ import { ShoppingBag, User, Menu, X, Search, ChevronDown } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import logo from "@/assets/logo.png";
+import { useCart } from "@/hooks/useCart";
 
 const subCategories = [
   { label: "Windchimes", to: "/home-living/windchimes" },
@@ -26,6 +27,7 @@ const Navbar = () => {
   const [mobileSubOpen, setMobileSubOpen] = useState(false);
   const megaRef = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const { totalItems, openCart } = useCart();
 
   const handleMegaEnter = () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -112,9 +114,11 @@ const Navbar = () => {
           <button className="text-foreground hover:text-primary transition-colors" aria-label="Account">
             <User className="w-4 h-4" />
           </button>
-          <button className="text-foreground hover:text-primary transition-colors relative" aria-label="Cart">
+          <button onClick={openCart} className="text-foreground hover:text-primary transition-colors relative" aria-label="Cart">
             <ShoppingBag className="w-4 h-4" />
-            <span className="absolute -top-1.5 -right-1.5 bg-primary text-primary-foreground text-[9px] w-3.5 h-3.5 rounded-full flex items-center justify-center">0</span>
+            {totalItems > 0 && (
+              <span className="absolute -top-1.5 -right-1.5 bg-primary text-primary-foreground text-[9px] w-3.5 h-3.5 rounded-full flex items-center justify-center">{totalItems}</span>
+            )}
           </button>
           <button className="md:hidden text-foreground" onClick={() => setMobileOpen(!mobileOpen)} aria-label="Menu">
             {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}

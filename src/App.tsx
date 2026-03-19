@@ -4,6 +4,8 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import { CartProvider } from "@/hooks/useCart";
+import CartDrawer from "@/components/CartDrawer";
 import CookieConsent from "@/components/CookieConsent";
 import Index from "./pages/Index.tsx";
 import ShopAll from "./pages/ShopAll.tsx";
@@ -24,32 +26,35 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/shop" element={<ShopAll />} />
-          <Route path="/home-living" element={<HomeLiving />} />
-          <Route path="/home-living/:category" element={<HomeLiving />} />
-          <Route path="/gift-shop" element={<GiftShop />} />
-          <Route path="/journal" element={<Journal />} />
-          <Route path="/insta-feed" element={<InstaFeed />} />
-          <Route path="/our-story" element={<OurStory />} />
-          <Route path="/connect" element={<Connect />} />
-          <Route path="/refund-policy" element={<RefundPolicy />} />
-          <Route path="/terms" element={<Terms />} />
-          <Route path="/product/:slug" element={<ProductDetail />} />
-          <Route path="/admin/products" element={<AdminProducts />} />
-          <Route path="/cookie-policy" element={<CookiePolicy />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-        <WhatsAppButton />
-        <CookieConsent />
-      </BrowserRouter>
-    </TooltipProvider>
+    <CartProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/shop" element={<ShopAll />} />
+            <Route path="/home-living" element={<HomeLiving />} />
+            <Route path="/home-living/:category" element={<HomeLiving />} />
+            <Route path="/gift-shop" element={<GiftShop />} />
+            <Route path="/journal" element={<Journal />} />
+            <Route path="/insta-feed" element={<InstaFeed />} />
+            <Route path="/our-story" element={<OurStory />} />
+            <Route path="/connect" element={<Connect />} />
+            <Route path="/refund-policy" element={<RefundPolicy />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/product/:slug" element={<ProductDetail />} />
+            <Route path="/admin/products" element={<AdminProducts />} />
+            <Route path="/cookie-policy" element={<CookiePolicy />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          <CartDrawer />
+          <WhatsAppButton />
+          <CookieConsent />
+        </BrowserRouter>
+      </TooltipProvider>
+    </CartProvider>
   </QueryClientProvider>
 );
 
