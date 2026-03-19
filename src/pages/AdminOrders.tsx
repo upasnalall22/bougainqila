@@ -59,7 +59,7 @@ const AdminOrders = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("orders")
-        .select("*, customers(*), order_items(*, products(name, slug, product_images(image_url, display_order)))")
+        .select("*, customers(*), order_items(*, products(name, slug, product_code, product_images(image_url, display_order)))")
         .order("created_at", { ascending: false });
       if (error) throw error;
       return data;
