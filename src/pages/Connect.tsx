@@ -28,9 +28,9 @@ const Connect = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-1 max-w-2xl mx-auto px-6 py-20 w-full">
-        <p className="text-sm tracking-[0.3em] uppercase text-muted-foreground mb-3">Get in Touch</p>
+        <p className="text-sm tracking-[0.3em] uppercase text-muted-foreground mb-3">Say Hello</p>
         <h1 className="text-3xl md:text-4xl font-light text-foreground mb-8" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
-          Connect with Us
+          We would love to hear from you
         </h1>
 
         {submitted ? (
