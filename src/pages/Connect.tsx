@@ -36,7 +36,7 @@ const Connect = () => {
         {submitted ? (
           <div className="bg-card border border-border rounded-sm p-8 text-center">
             <p className="text-foreground text-lg mb-2" style={{ fontFamily: "'Cormorant Garamond', serif" }}>Thank you!</p>
-            <p className="text-muted-foreground text-sm">We'll get back to you shortly.</p>
+            <p className="text-muted-foreground text-sm">Thank you. We will write back soon.</p>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-5">
