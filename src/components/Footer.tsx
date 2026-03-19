@@ -12,7 +12,7 @@ const Footer = () => {
               BougenQila
             </h3>
             <p className="text-sm opacity-70 leading-relaxed">
-              Handcrafted clay home decor & accessories. Every piece is one of a kind.
+              Handmade home decor shaped one piece at a time on a terrace in Gurugram. No two are the same.
             </p>
           </div>
 
