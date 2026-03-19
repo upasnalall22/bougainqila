@@ -67,15 +67,15 @@ const OurStory = () => {
           )}
 
           {founder1 && (
-            <div className="grid md:grid-cols-2 gap-10 items-center">
-              <div className="aspect-[3/4] bg-card rounded-sm overflow-hidden border border-border">
+            <div className="grid md:grid-cols-[2fr_3fr] gap-10 items-center">
+              <div className="max-w-[60%] mx-auto aspect-[3/4] bg-card rounded-sm overflow-hidden border border-border">
                 {founder1.image_url ? (
                   <img src={founder1.image_url} alt={founder1.subtitle || "Founder"} className="w-full h-full object-cover" loading="lazy" />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-muted-foreground text-sm">Founder Photo</div>
                 )}
               </div>
-              <div>
+              <div className="bg-card border border-border rounded-sm p-6 md:p-10">
                 {founder1.quote && (
                   <blockquote
                     className="text-lg md:text-xl font-light text-foreground mb-6 leading-relaxed italic"
