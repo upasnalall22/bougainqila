@@ -22,22 +22,6 @@ const OurStory = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-1">
-        {/* Hero Banner */}
-        <section className="relative w-full h-[70vh] md:h-[85vh] flex items-center justify-center overflow-hidden">
-          {hero?.image_url ? (
-            <img src={hero.image_url} alt="Our Story" className="absolute inset-0 w-full h-full object-cover" />
-          ) : (
-            <div className="absolute inset-0 bg-foreground/80" />
-          )}
-          <div className="absolute inset-0 bg-black/30" />
-          <h1
-            className="relative text-4xl md:text-6xl tracking-[0.3em] uppercase text-white font-light z-10"
-            style={{ fontFamily: "'Cormorant Garamond', serif" }}
-          >
-            {hero?.title || "OUR STORY"}
-          </h1>
-        </section>
-
         {/* Tagline + Image */}
         <section className="max-w-6xl mx-auto px-6 py-16 md:py-24">
           <div className="grid md:grid-cols-2 gap-10 items-center">
