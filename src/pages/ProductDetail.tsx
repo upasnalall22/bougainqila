@@ -11,7 +11,7 @@ import { useCart } from "@/hooks/useCart";
 const trustBadges = [
   { icon: Truck, label: "Hassle-free Shipping" },
   { icon: CreditCard, label: "COD Available" },
-  { icon: Hand, label: "Hand-crafted" },
+  { icon: Hand, label: "Handmade" },
   { icon: Gift, label: "Corporate Gifting" },
 ];
 
