@@ -9,8 +9,9 @@ import catWindchimes from "@/assets/cat-windchimes.jpg";
 const categories = [
   { name: "Clay Windchimes", image: catWindchimes, to: "/home-living/windchimes" },
   { name: "Clay Lettering", image: catLettering, to: "/home-living/letterings" },
-  { name: "Clay Containers", image: catContainers, to: "/home-living/containers" },
-  { name: "Hair Accessories", image: catHair, to: "/home-living/hair-accents" },
+  // Hidden until products are added:
+  // { name: "Clay Containers", image: catContainers, to: "/home-living/containers" },
+  // { name: "Hair Accessories", image: catHair, to: "/home-living/hair-accents" },
 ];
 
 const CategoryGrid = () => {
