@@ -162,6 +162,58 @@ const AdminProducts = () => {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["admin-products"] }),
   });
 
+  const handleCSVUpload = async (file: File) => {
+    setCsvStatus({ uploading: true, result: null });
+    try {
+      const text = await file.text();
+      const rows = parseCSV(text);
+      if (rows.length === 0) { setCsvStatus({ uploading: false, result: "CSV is empty or has no data rows." }); return; }
+
+      const products = rows.map((r) => {
+        const slug = (r.slug || r.name || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+        const stockQty = parseInt(r.stock_quantity || "0", 10) || 0;
+        return {
+          name: r.name,
+          slug,
+          description: r.description || null,
+          design_craft: r.materials_used || r.design_craft || null,
+          size: r.size || null,
+          price: parseFloat(r.price) || 0,
+          original_price: r.original_price ? parseFloat(r.original_price) : null,
+          category: r.category || "windchimes",
+          stock_quantity: stockQty,
+          in_stock: stockQty > 0,
+          ships_within: r.ships_within || "3-5 business days",
+          tag: r.tag || null,
+          featured: r.featured?.toLowerCase() === "true",
+          best_seller: r.best_seller?.toLowerCase() === "true",
+          meta_title: r.meta_title || null,
+          meta_description: r.meta_description || null,
+        };
+      }).filter((p) => p.name && p.price > 0);
+
+      if (products.length === 0) { setCsvStatus({ uploading: false, result: "No valid products found. Ensure 'name' and 'price' columns exist." }); return; }
+
+      const { error } = await supabase.from("products").insert(products);
+      if (error) throw error;
+
+      queryClient.invalidateQueries({ queryKey: ["admin-products"] });
+      setCsvStatus({ uploading: false, result: `Successfully imported ${products.length} product(s).` });
+    } catch (err: any) {
+      setCsvStatus({ uploading: false, result: `Error: ${err.message}` });
+    }
+  };
+
+  const downloadTemplate = () => {
+    const csv = CSV_TEMPLATE_HEADERS.join(",") + "\n" +
+      "Example Product,,A beautiful handcrafted item,Wood and brass,10cm x 15cm,1499,1999,windchimes,10,3-5 business days,New,false,false,,\n";
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = "products_template.csv"; a.click();
+    URL.revokeObjectURL(url);
+  };
+
   const startEdit = (product: any) => {
     setEditing(product.id);
     setForm({
