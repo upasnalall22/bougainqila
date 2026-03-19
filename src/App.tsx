@@ -24,6 +24,8 @@ import Terms from "./pages/Terms.tsx";
 import ProductDetail from "./pages/ProductDetail.tsx";
 import AdminProducts from "./pages/AdminProducts.tsx";
 import AdminDashboard from "./pages/AdminDashboard.tsx";
+import AdminOrders from "./pages/AdminOrders.tsx";
+import AdminCustomers from "./pages/AdminCustomers.tsx";
 import AdminLogin from "./pages/AdminLogin.tsx";
 import CookiePolicy from "./pages/CookiePolicy.tsx";
 import NotFound from "./pages/NotFound.tsx";
