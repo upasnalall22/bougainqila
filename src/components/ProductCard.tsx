@@ -38,7 +38,7 @@ const ProductCard = ({ product }: { product: Product }) => {
         {product.description}
       </p>
       <p className="text-xs font-medium text-foreground mb-3">
-        INR {product.price.toLocaleString("en-IN")}.00
+        MRP ₹{product.price.toLocaleString("en-IN")}.00
       </p>
 
       {/* Buttons */}
