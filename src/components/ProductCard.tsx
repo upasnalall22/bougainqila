@@ -1,4 +1,4 @@
-import { Heart, ShoppingCart, Zap } from "lucide-react";
+import { Heart } from "lucide-react";
 import { useState } from "react";
 import type { Product } from "@/data/products";
 
