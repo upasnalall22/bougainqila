@@ -27,7 +27,7 @@ const CategoryGrid = () => {
         {categories.map((cat) => (
           <Link
             key={cat.name}
-            to="/"
+            to={cat.to}
             className="group relative rounded-sm overflow-hidden aspect-square"
           >
             <img
