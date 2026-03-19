@@ -145,6 +145,9 @@ const AdminProducts = () => {
       ships_within: product.ships_within || "",
       tag: product.tag || "",
       featured: product.featured,
+      best_seller: product.best_seller || false,
+      meta_title: product.meta_title || "",
+      meta_description: product.meta_description || "",
     });
     setImageFiles([]);
   };
