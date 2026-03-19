@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
 import { useProduct, useRelatedProducts } from "@/hooks/useProducts";
+import { useCart } from "@/hooks/useCart";
 
 const trustBadges = [
   { icon: Truck, label: "Hassle-free Shipping" },
