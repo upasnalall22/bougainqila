@@ -8,7 +8,7 @@ const Footer = () => {
           {/* Brand */}
           <div>
             <h3 className="text-xl font-semibold mb-4" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
-              Artisan Clay
+              BougenQila
             </h3>
             <p className="text-sm opacity-70 leading-relaxed">
               Handcrafted clay home decor & accessories. Every piece is one of a kind.
@@ -39,7 +39,7 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-background/20 mt-12 pt-6 text-center text-xs opacity-50">
-          © {new Date().getFullYear()} Artisan Clay. All rights reserved.
+          © {new Date().getFullYear()} BougenQila. All rights reserved.
         </div>
       </div>
     </footer>
