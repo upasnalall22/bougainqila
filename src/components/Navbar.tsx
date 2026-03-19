@@ -2,6 +2,7 @@ import { ShoppingBag, User, Menu, X, Search, ChevronDown } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import logo from "@/assets/logo.png";
+import { useCart } from "@/hooks/useCart";
 
 const subCategories = [
   { label: "Windchimes", to: "/home-living/windchimes" },
