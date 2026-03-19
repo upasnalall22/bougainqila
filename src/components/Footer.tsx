@@ -39,7 +39,7 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-background/20 mt-12 pt-6 text-center text-xs opacity-50">
-          © {new Date().getFullYear()} Artisan Clay. All rights reserved.
+          © {new Date().getFullYear()} BougenQila. All rights reserved.
         </div>
       </div>
     </footer>
