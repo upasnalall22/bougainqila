@@ -171,6 +171,7 @@ const Navbar = () => {
         </nav>
       )}
     </header>
+    </>
   );
 };
 
