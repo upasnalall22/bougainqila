@@ -303,14 +303,6 @@ const AdminProducts = () => {
               <label className="flex items-center gap-2 text-sm text-foreground cursor-pointer">
                 <input
                   type="checkbox"
-                  checked={form.in_stock}
-                  onChange={(e) => setForm({ ...form, in_stock: e.target.checked })}
-                />
-                In Stock
-              </label>
-              <label className="flex items-center gap-2 text-sm text-foreground cursor-pointer">
-                <input
-                  type="checkbox"
                   checked={form.featured}
                   onChange={(e) => setForm({ ...form, featured: e.target.checked })}
                 />
