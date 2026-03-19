@@ -4,10 +4,10 @@ import { Link } from "react-router-dom";
 import logo from "@/assets/logo.png";
 
 const subCategories = [
-  { label: "WINDCHIMES", to: "/home-living/windchimes" },
-  { label: "LETTERINGS", to: "/home-living/letterings" },
-  { label: "CONTAINERS", to: "/home-living/containers" },
-  { label: "HAIR ACCENTS", to: "/home-living/hair-accents" },
+  { label: "Windchimes", to: "/home-living/windchimes" },
+  { label: "Letterings", to: "/home-living/letterings" },
+  { label: "Containers", to: "/home-living/containers" },
+  { label: "Hair Accents", to: "/home-living/hair-accents" },
 ];
 
 const navLinks = [
