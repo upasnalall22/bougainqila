@@ -139,6 +139,7 @@ const AdminProducts = () => {
       slug: product.slug,
       description: product.description || "",
       design_craft: product.design_craft || "",
+      size: product.size || "",
       price: product.price,
       original_price: product.original_price,
       category: product.category,
