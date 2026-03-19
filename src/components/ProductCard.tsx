@@ -30,23 +30,6 @@ const ProductCard = ({ product }: ProductCardProps) => {
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           loading="lazy"
         />
-        <div className="absolute top-3 left-3 flex flex-col gap-1">
-          {product.best_seller && (
-            <span className="bg-foreground text-background text-[9px] tracking-[0.15em] uppercase px-2.5 py-1 rounded-sm">
-              Bestseller
-            </span>
-          )}
-          {product.featured && (
-            <span className="bg-primary text-primary-foreground text-[9px] tracking-[0.15em] uppercase px-2.5 py-1 rounded-sm">
-              Featured
-            </span>
-          )}
-          {product.tag && (
-            <span className="bg-accent text-accent-foreground text-[9px] tracking-[0.15em] uppercase px-2.5 py-1 rounded-sm">
-              {product.tag}
-            </span>
-          )}
-        </div>
         <button
           onClick={(e) => { e.preventDefault(); setWishlisted(!wishlisted); }}
           className="absolute top-3 right-3 w-8 h-8 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center hover:bg-background transition-colors"
