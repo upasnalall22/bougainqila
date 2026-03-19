@@ -4,6 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import CookieConsent from "@/components/CookieConsent";
 import Index from "./pages/Index.tsx";
 import ShopAll from "./pages/ShopAll.tsx";
 import HomeLiving from "./pages/HomeLiving.tsx";
