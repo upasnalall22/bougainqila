@@ -29,6 +29,9 @@ const emptyProduct = {
   ships_within: "3-5 business days",
   tag: "",
   featured: false,
+  best_seller: false,
+  meta_title: "",
+  meta_description: "",
 };
 
 const AdminProducts = () => {
