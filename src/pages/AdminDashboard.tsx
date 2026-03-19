@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useAllHomepageContent, useAllCategoryContent, useJournalPosts } from "@/hooks/useCMS";
+import { useOurStorySections } from "@/hooks/useOurStory";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Save, Plus, Trash2, Edit, LogOut } from "lucide-react";
