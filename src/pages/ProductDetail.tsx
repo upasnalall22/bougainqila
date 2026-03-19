@@ -214,7 +214,7 @@ const ProductDetail = () => {
 
             {/* Stock Status */}
             {!product.in_stock && (
-              <p className="text-sm text-destructive font-medium mb-3">Out of Stock</p>
+              <p className="text-sm text-destructive font-medium mb-3">Sold Out</p>
             )}
 
             {/* Add to Cart */}
