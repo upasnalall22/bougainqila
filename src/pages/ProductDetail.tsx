@@ -4,6 +4,7 @@ import { ChevronDown, Heart, Minus, Plus, Truck, CreditCard, Hand, Gift } from "
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
+import SEOHead from "@/components/SEOHead";
 import { useProduct, useRelatedProducts } from "@/hooks/useProducts";
 import { useCart } from "@/hooks/useCart";
 
