@@ -69,6 +69,9 @@ const AdminProducts = () => {
         ships_within: form.ships_within || null,
         tag: form.tag || null,
         featured: form.featured,
+        best_seller: form.best_seller,
+        meta_title: form.meta_title || null,
+        meta_description: form.meta_description || null,
       };
 
       let productId: string;
