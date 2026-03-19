@@ -22,6 +22,7 @@ import Connect from "./pages/Connect.tsx";
 import RefundPolicy from "./pages/RefundPolicy.tsx";
 import Terms from "./pages/Terms.tsx";
 import ProductDetail from "./pages/ProductDetail.tsx";
+import Checkout from "./pages/Checkout.tsx";
 import AdminProducts from "./pages/AdminProducts.tsx";
 import AdminDashboard from "./pages/AdminDashboard.tsx";
 import AdminOrders from "./pages/AdminOrders.tsx";
