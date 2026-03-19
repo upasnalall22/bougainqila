@@ -7,10 +7,10 @@ import catHair from "@/assets/cat-hair.jpg";
 import catWindchimes from "@/assets/cat-windchimes.jpg";
 
 const categories = [
-  { name: "Clay Windchimes", image: catWindchimes },
-  { name: "Clay Lettering", image: catLettering },
-  { name: "Clay Containers", image: catContainers },
-  { name: "Hair Accessories", image: catHair },
+  { name: "Clay Windchimes", image: catWindchimes, to: "/home-living/windchimes" },
+  { name: "Clay Lettering", image: catLettering, to: "/home-living/letterings" },
+  { name: "Clay Containers", image: catContainers, to: "/home-living/containers" },
+  { name: "Hair Accessories", image: catHair, to: "/home-living/hair-accents" },
 ];
 
 const CategoryGrid = () => {
@@ -27,7 +27,7 @@ const CategoryGrid = () => {
         {categories.map((cat) => (
           <Link
             key={cat.name}
-            to="/"
+            to={cat.to}
             className="group relative rounded-sm overflow-hidden aspect-square"
           >
             <img
