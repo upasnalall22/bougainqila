@@ -21,7 +21,7 @@ const JournalSection = () => {
       <div className="text-center mb-12">
         <p className="text-sm tracking-[0.3em] uppercase text-muted-foreground mb-3">Journal</p>
         <h2 className="text-3xl md:text-4xl font-light text-foreground" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
-          Follow Our Story
+          From the Terrace
         </h2>
         <a
           href="https://instagram.com/"

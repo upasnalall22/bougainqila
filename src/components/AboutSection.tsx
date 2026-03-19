@@ -4,10 +4,10 @@ import { Link } from "react-router-dom";
 const AboutSection = () => {
   const { data: content } = useHomepageContent("about");
 
-  const title = content?.title || "Made by Hand,\nMade with Heart";
-  const subtitle = content?.subtitle || "Our Story";
-  const description = content?.description || "Every piece in our collection is shaped by hand from natural clay — no molds, no mass production. Each windchime, letter, container, and hair accessory carries the subtle imperfections that make handmade art truly special.";
-  const buttonText = content?.button_text || "Learn More About Us →";
+  const title = content?.title || "Where it all began";
+  const subtitle = content?.subtitle || "The Heart of it All";
+  const description = content?.description || "It started with a few pots on a terrace and a heart full of questions. What began as a quiet experiment with clay became a way of life — slow, imperfect, honest. Every piece we make carries the warmth of hands that shaped it and the story of the terrace where it was born.";
+  const buttonText = content?.button_text || "Read Our Story →";
   const buttonLink = content?.button_link || "/our-story";
   const imageUrl = content?.image_url;
 

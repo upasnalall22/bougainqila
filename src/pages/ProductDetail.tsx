@@ -289,7 +289,7 @@ const ProductDetail = () => {
               className="text-center text-2xl font-light text-foreground mb-10"
               style={{ fontFamily: "'Cormorant Garamond', serif" }}
             >
-              You may also like
+              You might also like
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {relatedProducts.map((rp) => (

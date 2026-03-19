@@ -43,7 +43,7 @@ const CategoryGrid = () => {
                 {cat.name}
               </h3>
               <span className="text-xs tracking-widest uppercase text-background/80 group-hover:text-background transition-colors">
-                Explore More →
+                Explore →
               </span>
             </div>
           </Link>
