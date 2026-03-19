@@ -3,6 +3,7 @@ import HeroBanner from "@/components/HeroBanner";
 import CategoryGrid from "@/components/CategoryGrid";
 import FeaturedProducts from "@/components/FeaturedProducts";
 import AboutSection from "@/components/AboutSection";
+import JournalSection from "@/components/JournalSection";
 import Footer from "@/components/Footer";
 
 const Index = () => {
@@ -14,6 +15,7 @@ const Index = () => {
         <CategoryGrid />
         <FeaturedProducts />
         <AboutSection />
+        <JournalSection />
       </main>
       <Footer />
     </div>
