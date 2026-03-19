@@ -17,6 +17,7 @@ import RefundPolicy from "./pages/RefundPolicy.tsx";
 import Terms from "./pages/Terms.tsx";
 import ProductDetail from "./pages/ProductDetail.tsx";
 import AdminProducts from "./pages/AdminProducts.tsx";
+import CookiePolicy from "./pages/CookiePolicy.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
