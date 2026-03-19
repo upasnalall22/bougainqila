@@ -8,8 +8,6 @@ import AnnouncementTicker from "@/components/AnnouncementTicker";
 const subCategories = [
   { label: "Windchimes", to: "/home-living/windchimes" },
   { label: "Letterings", to: "/home-living/letterings" },
-  { label: "Containers", to: "/home-living/containers" },
-  { label: "Hair Accents", to: "/home-living/hair-accents" },
 ];
 
 const navLinks = [
