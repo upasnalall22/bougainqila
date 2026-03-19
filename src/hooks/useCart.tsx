@@ -143,6 +143,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         addToCart,
         updateQuantity,
         removeItem,
+        clearCart,
         totalItems,
         subtotal,
       }}
