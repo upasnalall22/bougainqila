@@ -50,7 +50,7 @@ const Navbar = () => {
         </Link>
 
         {/* Desktop Nav - Centered */}
-        <nav className="hidden lg:flex items-center justify-center flex-1 gap-6 text-[11px] tracking-[0.2em] uppercase text-muted-foreground font-medium">
+        <nav className="hidden lg:flex items-center justify-center flex-1 gap-8 text-xs tracking-[0.15em] uppercase text-foreground/70">
           {navLinks.map((link) =>
             link.hasMega ? (
               <div
