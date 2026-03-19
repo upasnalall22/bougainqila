@@ -28,7 +28,7 @@ const FeaturedProducts = () => {
               </div>
               <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">{product.category}</p>
               <h3 className="text-sm font-medium text-foreground mb-1">{product.name}</h3>
-              <p className="text-sm text-primary font-medium">₹{product.price.toLocaleString()}</p>
+              <p className="text-sm text-primary font-medium">MRP ₹{product.price.toLocaleString("en-IN")}.00</p>
             </Link>
           ))}
         </div>
