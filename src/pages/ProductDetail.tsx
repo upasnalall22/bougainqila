@@ -147,11 +147,19 @@ const ProductDetail = () => {
               </div>
             )}
 
-            {/* Design & Craft */}
+            {/* Materials Used */}
             {product.design_craft && (
               <div className="mb-6">
-                <h3 className="text-xs tracking-[0.2em] uppercase text-muted-foreground mb-2">Design & Craft</h3>
+                <h3 className="text-xs tracking-[0.2em] uppercase text-muted-foreground mb-2">Materials Used</h3>
                 <p className="text-sm text-foreground/80 leading-relaxed">{product.design_craft}</p>
+              </div>
+            )}
+
+            {/* Size */}
+            {(product as any).size && (
+              <div className="mb-6">
+                <h3 className="text-xs tracking-[0.2em] uppercase text-muted-foreground mb-2">Size</h3>
+                <p className="text-sm text-foreground/80 leading-relaxed">{(product as any).size}</p>
               </div>
             )}
 

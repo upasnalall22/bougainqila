@@ -210,12 +210,23 @@ const AdminProducts = () => {
           </div>
 
           <div className="mb-4">
-            <label className="text-xs tracking-widest uppercase text-muted-foreground block mb-1">Design & Craft</label>
+            <label className="text-xs tracking-widest uppercase text-muted-foreground block mb-1">Materials Used</label>
             <textarea
               value={form.design_craft}
               onChange={(e) => setForm({ ...form, design_craft: e.target.value })}
               rows={3}
               className="w-full border border-border bg-background px-3 py-2 text-sm rounded-sm focus:outline-none focus:ring-1 focus:ring-primary resize-none"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label className="text-xs tracking-widest uppercase text-muted-foreground block mb-1">Size</label>
+            <input
+              type="text"
+              value={(form as any).size || ""}
+              onChange={(e) => setForm({ ...form, size: e.target.value } as any)}
+              placeholder="e.g. 10cm x 15cm"
+              className="w-full border border-border bg-background px-3 py-2 text-sm rounded-sm focus:outline-none focus:ring-1 focus:ring-primary"
             />
           </div>
 
