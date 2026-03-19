@@ -315,6 +315,7 @@ const ProductDetail = () => {
           </div>
         )}
       </main>
+      <NewsletterBar />
       <Footer />
     </div>
   );

@@ -50,6 +50,7 @@ const Journal = () => {
           <p className="text-muted-foreground text-sm">No articles yet. Check back soon!</p>
         )}
       </main>
+      <NewsletterBar />
       <Footer />
     </div>
   );

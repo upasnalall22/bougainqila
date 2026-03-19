@@ -78,6 +78,7 @@ const ShopAll = () => {
           <p className="text-center text-muted-foreground">No products found. Add products via the admin panel.</p>
         )}
       </main>
+      <NewsletterBar />
       <Footer />
     </div>
   );

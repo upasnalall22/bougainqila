@@ -129,6 +129,7 @@ const OurStory = () => {
           </div>
         </section>
       </main>
+      <NewsletterBar />
       <Footer />
     </div>
   );

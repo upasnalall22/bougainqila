@@ -96,6 +96,7 @@ const HomeLiving = () => {
         <p className="text-center text-muted-foreground">New Products will be added here soon!</p>
         }
       </main>
+      <NewsletterBar />
       <Footer />
     </div>);
 
