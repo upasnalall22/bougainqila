@@ -45,6 +45,7 @@ const AdminDashboard = () => {
         {tab === "categories" && <CategoriesTab />}
         {tab === "journal" && <JournalTab />}
         {tab === "our-story" && <OurStoryTab />}
+        {tab === "subscribers" && <SubscribersTab />}
       </main>
       <Footer />
     </div>
