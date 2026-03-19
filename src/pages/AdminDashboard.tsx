@@ -3,11 +3,12 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useAllHomepageContent, useAllCategoryContent, useJournalPosts } from "@/hooks/useCMS";
+import { useOurStorySections } from "@/hooks/useOurStory";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Save, Plus, Trash2, Edit, LogOut } from "lucide-react";
 
-type Tab = "homepage" | "categories" | "journal";
+type Tab = "homepage" | "categories" | "journal" | "our-story";
 
 const AdminDashboard = () => {
   const { signOut } = useAuth();
@@ -27,7 +28,7 @@ const AdminDashboard = () => {
         </div>
 
         <div className="flex gap-1 mb-8 border-b border-border">
-          {(["homepage", "categories", "journal"] as Tab[]).map((t) => (
+          {(["homepage", "categories", "journal", "our-story"] as Tab[]).map((t) => (
             <button
               key={t}
               onClick={() => setTab(t)}
@@ -43,6 +44,7 @@ const AdminDashboard = () => {
         {tab === "homepage" && <HomepageTab />}
         {tab === "categories" && <CategoriesTab />}
         {tab === "journal" && <JournalTab />}
+        {tab === "our-story" && <OurStoryTab />}
       </main>
       <Footer />
     </div>
@@ -366,6 +368,118 @@ function JournalTab() {
           {posts?.length === 0 && <p className="text-muted-foreground text-sm text-center py-8">No journal posts yet.</p>}
         </div>
       )}
+    </div>
+  );
+}
+
+// ─── Our Story Tab ────────────────────────────────────────────
+function OurStoryTab() {
+  const queryClient = useQueryClient();
+  const { data: sections, isLoading } = useOurStorySections();
+  const [editing, setEditing] = useState<string | null>(null);
+  const [form, setForm] = useState<Record<string, string>>({});
+
+  const saveMutation = useMutation({
+    mutationFn: async () => {
+      const { error } = await supabase
+        .from("our_story_sections")
+        .update(form)
+        .eq("section_key", editing!);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["our-story-sections"] });
+      setEditing(null);
+    },
+  });
+
+  if (isLoading) return <p className="text-muted-foreground text-sm">Loading...</p>;
+
+  const fields = ["title", "subtitle", "description", "quote", "image_url", "image_url_2", "button_text", "button_link"];
+
+  const startEdit = (s: any) => {
+    setEditing(s.section_key);
+    const f: Record<string, string> = {};
+    fields.forEach((field) => (f[field] = s[field] || ""));
+    setForm(f);
+  };
+
+  const sectionLabels: Record<string, string> = {
+    hero: "Hero Banner",
+    tagline: "Tagline Section",
+    "brand-story": "Brand Story",
+    philosophy: "Philosophy / Quote",
+    "founders-intro": "Founders Intro",
+    "founder-1": "Founder Profile",
+    "card-1": "Bottom Card 1 (Shop)",
+    "card-2": "Bottom Card 2 (Gifts)",
+    "card-3": "Bottom Card 3 (Journal)",
+  };
+
+  return (
+    <div className="space-y-4">
+      <p className="text-xs text-muted-foreground mb-4">Manage all sections of the Our Story page. Upload images via product image storage and paste URLs here.</p>
+      {sections?.map((s: any) => (
+        <div key={s.id} className="border border-border rounded-sm p-4">
+          {editing === s.section_key ? (
+            <div className="space-y-3">
+              <p className="text-xs tracking-[0.2em] uppercase text-muted-foreground mb-2">
+                Editing: {sectionLabels[s.section_key] || s.section_key}
+              </p>
+              {fields.map((field) => (
+                <div key={field}>
+                  <label className="text-xs tracking-widest uppercase text-muted-foreground block mb-1">
+                    {field.replace(/_/g, " ")}
+                  </label>
+                  {field === "description" || field === "quote" ? (
+                    <textarea
+                      value={form[field] || ""}
+                      onChange={(e) => setForm({ ...form, [field]: e.target.value })}
+                      rows={3}
+                      className="w-full border border-border bg-background px-3 py-2 text-sm rounded-sm focus:outline-none focus:ring-1 focus:ring-primary resize-none"
+                    />
+                  ) : (
+                    <input
+                      type="text"
+                      value={form[field] || ""}
+                      onChange={(e) => setForm({ ...form, [field]: e.target.value })}
+                      className="w-full border border-border bg-background px-3 py-2 text-sm rounded-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                    />
+                  )}
+                </div>
+              ))}
+              <div className="flex gap-2">
+                <button
+                  onClick={() => saveMutation.mutate()}
+                  disabled={saveMutation.isPending}
+                  className="bg-primary text-primary-foreground px-5 py-2 text-xs tracking-[0.15em] uppercase rounded-sm hover:opacity-90 disabled:opacity-50 inline-flex items-center gap-1.5"
+                >
+                  <Save className="w-3.5 h-3.5" /> {saveMutation.isPending ? "Saving..." : "Save"}
+                </button>
+                <button
+                  onClick={() => setEditing(null)}
+                  className="border border-border px-5 py-2 text-xs tracking-[0.15em] uppercase rounded-sm hover:bg-muted"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs tracking-[0.2em] uppercase text-muted-foreground mb-1">
+                  {sectionLabels[s.section_key] || s.section_key}
+                </p>
+                <p className="text-sm font-medium text-foreground">{s.title || "(no title)"}</p>
+                {s.description && <p className="text-xs text-muted-foreground truncate max-w-md">{s.description}</p>}
+              </div>
+              <button onClick={() => startEdit(s)} className="text-foreground hover:text-primary">
+                <Edit className="w-4 h-4" />
+              </button>
+            </div>
+          )}
+        </div>
+      ))}
     </div>
   );
 }

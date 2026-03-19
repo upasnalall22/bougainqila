@@ -321,6 +321,51 @@ export type Database = {
           },
         ]
       }
+      our_story_sections: {
+        Row: {
+          button_link: string | null
+          button_text: string | null
+          description: string | null
+          display_order: number
+          id: string
+          image_url: string | null
+          image_url_2: string | null
+          quote: string | null
+          section_key: string
+          subtitle: string | null
+          title: string | null
+          updated_at: string
+        }
+        Insert: {
+          button_link?: string | null
+          button_text?: string | null
+          description?: string | null
+          display_order?: number
+          id?: string
+          image_url?: string | null
+          image_url_2?: string | null
+          quote?: string | null
+          section_key: string
+          subtitle?: string | null
+          title?: string | null
+          updated_at?: string
+        }
+        Update: {
+          button_link?: string | null
+          button_text?: string | null
+          description?: string | null
+          display_order?: number
+          id?: string
+          image_url?: string | null
+          image_url_2?: string | null
+          quote?: string | null
+          section_key?: string
+          subtitle?: string | null
+          title?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       product_images: {
         Row: {
           created_at: string
