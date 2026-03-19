@@ -1,46 +1,125 @@
 
 
-## Plan: Build Homepage (Artisan Lab-inspired layout) with Supabase E-commerce
+# Brand Language Adaptation, Logo Replacement, Newsletter Popup with Backend
 
-### Overview
-Build a handmade home decor e-commerce site with a clean, minimal aesthetic inspired by the reference site. We'll use Supabase (via Lovable Cloud) for the backend — products, cart, orders, and auth. This plan covers the **homepage only**; additional pages (product detail, cart, checkout, auth) will follow.
+## Summary
 
-### Your Product Categories
-1. Handmade Clay Windchimes
-2. Handmade Clay Lettering
-3. Handmade Clay Containers
-4. Handmade Jooda Stick Hair Accessories
+Adapt all website copy to match the BougenQila brand guidebook voice (unhurried, tactile, honest, intimate, story-led). Replace the logo with the uploaded master logo file. Update the newsletter popup to use session-based (not localStorage) display logic and store subscriber data in the database.
 
-### Homepage Sections (top to bottom)
+---
 
-1. **Navbar** — Logo (left), nav links (Shop, About, Contact — center/right), cart icon + account icon (right). Clean, minimal header with a warm off-white background.
+## 1. Replace Logo
 
-2. **Hero Banner** — Full-width image area with overlay text: brand tagline and a "Shop Now" CTA button. Placeholder image for now (you'll replace with your own).
+- Copy `user-uploads://BQ_LOGO_MASTER_1.png` to `src/assets/logo.png` (overwrite existing)
+- No component changes needed — Navbar already imports from `@/assets/logo.png`
 
-3. **Category Grid** — 4 cards (one per category) in a 2×2 grid on desktop, stacked on mobile. Each card has a placeholder image, category name, and "Explore" link.
+## 2. Adapt Language Across Components
 
-4. **Featured Products** — Horizontal scroll or grid of 4-6 product cards with image, name, and price. Placeholder data for now.
+Apply brand guidebook voice throughout. Key vocabulary shifts: "handcrafted" not "handcrafted artisan", "piece" not "product", "one of a kind" not "unique exclusive", "handmade" not "premium", "terrace studio" not "workshop", "bring home" not "buy now", "made with intention" not "made with love".
 
-5. **About/Story Section** — Split layout: image on one side, short brand story text on the other. Emphasizes the handmade, one-of-a-kind nature of your pieces.
+### Files and specific changes:
 
-6. **Footer** — Logo, quick links, social media icons, copyright.
+**AnnouncementTicker.tsx**
+- "Free Shipping on Orders Above ₹1,499 ✨" → "Free shipping on orders above ₹1,499"
+- "Handcrafted with Love — Each Piece is One of a Kind 🏺" → "Made one piece at a time on a terrace in Gurugram"
+- Remove emojis (brand never uses them in this way)
 
-### Design Tokens
-- Warm, earthy palette: off-white background (`#FAF8F5`), dark charcoal text, warm accent color (terracotta/clay tone `#C4896B`)
-- Clean sans-serif font (Inter or similar)
-- Minimal borders, generous whitespace
+**HeroBanner.tsx** (default/fallback text)
+- subtitle: "Handcrafted with Love" → "Imperfectly Perfect"
+- title: "One of a Kind\nClay Creations" → "There is beauty in the broken\nand magic in the slow."
+- description: current generic text → "Handmade home decor born from a terrace garden. Each piece carries the warmth of slow craft with an organic spirit."
+- buttonText: "Explore More" → "Shop Now"
 
-### Technical Details
+**CategoryGrid.tsx**
+- Section subtitle: "Collections" (keep)
+- Section title: "Shop by Category" → "Made by hand, meant to last"
+- CTA text: "Explore More →" → "Explore →"
 
-**Files to create/modify:**
-- `src/index.css` — Update design tokens (warm palette)
-- `src/pages/Index.tsx` — Full homepage with all sections
-- `src/components/Navbar.tsx` — Top navigation
-- `src/components/HeroBanner.tsx` — Hero section
-- `src/components/CategoryGrid.tsx` — Category cards
-- `src/components/FeaturedProducts.tsx` — Product cards
-- `src/components/AboutSection.tsx` — Brand story
-- `src/components/Footer.tsx` — Site footer
+**AboutSection.tsx** (fallback text)
+- subtitle: "Our Story" → "The Heart of it All"
+- title: "Made by Hand,\nMade with Heart" → "Where it all began"
+- description: Replace generic text with brand-voice copy from reference site: "It started with a few pots on a terrace and a heart full of questions..."
+- buttonText: "Learn More About Us →" → "Read Our Story →"
 
-All product data will be hardcoded placeholders initially. Supabase integration (products table, cart, auth) will be added in a subsequent step when you're ready.
+**FeaturedProducts.tsx**
+- subtitle: "Curated" → "From the Studio"
+- title: "Featured Pieces" (keep — "pieces" is brand vocabulary)
+- "Add to Cart" → "Bring Home"
+
+**JournalSection.tsx**
+- subtitle: "Journal" (keep)
+- title: "Follow Our Story" → "From the Terrace"
+
+**NewsletterBar.tsx**
+- title: "Sign Up for Our Newsletter" → "Stay a while"
+- description: "Subscribe to get special offers and updates." → "New pieces, behind-the-scenes stories and the occasional quiet thought — straight to your inbox."
+- button: "Subscribe" → "Join"
+- success: "Thank you for subscribing!" → "Welcome. You will hear from us soon."
+- Save email to database (same table as popup)
+
+**Footer.tsx**
+- Brand description: "Handcrafted clay home decor & accessories. Every piece is one of a kind." → "Handmade home decor shaped one piece at a time on a terrace in Gurugram. No two are the same."
+- "About Us" → "Our Story"
+- "Contact" → "Connect"
+
+**ProductDetail.tsx**
+- Trust badge: "Hand-crafted" → "Handmade"
+- "Add to Cart" → "Bring Home" / "Out of Stock" → "Sold Out"
+- "You may also like" → "You might also like"
+- Shipping text: keep factual tone
+
+**CartDrawer.tsx**
+- "Add to Cart" in recommendations → "Bring Home"
+
+**Connect.tsx**
+- subtitle: "Get in Touch" → "Say Hello"
+- title: "Connect with Us" → "We would love to hear from you"
+- success: "We'll get back to you shortly." → "Thank you. We will write back soon."
+- button: "Send Message" → "Send"
+
+**Checkout.tsx**
+- No major language changes needed (transactional, factual — matches brand guidance for checkout)
+
+## 3. Newsletter Popup — Session-Based + Backend Storage
+
+### Database Migration
+Create `newsletter_subscribers` table:
+```sql
+CREATE TABLE public.newsletter_subscribers (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  email text NOT NULL UNIQUE,
+  source text DEFAULT 'popup',
+  subscribed_at timestamptz DEFAULT now()
+);
+ALTER TABLE public.newsletter_subscribers ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Allow anonymous inserts" ON public.newsletter_subscribers
+  FOR INSERT TO anon, authenticated WITH CHECK (true);
+CREATE POLICY "Admins can read" ON public.newsletter_subscribers
+  FOR SELECT TO authenticated USING (public.has_role(auth.uid(), 'admin'));
+```
+
+### NewsletterPopup.tsx Changes
+- Use `sessionStorage` instead of `localStorage` so popup shows once per session (not permanently dismissed)
+- Update copy to brand voice:
+  - Title: "Stay in the Loop" → "Before you go"
+  - Description: "Get 10% off your first order when you subscribe to our newsletter." → "New pieces, stories from the terrace and the occasional quiet thought. We will only write when we have something worth saying."
+  - Success: "Welcome aboard! Check your inbox." → "Welcome. You will hear from us soon."
+  - Button: "Subscribe" → "Join"
+- On submit, insert email into `newsletter_subscribers` table with `source: 'popup'`
+
+### NewsletterBar.tsx Changes
+- On submit, insert email into `newsletter_subscribers` table with `source: 'footer_bar'`
+
+### Admin — View Subscribers
+- Add a "Subscribers" section in AdminDashboard to list newsletter subscribers (read-only table)
+
+---
+
+## Technical Details
+
+- **13 component files** edited for language updates
+- **1 asset** replaced (logo)
+- **1 database migration** (newsletter_subscribers table + RLS)
+- **2 components** updated to write to database (NewsletterPopup, NewsletterBar)
+- **1 admin tab** added (Subscribers list in AdminDashboard)
 
