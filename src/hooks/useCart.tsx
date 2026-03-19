@@ -1,6 +1,5 @@
 import { createContext, useContext, useCallback, useEffect, useState, type ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { useQueryClient } from "@tanstack/react-query";
 
 function getSessionId() {
   let id = localStorage.getItem("cart_session_id");
