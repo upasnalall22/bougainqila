@@ -124,7 +124,7 @@ const Navbar = () => {
 
       {/* Mobile Nav */}
       {mobileOpen && (
-        <nav className="lg:hidden border-t border-border px-6 py-4 flex flex-col gap-3 text-[11px] tracking-[0.2em] uppercase text-muted-foreground bg-background">
+        <nav className="md:hidden border-t border-border px-6 py-4 flex flex-col gap-3 text-[11px] tracking-[0.2em] uppercase text-muted-foreground bg-background">
           {navLinks.map((link) =>
             link.hasMega ? (
               <div key={link.label}>
