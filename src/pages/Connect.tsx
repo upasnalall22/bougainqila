@@ -19,7 +19,7 @@ const Connect = () => {
     } catch {
       // non-blocking
     }
-    toast.success("Message sent! We'll get back to you shortly.");
+    toast.success("Thank you. We will write back soon.");
     setSubmitted(true);
     setSending(false);
   };
