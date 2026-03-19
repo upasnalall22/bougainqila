@@ -27,6 +27,7 @@ const Navbar = () => {
   const [mobileSubOpen, setMobileSubOpen] = useState(false);
   const megaRef = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const { totalItems, openCart } = useCart();
 
   const handleMegaEnter = () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
