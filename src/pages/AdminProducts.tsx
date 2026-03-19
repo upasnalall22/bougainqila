@@ -36,12 +36,40 @@ const emptyProduct = {
   meta_description: "",
 };
 
+function parseCSV(text: string): Record<string, string>[] {
+  const lines = text.split(/\r?\n/).filter((l) => l.trim());
+  if (lines.length < 2) return [];
+  const headers = lines[0].split(",").map((h) => h.trim().toLowerCase().replace(/\s+/g, "_"));
+  return lines.slice(1).map((line) => {
+    const values: string[] = [];
+    let current = "";
+    let inQuotes = false;
+    for (const ch of line) {
+      if (ch === '"') { inQuotes = !inQuotes; continue; }
+      if (ch === "," && !inQuotes) { values.push(current.trim()); current = ""; continue; }
+      current += ch;
+    }
+    values.push(current.trim());
+    const row: Record<string, string> = {};
+    headers.forEach((h, i) => { row[h] = values[i] || ""; });
+    return row;
+  });
+}
+
+const CSV_TEMPLATE_HEADERS = [
+  "name", "slug", "description", "materials_used", "size", "price",
+  "original_price", "category", "stock_quantity", "ships_within",
+  "tag", "featured", "best_seller", "meta_title", "meta_description"
+];
+
 const AdminProducts = () => {
   const queryClient = useQueryClient();
   const [editing, setEditing] = useState<string | null>(null);
   const [form, setForm] = useState(emptyProduct);
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [newColor, setNewColor] = useState({ name: "", hex: "#8B4513" });
+  const csvInputRef = useRef<HTMLInputElement>(null);
+  const [csvStatus, setCsvStatus] = useState<{ uploading: boolean; result: string | null }>({ uploading: false, result: null });
 
   const { data: products, isLoading } = useQuery({
     queryKey: ["admin-products"],
