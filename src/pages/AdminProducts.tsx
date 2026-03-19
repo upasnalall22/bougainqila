@@ -90,6 +90,7 @@ const AdminProducts = () => {
       const productData = {
         name: form.name,
         slug,
+        product_code: form.product_code || null,
         description: form.description || null,
         design_craft: form.design_craft || null,
         size: form.size || null,
