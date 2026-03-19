@@ -537,13 +537,27 @@ const AdminProducts = () => {
             <input
               type="file"
               multiple
-              accept="image/*"
-              onChange={(e) => setImageFiles(Array.from(e.target.files || []))}
+              accept="image/*,image/gif"
+              onChange={(e) => {
+                const files = Array.from(e.target.files || []);
+                const existingCount = editing
+                  ? (products?.find((p: any) => p.id === editing) as any)?.product_images?.length || 0
+                  : 0;
+                const allowed = 5 - existingCount;
+                if (files.length > allowed) {
+                  alert(`You can upload up to ${allowed} more image(s). Max 5 total.`);
+                  setImageFiles(files.slice(0, allowed));
+                } else {
+                  setImageFiles(files);
+                }
+              }}
               className="text-sm text-muted-foreground"
             />
-            {imageFiles.length > 0 && (
-              <p className="text-xs text-muted-foreground mt-1">{imageFiles.length} file(s) selected</p>
-            )}
+            <p className="text-xs text-muted-foreground mt-1">
+              {imageFiles.length > 0
+                ? `${imageFiles.length} file(s) selected`
+                : "Upload up to 5 images or GIFs"}
+            </p>
           </div>
 
           <div className="flex gap-3">
