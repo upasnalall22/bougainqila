@@ -22,56 +22,17 @@ const OurStory = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-1">
-        {/* Tagline + Image */}
-        <section className="max-w-6xl mx-auto px-6 py-16 md:py-24">
-          <div className="grid md:grid-cols-2 gap-10 items-center">
-            <div className="aspect-[4/5] bg-card rounded-sm overflow-hidden border border-border">
-              {tagline?.image_url ? (
-                <img src={tagline.image_url} alt="Tagline" className="w-full h-full object-cover" loading="lazy" />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center text-muted-foreground text-sm">Image</div>
-              )}
-            </div>
-            <h2
-              className="text-2xl md:text-4xl font-light text-foreground leading-snug"
-              style={{ fontFamily: "'Cormorant Garamond', serif" }}
-            >
-              {tagline?.title || "Turn everyday into small moments of joy"}
-            </h2>
-          </div>
-        </section>
-
         {/* Brand Story */}
-        <section className="max-w-6xl mx-auto px-6 pb-16 md:pb-24">
+        <section className="max-w-6xl mx-auto px-6 py-16 md:py-24">
           <div className="grid md:grid-cols-2 gap-10 items-center">
             <div className="order-2 md:order-1">
               <p className="text-muted-foreground leading-relaxed text-base md:text-lg">
                 {brandStory?.description || ""}
               </p>
             </div>
-            <div className="aspect-[4/5] bg-card rounded-sm overflow-hidden border border-border order-1 md:order-2">
+            <div className="max-w-[60%] mx-auto aspect-[4/5] bg-card rounded-sm overflow-hidden border border-border order-1 md:order-2">
               {brandStory?.image_url ? (
                 <img src={brandStory.image_url} alt="Brand Story" className="w-full h-full object-cover" loading="lazy" />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center text-muted-foreground text-sm">Image</div>
-              )}
-            </div>
-          </div>
-        </section>
-
-        {/* Two Image Grid */}
-        <section className="max-w-6xl mx-auto px-6 pb-16 md:pb-24">
-          <div className="grid grid-cols-2 gap-4">
-            <div className="aspect-square bg-card rounded-sm overflow-hidden border border-border">
-              {brandStory?.image_url_2 ? (
-                <img src={brandStory.image_url_2} alt="Studio" className="w-full h-full object-cover" loading="lazy" />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center text-muted-foreground text-sm">Image</div>
-              )}
-            </div>
-            <div className="aspect-square bg-card rounded-sm overflow-hidden border border-border">
-              {philosophy?.image_url ? (
-                <img src={philosophy.image_url} alt="Craft" className="w-full h-full object-cover" loading="lazy" />
               ) : (
                 <div className="w-full h-full flex items-center justify-center text-muted-foreground text-sm">Image</div>
               )}
