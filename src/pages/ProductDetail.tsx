@@ -212,12 +212,18 @@ const ProductDetail = () => {
               </div>
             </div>
 
+            {/* Stock Status */}
+            {!product.in_stock && (
+              <p className="text-sm text-destructive font-medium mb-3">Out of Stock</p>
+            )}
+
             {/* Add to Cart */}
             <button
               onClick={() => addToCart(product.id, quantity)}
-              className="w-full bg-primary text-primary-foreground py-3.5 text-xs tracking-[0.2em] uppercase rounded-sm hover:opacity-90 transition-opacity mb-3"
+              disabled={!product.in_stock}
+              className="w-full bg-primary text-primary-foreground py-3.5 text-xs tracking-[0.2em] uppercase rounded-sm hover:opacity-90 transition-opacity mb-3 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Add to Cart
+              {product.in_stock ? "Add to Cart" : "Out of Stock"}
             </button>
 
             {/* Pickup */}

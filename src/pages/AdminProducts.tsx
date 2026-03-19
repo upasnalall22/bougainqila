@@ -27,6 +27,7 @@ const emptyProduct = {
   category: "windchimes",
   colors: [] as Array<{ name: string; hex: string }>,
   in_stock: true,
+  stock_quantity: 0,
   ships_within: "3-5 business days",
   tag: "",
   featured: false,
@@ -67,7 +68,8 @@ const AdminProducts = () => {
         original_price: form.original_price || null,
         category: form.category,
         colors: form.colors as any,
-        in_stock: form.in_stock,
+        in_stock: form.stock_quantity > 0,
+        stock_quantity: form.stock_quantity,
         ships_within: form.ships_within || null,
         tag: form.tag || null,
         featured: form.featured,
@@ -145,6 +147,7 @@ const AdminProducts = () => {
       category: product.category,
       colors: (product.colors as Array<{ name: string; hex: string }>) || [],
       in_stock: product.in_stock,
+      stock_quantity: product.stock_quantity || 0,
       ships_within: product.ships_within || "",
       tag: product.tag || "",
       featured: product.featured,
@@ -233,7 +236,7 @@ const AdminProducts = () => {
             />
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-4">
             <div>
               <label className="text-xs tracking-widest uppercase text-muted-foreground block mb-1">Price (₹) *</label>
               <input
@@ -249,6 +252,16 @@ const AdminProducts = () => {
                 type="number"
                 value={form.original_price || ""}
                 onChange={(e) => setForm({ ...form, original_price: e.target.value ? Number(e.target.value) : null })}
+                className="w-full border border-border bg-background px-3 py-2 text-sm rounded-sm focus:outline-none focus:ring-1 focus:ring-primary"
+              />
+            </div>
+            <div>
+              <label className="text-xs tracking-widest uppercase text-muted-foreground block mb-1">Stock Qty *</label>
+              <input
+                type="number"
+                min={0}
+                value={form.stock_quantity}
+                onChange={(e) => setForm({ ...form, stock_quantity: Number(e.target.value) })}
                 className="w-full border border-border bg-background px-3 py-2 text-sm rounded-sm focus:outline-none focus:ring-1 focus:ring-primary"
               />
             </div>
@@ -287,14 +300,6 @@ const AdminProducts = () => {
               />
             </div>
             <div className="flex items-end gap-4">
-              <label className="flex items-center gap-2 text-sm text-foreground cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={form.in_stock}
-                  onChange={(e) => setForm({ ...form, in_stock: e.target.checked })}
-                />
-                In Stock
-              </label>
               <label className="flex items-center gap-2 text-sm text-foreground cursor-pointer">
                 <input
                   type="checkbox"
@@ -449,6 +454,7 @@ const AdminProducts = () => {
                   <h3 className="text-sm font-medium text-foreground truncate">{product.name}</h3>
                   <p className="text-xs text-muted-foreground">
                     {product.category} · MRP ₹{product.price.toLocaleString("en-IN")}.00
+                    · Stock: {(product as any).stock_quantity ?? 0}
                     {product.tag && ` · ${product.tag}`}
                   </p>
                 </div>

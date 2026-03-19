@@ -24,6 +24,8 @@ import Terms from "./pages/Terms.tsx";
 import ProductDetail from "./pages/ProductDetail.tsx";
 import AdminProducts from "./pages/AdminProducts.tsx";
 import AdminDashboard from "./pages/AdminDashboard.tsx";
+import AdminOrders from "./pages/AdminOrders.tsx";
+import AdminCustomers from "./pages/AdminCustomers.tsx";
 import AdminLogin from "./pages/AdminLogin.tsx";
 import CookiePolicy from "./pages/CookiePolicy.tsx";
 import NotFound from "./pages/NotFound.tsx";
@@ -55,6 +57,8 @@ const App = () => (
                 <Route path="/product/:slug" element={<ProductDetail />} />
                 <Route path="/admin/login" element={<AdminLogin />} />
                 <Route path="/admin/products" element={<AdminRoute><AdminProducts /></AdminRoute>} />
+                <Route path="/admin/orders" element={<AdminRoute><AdminOrders /></AdminRoute>} />
+                <Route path="/admin/customers" element={<AdminRoute><AdminCustomers /></AdminRoute>} />
                 <Route path="/admin/content" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
                 <Route path="/cookie-policy" element={<CookiePolicy />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
