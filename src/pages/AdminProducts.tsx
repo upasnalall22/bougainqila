@@ -257,6 +257,47 @@ const AdminProducts = () => {
           Product Management
         </h1>
 
+        {/* CSV Bulk Upload */}
+        <div className="bg-card border border-border rounded-sm p-6 mb-6">
+          <h2 className="text-sm tracking-[0.2em] uppercase text-muted-foreground mb-4">Bulk Import via CSV</h2>
+          <p className="text-xs text-muted-foreground mb-4">
+            Upload a CSV file to import multiple products at once. Download the template to see the required format.
+          </p>
+          <div className="flex flex-wrap gap-3 items-center">
+            <button
+              onClick={downloadTemplate}
+              className="border border-border px-4 py-2 text-xs tracking-[0.15em] uppercase rounded-sm hover:bg-muted transition-colors inline-flex items-center gap-2"
+            >
+              <Download className="w-3.5 h-3.5" />
+              Download Template
+            </button>
+            <input
+              ref={csvInputRef}
+              type="file"
+              accept=".csv"
+              className="hidden"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) handleCSVUpload(file);
+                e.target.value = "";
+              }}
+            />
+            <button
+              onClick={() => csvInputRef.current?.click()}
+              disabled={csvStatus.uploading}
+              className="bg-primary text-primary-foreground px-4 py-2 text-xs tracking-[0.15em] uppercase rounded-sm hover:opacity-90 transition-opacity disabled:opacity-50 inline-flex items-center gap-2"
+            >
+              <FileUp className="w-3.5 h-3.5" />
+              {csvStatus.uploading ? "Importing..." : "Upload CSV"}
+            </button>
+          </div>
+          {csvStatus.result && (
+            <p className={`text-xs mt-3 ${csvStatus.result.startsWith("Error") ? "text-destructive" : "text-green-600"}`}>
+              {csvStatus.result}
+            </p>
+          )}
+        </div>
+
         {/* Form */}
         <div className="bg-card border border-border rounded-sm p-6 mb-10">
           <h2 className="text-sm tracking-[0.2em] uppercase text-muted-foreground mb-6">
