@@ -4,6 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import CookieConsent from "@/components/CookieConsent";
 import Index from "./pages/Index.tsx";
 import ShopAll from "./pages/ShopAll.tsx";
 import HomeLiving from "./pages/HomeLiving.tsx";
@@ -16,6 +17,7 @@ import RefundPolicy from "./pages/RefundPolicy.tsx";
 import Terms from "./pages/Terms.tsx";
 import ProductDetail from "./pages/ProductDetail.tsx";
 import AdminProducts from "./pages/AdminProducts.tsx";
+import CookiePolicy from "./pages/CookiePolicy.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -40,10 +42,12 @@ const App = () => (
           <Route path="/terms" element={<Terms />} />
           <Route path="/product/:slug" element={<ProductDetail />} />
           <Route path="/admin/products" element={<AdminProducts />} />
+          <Route path="/cookie-policy" element={<CookiePolicy />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
         <WhatsAppButton />
+        <CookieConsent />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
