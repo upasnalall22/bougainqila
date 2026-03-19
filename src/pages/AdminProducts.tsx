@@ -587,6 +587,7 @@ const AdminProducts = () => {
                 <div className="flex-1 min-w-0">
                   <h3 className="text-sm font-medium text-foreground truncate">{product.name}</h3>
                   <p className="text-xs text-muted-foreground">
+                    {product.product_code && <span className="font-mono">{product.product_code} · </span>}
                     {product.category} · MRP ₹{product.price.toLocaleString("en-IN")}.00
                     · Stock: {(product as any).stock_quantity ?? 0}
                     {product.tag && ` · ${product.tag}`}

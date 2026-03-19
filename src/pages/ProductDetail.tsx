@@ -125,6 +125,9 @@ const ProductDetail = () => {
             >
               {product.name}
             </h1>
+            {(product as any).product_code && (
+              <p className="text-xs font-mono text-muted-foreground mb-3">Code: {(product as any).product_code}</p>
+            )}
 
             {/* Price */}
             <div className="flex items-baseline gap-3 mb-1">
