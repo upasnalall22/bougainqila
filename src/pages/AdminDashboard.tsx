@@ -8,7 +8,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Save, Plus, Trash2, Edit, LogOut } from "lucide-react";
 
-type Tab = "homepage" | "categories" | "journal";
+type Tab = "homepage" | "categories" | "journal" | "our-story";
 
 const AdminDashboard = () => {
   const { signOut } = useAuth();
