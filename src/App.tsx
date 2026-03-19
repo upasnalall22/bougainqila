@@ -28,6 +28,7 @@ const App = () => (
           <Route path="/home-living/:category" element={<HomeLiving />} />
           <Route path="/gift-shop" element={<GiftShop />} />
           <Route path="/journal" element={<Journal />} />
+          <Route path="/insta-feed" element={<InstaFeed />} />
           <Route path="/our-story" element={<OurStory />} />
           <Route path="/connect" element={<Connect />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
