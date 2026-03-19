@@ -43,12 +43,10 @@ const ProductCard = ({ product }: { product: Product }) => {
 
       {/* Buttons */}
       <div className="flex gap-2">
-        <button className="flex-1 flex items-center justify-center gap-1.5 border border-border text-foreground text-[10px] tracking-[0.1em] uppercase py-2 rounded-sm hover:bg-muted transition-colors">
-          <ShoppingCart className="w-3.5 h-3.5" />
+        <button className="flex-1 border border-border text-foreground text-[10px] tracking-[0.1em] uppercase py-2 rounded-sm hover:bg-muted transition-colors">
           Add to Cart
         </button>
-        <button className="flex-1 flex items-center justify-center gap-1.5 bg-primary text-primary-foreground text-[10px] tracking-[0.1em] uppercase py-2 rounded-sm hover:opacity-90 transition-opacity">
-          <Zap className="w-3.5 h-3.5" />
+        <button className="flex-1 bg-primary text-primary-foreground text-[10px] tracking-[0.1em] uppercase py-2 rounded-sm hover:opacity-90 transition-opacity">
           Buy Now
         </button>
       </div>
