@@ -147,6 +147,7 @@ const AdminProducts = () => {
       category: product.category,
       colors: (product.colors as Array<{ name: string; hex: string }>) || [],
       in_stock: product.in_stock,
+      stock_quantity: product.stock_quantity || 0,
       ships_within: product.ships_within || "",
       tag: product.tag || "",
       featured: product.featured,
