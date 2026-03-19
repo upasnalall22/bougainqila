@@ -4,6 +4,8 @@ import CategoryGrid from "@/components/CategoryGrid";
 import FeaturedProducts from "@/components/FeaturedProducts";
 import AboutSection from "@/components/AboutSection";
 import JournalSection from "@/components/JournalSection";
+import NewsletterBar from "@/components/NewsletterBar";
+import NewsletterPopup from "@/components/NewsletterPopup";
 import Footer from "@/components/Footer";
 
 const Index = () => {
@@ -16,8 +18,10 @@ const Index = () => {
         <AboutSection />
         <FeaturedProducts />
         <JournalSection />
+        <NewsletterBar />
       </main>
       <Footer />
+      <NewsletterPopup />
     </div>
   );
 };
