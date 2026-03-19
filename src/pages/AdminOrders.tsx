@@ -490,6 +490,7 @@ const AdminOrders = () => {
                 <tr className="border-b border-border text-left">
                   <th className="py-3 px-2 text-xs tracking-widest uppercase text-muted-foreground font-normal">Order #</th>
                   <th className="py-3 px-2 text-xs tracking-widest uppercase text-muted-foreground font-normal">Customer</th>
+                  <th className="py-3 px-2 text-xs tracking-widest uppercase text-muted-foreground font-normal">Items</th>
                   <th className="py-3 px-2 text-xs tracking-widest uppercase text-muted-foreground font-normal">Status</th>
                   <th className="py-3 px-2 text-xs tracking-widest uppercase text-muted-foreground font-normal">Payment</th>
                   <th className="py-3 px-2 text-xs tracking-widest uppercase text-muted-foreground font-normal">Total</th>
@@ -499,9 +500,22 @@ const AdminOrders = () => {
               </thead>
               <tbody>
                 {filteredOrders?.map((order: any) => (
-                  <tr key={order.id} className="border-b border-border hover:bg-muted/50 transition-colors">
+                  <tr key={order.id} className="border-b border-border hover:bg-muted/50 transition-colors align-top">
                     <td className="py-3 px-2 font-medium">{order.order_number}</td>
                     <td className="py-3 px-2">{order.customers?.name || "Walk-in"}</td>
+                    <td className="py-3 px-2">
+                      <div className="space-y-1">
+                        {order.order_items?.map((item: any) => (
+                          <div key={item.id} className="text-xs">
+                            <span>{item.product_name}</span>
+                            {item.products?.slug && (
+                              <span className="text-muted-foreground font-mono ml-1">({item.products.slug})</span>
+                            )}
+                            <span className="text-muted-foreground"> ×{item.quantity}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </td>
                     <td className="py-3 px-2">{getStatusBadge(order.status)}</td>
                     <td className="py-3 px-2">
                       <span className={`text-[10px] px-2 py-0.5 rounded-full ${order.payment_status === "paid" ? "bg-green-100 text-green-800" : "bg-orange-100 text-orange-800"}`}>
@@ -518,7 +532,7 @@ const AdminOrders = () => {
                   </tr>
                 ))}
                 {filteredOrders?.length === 0 && (
-                  <tr><td colSpan={7} className="py-8 text-center text-muted-foreground">No orders found.</td></tr>
+                  <tr><td colSpan={8} className="py-8 text-center text-muted-foreground">No orders found.</td></tr>
                 )}
               </tbody>
             </table>
