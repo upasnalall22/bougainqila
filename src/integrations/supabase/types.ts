@@ -14,7 +14,92 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      product_images: {
+        Row: {
+          created_at: string
+          display_order: number
+          id: string
+          image_url: string
+          product_id: string
+        }
+        Insert: {
+          created_at?: string
+          display_order?: number
+          id?: string
+          image_url: string
+          product_id: string
+        }
+        Update: {
+          created_at?: string
+          display_order?: number
+          id?: string
+          image_url?: string
+          product_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_images_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      products: {
+        Row: {
+          category: string
+          colors: Json | null
+          created_at: string
+          description: string | null
+          design_craft: string | null
+          featured: boolean
+          id: string
+          in_stock: boolean
+          name: string
+          original_price: number | null
+          price: number
+          ships_within: string | null
+          slug: string
+          tag: string | null
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          colors?: Json | null
+          created_at?: string
+          description?: string | null
+          design_craft?: string | null
+          featured?: boolean
+          id?: string
+          in_stock?: boolean
+          name: string
+          original_price?: number | null
+          price: number
+          ships_within?: string | null
+          slug: string
+          tag?: string | null
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          colors?: Json | null
+          created_at?: string
+          description?: string | null
+          design_craft?: string | null
+          featured?: boolean
+          id?: string
+          in_stock?: boolean
+          name?: string
+          original_price?: number | null
+          price?: number
+          ships_within?: string | null
+          slug?: string
+          tag?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
