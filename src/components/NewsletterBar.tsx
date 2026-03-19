@@ -1,12 +1,20 @@
 import { useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 const NewsletterBar = () => {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email) setSubmitted(true);
+    if (email) {
+      try {
+        await supabase.from("newsletter_subscribers" as any).insert({ email, source: "footer_bar" } as any);
+      } catch {
+        // non-blocking
+      }
+      setSubmitted(true);
+    }
   };
 
   return (
@@ -16,14 +24,14 @@ const NewsletterBar = () => {
           className="text-xl md:text-2xl font-light text-foreground mb-2 italic"
           style={{ fontFamily: "'Cormorant Garamond', serif" }}
         >
-          Sign Up for Our Newsletter
+          Stay a while
         </h2>
         <p className="text-xs text-muted-foreground tracking-wide mb-6">
-          Subscribe to get special offers and updates.
+          New pieces, behind-the-scenes stories and the occasional quiet thought — straight to your inbox.
         </p>
 
         {submitted ? (
-          <p className="text-sm text-primary">Thank you for subscribing!</p>
+          <p className="text-sm text-primary">Welcome. You will hear from us soon.</p>
         ) : (
           <form onSubmit={handleSubmit} className="flex justify-center gap-0 max-w-md mx-auto">
             <input
@@ -38,7 +46,7 @@ const NewsletterBar = () => {
               type="submit"
               className="bg-primary text-primary-foreground px-6 py-2.5 text-xs tracking-[0.15em] uppercase hover:opacity-90 transition-opacity rounded-r-sm"
             >
-              Subscribe
+              Join
             </button>
           </form>
         )}

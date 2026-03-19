@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { X } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 const NewsletterPopup = () => {
   const [open, setOpen] = useState(false);
@@ -7,7 +8,7 @@ const NewsletterPopup = () => {
   const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
-    const dismissed = localStorage.getItem("newsletter_popup_dismissed");
+    const dismissed = sessionStorage.getItem("newsletter_popup_dismissed");
     if (!dismissed) {
       const timer = setTimeout(() => setOpen(true), 3000);
       return () => clearTimeout(timer);
@@ -16,12 +17,17 @@ const NewsletterPopup = () => {
 
   const close = () => {
     setOpen(false);
-    localStorage.setItem("newsletter_popup_dismissed", "true");
+    sessionStorage.setItem("newsletter_popup_dismissed", "true");
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (email) {
+      try {
+        await supabase.from("newsletter_subscribers" as any).insert({ email, source: "popup" } as any);
+      } catch {
+        // non-blocking
+      }
       setSubmitted(true);
       setTimeout(close, 2000);
     }
@@ -45,14 +51,14 @@ const NewsletterPopup = () => {
             className="text-2xl font-light text-foreground mb-2 italic"
             style={{ fontFamily: "'Cormorant Garamond', serif" }}
           >
-            Stay in the Loop
+            Before you go
           </h2>
           <p className="text-xs text-muted-foreground tracking-wide mb-6">
-            Get 10% off your first order when you subscribe to our newsletter.
+            New pieces, stories from the terrace and the occasional quiet thought. We will only write when we have something worth saying.
           </p>
 
           {submitted ? (
-            <p className="text-sm text-primary">Welcome aboard! Check your inbox.</p>
+            <p className="text-sm text-primary">Welcome. You will hear from us soon.</p>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-3">
               <input
@@ -67,7 +73,7 @@ const NewsletterPopup = () => {
                 type="submit"
                 className="w-full bg-primary text-primary-foreground py-2.5 text-xs tracking-[0.15em] uppercase hover:opacity-90 transition-opacity rounded-sm"
               >
-                Subscribe
+                Join
               </button>
             </form>
           )}
