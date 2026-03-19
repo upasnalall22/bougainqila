@@ -6,8 +6,8 @@ interface AnnouncementTickerProps {
 
 const AnnouncementTicker = ({
   messages = [
-    "Free Shipping on Orders Above ₹1,499 ✨",
-    "Handcrafted with Love — Each Piece is One of a Kind 🏺",
+    "Free shipping on orders above ₹1,499",
+    "Made one piece at a time on a terrace in Gurugram",
   ],
 }: AnnouncementTickerProps) => {
   const tickerRef = useRef<HTMLDivElement>(null);

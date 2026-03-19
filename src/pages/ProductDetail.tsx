@@ -11,7 +11,7 @@ import { useCart } from "@/hooks/useCart";
 const trustBadges = [
   { icon: Truck, label: "Hassle-free Shipping" },
   { icon: CreditCard, label: "COD Available" },
-  { icon: Hand, label: "Hand-crafted" },
+  { icon: Hand, label: "Handmade" },
   { icon: Gift, label: "Corporate Gifting" },
 ];
 
@@ -214,7 +214,7 @@ const ProductDetail = () => {
 
             {/* Stock Status */}
             {!product.in_stock && (
-              <p className="text-sm text-destructive font-medium mb-3">Out of Stock</p>
+              <p className="text-sm text-destructive font-medium mb-3">Sold Out</p>
             )}
 
             {/* Add to Cart */}
@@ -223,7 +223,7 @@ const ProductDetail = () => {
               disabled={!product.in_stock}
               className="w-full bg-primary text-primary-foreground py-3.5 text-xs tracking-[0.2em] uppercase rounded-sm hover:opacity-90 transition-opacity mb-3 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {product.in_stock ? "Add to Cart" : "Out of Stock"}
+              {product.in_stock ? "Bring Home" : "Sold Out"}
             </button>
 
             {/* Pickup */}
@@ -289,7 +289,7 @@ const ProductDetail = () => {
               className="text-center text-2xl font-light text-foreground mb-10"
               style={{ fontFamily: "'Cormorant Garamond', serif" }}
             >
-              You may also like
+              You might also like
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {relatedProducts.map((rp) => (

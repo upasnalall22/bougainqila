@@ -20,7 +20,7 @@ const CategoryGrid = () => {
       <div className="text-center mb-12">
         <p className="text-sm tracking-[0.3em] uppercase text-muted-foreground mb-3">Collections</p>
         <h2 className="text-3xl md:text-4xl font-light text-foreground" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
-          Shop by Category
+          Made by hand, meant to last
         </h2>
       </div>
 
@@ -42,7 +42,7 @@ const CategoryGrid = () => {
                 {cat.name}
               </h3>
               <span className="text-xs tracking-widest uppercase text-background/80 group-hover:text-background transition-colors">
-                Explore More →
+                Explore →
               </span>
             </div>
           </Link>

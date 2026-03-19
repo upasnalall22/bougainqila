@@ -75,7 +75,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
           onClick={(e) => { e.preventDefault(); addToCart(product.id); }}
           className="flex-1 border border-border text-foreground text-[10px] tracking-[0.1em] uppercase py-2 rounded-sm hover:bg-muted transition-colors"
         >
-          Add to Cart
+          Bring Home
         </button>
         <button
           onClick={(e) => { e.preventDefault(); addToCart(product.id); }}

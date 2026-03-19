@@ -19,7 +19,7 @@ const Connect = () => {
     } catch {
       // non-blocking
     }
-    toast.success("Message sent! We'll get back to you shortly.");
+    toast.success("Thank you. We will write back soon.");
     setSubmitted(true);
     setSending(false);
   };
@@ -28,15 +28,15 @@ const Connect = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-1 max-w-2xl mx-auto px-6 py-20 w-full">
-        <p className="text-sm tracking-[0.3em] uppercase text-muted-foreground mb-3">Get in Touch</p>
+        <p className="text-sm tracking-[0.3em] uppercase text-muted-foreground mb-3">Say Hello</p>
         <h1 className="text-3xl md:text-4xl font-light text-foreground mb-8" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
-          Connect with Us
+          We would love to hear from you
         </h1>
 
         {submitted ? (
           <div className="bg-card border border-border rounded-sm p-8 text-center">
             <p className="text-foreground text-lg mb-2" style={{ fontFamily: "'Cormorant Garamond', serif" }}>Thank you!</p>
-            <p className="text-muted-foreground text-sm">We'll get back to you shortly.</p>
+            <p className="text-muted-foreground text-sm">Thank you. We will write back soon.</p>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-5">
@@ -75,7 +75,7 @@ const Connect = () => {
               disabled={sending}
               className="bg-primary text-primary-foreground px-8 py-3 text-xs tracking-widest uppercase hover:opacity-90 transition-opacity rounded-sm disabled:opacity-50"
             >
-              {sending ? "Sending..." : "Send Message"}
+              {sending ? "Sending..." : "Send"}
             </button>
           </form>
         )}

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useAllHomepageContent, useAllCategoryContent, useJournalPosts } from "@/hooks/useCMS";
@@ -8,7 +8,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Save, Plus, Trash2, Edit, LogOut } from "lucide-react";
 
-type Tab = "homepage" | "categories" | "journal" | "our-story";
+type Tab = "homepage" | "categories" | "journal" | "our-story" | "subscribers";
 
 const AdminDashboard = () => {
   const { signOut } = useAuth();
@@ -28,7 +28,7 @@ const AdminDashboard = () => {
         </div>
 
         <div className="flex gap-1 mb-8 border-b border-border">
-          {(["homepage", "categories", "journal", "our-story"] as Tab[]).map((t) => (
+          {(["homepage", "categories", "journal", "our-story", "subscribers"] as Tab[]).map((t) => (
             <button
               key={t}
               onClick={() => setTab(t)}
@@ -45,6 +45,7 @@ const AdminDashboard = () => {
         {tab === "categories" && <CategoriesTab />}
         {tab === "journal" && <JournalTab />}
         {tab === "our-story" && <OurStoryTab />}
+        {tab === "subscribers" && <SubscribersTab />}
       </main>
       <Footer />
     </div>
@@ -480,6 +481,51 @@ function OurStoryTab() {
           )}
         </div>
       ))}
+    </div>
+  );
+}
+
+// ─── Subscribers Tab ──────────────────────────────────────────
+function SubscribersTab() {
+  const { data: subscribers, isLoading } = useQuery({
+    queryKey: ["newsletter-subscribers"],
+    queryFn: async () => {
+      const { data, error } = await (supabase as any)
+        .from("newsletter_subscribers")
+        .select("*")
+        .order("subscribed_at", { ascending: false });
+      if (error) throw error;
+      return data as Array<{ id: string; email: string; source: string; subscribed_at: string }>;
+    },
+  });
+
+  if (isLoading) return <p className="text-muted-foreground text-sm">Loading...</p>;
+
+  return (
+    <div>
+      <p className="text-xs tracking-[0.2em] uppercase text-muted-foreground mb-4">
+        {subscribers?.length || 0} subscribers
+      </p>
+      <div className="border border-border rounded-sm overflow-hidden">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="bg-muted">
+              <th className="text-left px-4 py-2 text-xs tracking-widest uppercase text-muted-foreground">Email</th>
+              <th className="text-left px-4 py-2 text-xs tracking-widest uppercase text-muted-foreground">Source</th>
+              <th className="text-left px-4 py-2 text-xs tracking-widest uppercase text-muted-foreground">Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {subscribers?.map((s) => (
+              <tr key={s.id} className="border-t border-border">
+                <td className="px-4 py-2.5 text-foreground">{s.email}</td>
+                <td className="px-4 py-2.5 text-muted-foreground">{s.source}</td>
+                <td className="px-4 py-2.5 text-muted-foreground">{new Date(s.subscribed_at).toLocaleDateString()}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

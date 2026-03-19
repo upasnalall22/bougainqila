@@ -5,10 +5,10 @@ import { useHomepageContent } from "@/hooks/useCMS";
 const HeroBanner = () => {
   const { data: content } = useHomepageContent("hero");
 
-  const title = content?.title || "One of a Kind\nClay Creations";
-  const subtitle = content?.subtitle || "Handcrafted with Love";
-  const description = content?.description || "Unique handmade home decor & accessories, crafted piece by piece with intention.";
-  const buttonText = content?.button_text || "Explore More";
+  const title = content?.title || "There is beauty in the broken\nand magic in the slow.";
+  const subtitle = content?.subtitle || "Imperfectly Perfect";
+  const description = content?.description || "Handmade home decor born from a terrace garden. Each piece carries the warmth of slow craft and an organic spirit.";
+  const buttonText = content?.button_text || "Shop Now";
   const buttonLink = content?.button_link || "/shop";
   const bgImage = content?.image_url || heroBanner;
 

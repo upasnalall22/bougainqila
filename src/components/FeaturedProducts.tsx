@@ -14,7 +14,7 @@ const FeaturedProducts = () => {
     <section className="bg-card py-20">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-12">
-          <p className="text-sm tracking-[0.3em] uppercase text-muted-foreground mb-3">Curated</p>
+           <p className="text-sm tracking-[0.3em] uppercase text-muted-foreground mb-3">From the Studio</p>
           <h2 className="text-3xl md:text-4xl font-light text-foreground" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
             Featured Pieces
           </h2>
@@ -50,7 +50,7 @@ const FeaturedProducts = () => {
                   onClick={() => addToCart(product.id)}
                   className="text-xs tracking-widest uppercase text-muted-foreground hover:text-primary transition-colors"
                 >
-                  Add to Cart
+                  Bring Home
                 </button>
               </div>
             );
