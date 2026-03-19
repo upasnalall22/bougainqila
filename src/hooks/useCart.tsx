@@ -34,6 +34,7 @@ interface CartContextValue {
   addToCart: (productId: string, quantity?: number) => Promise<void>;
   updateQuantity: (itemId: string, quantity: number) => Promise<void>;
   removeItem: (itemId: string) => Promise<void>;
+  clearCart: () => Promise<void>;
   totalItems: number;
   subtotal: number;
 }
@@ -123,6 +124,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
     [fetchCart]
   );
 
+  const clearCart = useCallback(async () => {
+    await supabase.from("cart_items").delete().eq("session_id", sessionId);
+    setItems([]);
+  }, [sessionId]);
+
   const totalItems = items.reduce((sum, i) => sum + i.quantity, 0);
   const subtotal = items.reduce((sum, i) => sum + i.product.price * i.quantity, 0);
 
@@ -137,6 +143,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         addToCart,
         updateQuantity,
         removeItem,
+        clearCart,
         totalItems,
         subtotal,
       }}
