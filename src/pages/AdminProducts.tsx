@@ -307,13 +307,23 @@ const AdminProducts = () => {
             {editing ? "Edit Product" : "Add New Product"}
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
             <div>
               <label className="text-xs tracking-widest uppercase text-muted-foreground block mb-1">Name *</label>
               <input
                 type="text"
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
+                className="w-full border border-border bg-background px-3 py-2 text-sm rounded-sm focus:outline-none focus:ring-1 focus:ring-primary"
+              />
+            </div>
+            <div>
+              <label className="text-xs tracking-widest uppercase text-muted-foreground block mb-1">Product Code</label>
+              <input
+                type="text"
+                value={form.product_code}
+                onChange={(e) => setForm({ ...form, product_code: e.target.value })}
+                placeholder="e.g. BQ-WC-001"
                 className="w-full border border-border bg-background px-3 py-2 text-sm rounded-sm focus:outline-none focus:ring-1 focus:ring-primary"
               />
             </div>
