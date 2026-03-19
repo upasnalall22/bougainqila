@@ -8,6 +8,7 @@ import ShopAll from "./pages/ShopAll.tsx";
 import HomeLiving from "./pages/HomeLiving.tsx";
 import GiftShop from "./pages/GiftShop.tsx";
 import Journal from "./pages/Journal.tsx";
+import InstaFeed from "./pages/InstaFeed.tsx";
 import OurStory from "./pages/OurStory.tsx";
 import Connect from "./pages/Connect.tsx";
 import NotFound from "./pages/NotFound.tsx";
