@@ -116,7 +116,7 @@ const Navbar = () => {
             <ShoppingBag className="w-4 h-4" />
             <span className="absolute -top-1.5 -right-1.5 bg-primary text-primary-foreground text-[9px] w-3.5 h-3.5 rounded-full flex items-center justify-center">0</span>
           </button>
-          <button className="lg:hidden text-foreground" onClick={() => setMobileOpen(!mobileOpen)} aria-label="Menu">
+          <button className="md:hidden text-foreground" onClick={() => setMobileOpen(!mobileOpen)} aria-label="Menu">
             {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
