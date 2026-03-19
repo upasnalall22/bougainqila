@@ -51,7 +51,7 @@ const Navbar = () => {
         </Link>
 
         {/* Desktop Nav - Centered */}
-        <nav className="hidden lg:flex items-center justify-center flex-1 gap-8 text-xs tracking-[0.15em] uppercase text-foreground/70">
+        <nav className="hidden md:flex items-center justify-center flex-1 gap-6 text-[10px] lg:text-xs tracking-[0.15em] uppercase text-foreground/70">
           {navLinks.map((link) =>
             link.hasMega ? (
               <div
@@ -116,7 +116,7 @@ const Navbar = () => {
             <ShoppingBag className="w-4 h-4" />
             <span className="absolute -top-1.5 -right-1.5 bg-primary text-primary-foreground text-[9px] w-3.5 h-3.5 rounded-full flex items-center justify-center">0</span>
           </button>
-          <button className="lg:hidden text-foreground" onClick={() => setMobileOpen(!mobileOpen)} aria-label="Menu">
+          <button className="md:hidden text-foreground" onClick={() => setMobileOpen(!mobileOpen)} aria-label="Menu">
             {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
@@ -124,7 +124,7 @@ const Navbar = () => {
 
       {/* Mobile Nav */}
       {mobileOpen && (
-        <nav className="lg:hidden border-t border-border px-6 py-4 flex flex-col gap-3 text-[11px] tracking-[0.2em] uppercase text-muted-foreground bg-background">
+        <nav className="md:hidden border-t border-border px-6 py-4 flex flex-col gap-3 text-[11px] tracking-[0.2em] uppercase text-muted-foreground bg-background">
           {navLinks.map((link) =>
             link.hasMega ? (
               <div key={link.label}>
