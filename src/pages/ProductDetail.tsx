@@ -132,11 +132,6 @@ const ProductDetail = () => {
 
             {/* Price */}
             <div className="flex items-baseline gap-3 mb-1">
-              {product.original_price && (
-                <span className="text-sm text-muted-foreground line-through">
-                  MRP ₹{product.original_price.toLocaleString("en-IN")}.00
-                </span>
-              )}
               <span className="text-lg font-medium text-foreground">
                 MRP ₹{product.price.toLocaleString("en-IN")}.00
               </span>

@@ -101,11 +101,6 @@ function RecommendationStrip({ cartProductIds }: { cartProductIds: string[] }) {
             </Link>
             <div className="flex items-baseline gap-1.5 mb-2">
               <span className="text-xs font-medium text-foreground">₹{rec.price.toLocaleString("en-IN")}</span>
-              {rec.original_price && (
-                <span className="text-[10px] text-muted-foreground line-through">
-                  ₹{rec.original_price.toLocaleString("en-IN")}
-                </span>
-              )}
             </div>
             <button
               onClick={() => addToCart(rec.id)}
