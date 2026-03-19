@@ -284,7 +284,7 @@ export type Database = {
           customer_id?: string | null
           id?: string
           notes?: string | null
-          order_number: string
+          order_number?: string
           payment_method?: string | null
           payment_status?: string | null
           shipping_address?: string | null
