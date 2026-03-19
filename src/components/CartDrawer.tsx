@@ -14,6 +14,7 @@ function RecommendationStrip({ cartProductIds }: { cartProductIds: string[] }) {
         .from("products")
         .select("id, name, slug, price, original_price, product_images(image_url, display_order)")
         .eq("in_stock", true)
+        .eq("featured", true)
         .order("created_at", { ascending: false })
         .limit(10);
 
