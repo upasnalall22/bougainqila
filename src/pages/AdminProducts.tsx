@@ -19,6 +19,7 @@ const categories = [
 const emptyProduct = {
   name: "",
   slug: "",
+  product_code: "",
   description: "",
   design_craft: "",
   size: "",
@@ -89,6 +90,7 @@ const AdminProducts = () => {
       const productData = {
         name: form.name,
         slug,
+        product_code: form.product_code || null,
         description: form.description || null,
         design_craft: form.design_craft || null,
         size: form.size || null,
@@ -219,6 +221,7 @@ const AdminProducts = () => {
     setForm({
       name: product.name,
       slug: product.slug,
+      product_code: product.product_code || "",
       description: product.description || "",
       design_craft: product.design_craft || "",
       size: product.size || "",
@@ -304,13 +307,23 @@ const AdminProducts = () => {
             {editing ? "Edit Product" : "Add New Product"}
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
             <div>
               <label className="text-xs tracking-widest uppercase text-muted-foreground block mb-1">Name *</label>
               <input
                 type="text"
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
+                className="w-full border border-border bg-background px-3 py-2 text-sm rounded-sm focus:outline-none focus:ring-1 focus:ring-primary"
+              />
+            </div>
+            <div>
+              <label className="text-xs tracking-widest uppercase text-muted-foreground block mb-1">Product Code</label>
+              <input
+                type="text"
+                value={form.product_code}
+                onChange={(e) => setForm({ ...form, product_code: e.target.value })}
+                placeholder="e.g. BQ-WC-001"
                 className="w-full border border-border bg-background px-3 py-2 text-sm rounded-sm focus:outline-none focus:ring-1 focus:ring-primary"
               />
             </div>
@@ -574,6 +587,7 @@ const AdminProducts = () => {
                 <div className="flex-1 min-w-0">
                   <h3 className="text-sm font-medium text-foreground truncate">{product.name}</h3>
                   <p className="text-xs text-muted-foreground">
+                    {product.product_code && <span className="font-mono">{product.product_code} · </span>}
                     {product.category} · MRP ₹{product.price.toLocaleString("en-IN")}.00
                     · Stock: {(product as any).stock_quantity ?? 0}
                     {product.tag && ` · ${product.tag}`}

@@ -435,6 +435,7 @@ export type Database = {
           name: string
           original_price: number | null
           price: number
+          product_code: string | null
           ships_within: string | null
           size: string | null
           slug: string
@@ -457,6 +458,7 @@ export type Database = {
           name: string
           original_price?: number | null
           price: number
+          product_code?: string | null
           ships_within?: string | null
           size?: string | null
           slug: string
@@ -479,6 +481,7 @@ export type Database = {
           name?: string
           original_price?: number | null
           price?: number
+          product_code?: string | null
           ships_within?: string | null
           size?: string | null
           slug?: string

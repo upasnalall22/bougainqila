@@ -59,7 +59,7 @@ const AdminOrders = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("orders")
-        .select("*, customers(*), order_items(*, products(name, slug, product_images(image_url, display_order)))")
+        .select("*, customers(*), order_items(*, products(name, slug, product_code, product_images(image_url, display_order)))")
         .order("created_at", { ascending: false });
       if (error) throw error;
       return data;
@@ -453,8 +453,11 @@ const AdminOrders = () => {
                       </div>
                       <div className="flex-1">
                         <p className="text-sm">{item.product_name}</p>
-                        {item.products?.slug && (
-                          <p className="text-[10px] text-muted-foreground font-mono">Code: {item.products.slug}</p>
+                        {item.products?.product_code && (
+                          <p className="text-[10px] text-muted-foreground font-mono">Code: {item.products.product_code}</p>
+                        )}
+                        {!item.products?.product_code && item.products?.slug && (
+                          <p className="text-[10px] text-muted-foreground font-mono">Slug: {item.products.slug}</p>
                         )}
                         <p className="text-xs text-muted-foreground">Qty: {item.quantity} × ₹{item.unit_price}</p>
                       </div>
@@ -507,10 +510,13 @@ const AdminOrders = () => {
                       <div className="space-y-1">
                         {order.order_items?.map((item: any) => (
                           <div key={item.id} className="text-xs">
-                            <span>{item.product_name}</span>
-                            {item.products?.slug && (
-                              <span className="text-muted-foreground font-mono ml-1">({item.products.slug})</span>
-                            )}
+                          <span>{item.product_name}</span>
+                          {item.products?.product_code && (
+                            <span className="text-muted-foreground font-mono ml-1">({item.products.product_code})</span>
+                          )}
+                          {!item.products?.product_code && item.products?.slug && (
+                            <span className="text-muted-foreground font-mono ml-1">({item.products.slug})</span>
+                          )}
                             <span className="text-muted-foreground"> ×{item.quantity}</span>
                           </div>
                         ))}
