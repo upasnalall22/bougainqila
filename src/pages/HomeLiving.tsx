@@ -1,7 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
-import { products } from "@/data/products";
+import { useProducts } from "@/hooks/useProducts";
 import { useParams, Link } from "react-router-dom";
 
 const subCategories = [
@@ -12,13 +12,15 @@ const subCategories = [
   { label: "Hair Accents", slug: "hair-accents" },
 ];
 
-const homeLivingCategories = ["windchimes", "letterings", "containers", "hair-accents"] as const;
+const homeLivingCategories = ["windchimes", "letterings", "containers", "hair-accents"];
 
 const HomeLiving = () => {
   const { category } = useParams<{ category?: string }>();
-  const filtered = category
-    ? products.filter((p) => p.category === category)
-    : products.filter((p) => (homeLivingCategories as readonly string[]).includes(p.category));
+  const { data: allProducts, isLoading } = useProducts(category || undefined);
+
+  const products = category
+    ? allProducts
+    : allProducts?.filter((p) => homeLivingCategories.includes(p.category));
 
   const activeLabel = subCategories.find((s) => s.slug === (category || ""))?.label || "All";
 
@@ -33,7 +35,6 @@ const HomeLiving = () => {
           </h1>
         </div>
 
-        {/* Sub-category Tabs */}
         <div className="flex flex-wrap justify-center gap-3 mb-12">
           {subCategories.map((sub) => (
             <Link
@@ -50,12 +51,29 @@ const HomeLiving = () => {
           ))}
         </div>
 
-        {/* Product Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {filtered.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
+        {isLoading ? (
+          <p className="text-center text-muted-foreground">Loading products...</p>
+        ) : products && products.length > 0 ? (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {products.map((product) => (
+              <Link key={product.id} to={`/product/${product.slug}`}>
+                <ProductCard
+                  product={{
+                    id: product.id,
+                    name: product.name,
+                    description: product.description || "",
+                    price: product.price,
+                    image: product.product_images?.[0]?.image_url || "/placeholder.svg",
+                    category: product.category as any,
+                    tag: product.tag || undefined,
+                  }}
+                />
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <p className="text-center text-muted-foreground">No products found in this category.</p>
+        )}
       </main>
       <Footer />
     </div>

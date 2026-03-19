@@ -14,6 +14,8 @@ import OurStory from "./pages/OurStory.tsx";
 import Connect from "./pages/Connect.tsx";
 import RefundPolicy from "./pages/RefundPolicy.tsx";
 import Terms from "./pages/Terms.tsx";
+import ProductDetail from "./pages/ProductDetail.tsx";
+import AdminProducts from "./pages/AdminProducts.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -36,6 +38,8 @@ const App = () => (
           <Route path="/connect" element={<Connect />} />
           <Route path="/refund-policy" element={<RefundPolicy />} />
           <Route path="/terms" element={<Terms />} />
+          <Route path="/product/:slug" element={<ProductDetail />} />
+          <Route path="/admin/products" element={<AdminProducts />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
