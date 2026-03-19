@@ -29,6 +29,9 @@ const emptyProduct = {
   ships_within: "3-5 business days",
   tag: "",
   featured: false,
+  best_seller: false,
+  meta_title: "",
+  meta_description: "",
 };
 
 const AdminProducts = () => {
@@ -66,6 +69,9 @@ const AdminProducts = () => {
         ships_within: form.ships_within || null,
         tag: form.tag || null,
         featured: form.featured,
+        best_seller: form.best_seller,
+        meta_title: form.meta_title || null,
+        meta_description: form.meta_description || null,
       };
 
       let productId: string;
@@ -139,6 +145,9 @@ const AdminProducts = () => {
       ships_within: product.ships_within || "",
       tag: product.tag || "",
       featured: product.featured,
+      best_seller: product.best_seller || false,
+      meta_title: product.meta_title || "",
+      meta_description: product.meta_description || "",
     });
     setImageFiles([]);
   };
@@ -280,6 +289,38 @@ const AdminProducts = () => {
                 />
                 Featured
               </label>
+              <label className="flex items-center gap-2 text-sm text-foreground cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={form.best_seller}
+                  onChange={(e) => setForm({ ...form, best_seller: e.target.checked })}
+                />
+                Best Seller
+              </label>
+            </div>
+          </div>
+
+          {/* SEO Fields */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label className="text-xs tracking-widest uppercase text-muted-foreground block mb-1">Meta Title</label>
+              <input
+                type="text"
+                value={form.meta_title}
+                onChange={(e) => setForm({ ...form, meta_title: e.target.value })}
+                placeholder="SEO title (optional)"
+                className="w-full border border-border bg-background px-3 py-2 text-sm rounded-sm focus:outline-none focus:ring-1 focus:ring-primary"
+              />
+            </div>
+            <div>
+              <label className="text-xs tracking-widest uppercase text-muted-foreground block mb-1">Meta Description</label>
+              <input
+                type="text"
+                value={form.meta_description}
+                onChange={(e) => setForm({ ...form, meta_description: e.target.value })}
+                placeholder="SEO description (optional)"
+                className="w-full border border-border bg-background px-3 py-2 text-sm rounded-sm focus:outline-none focus:ring-1 focus:ring-primary"
+              />
             </div>
           </div>
 

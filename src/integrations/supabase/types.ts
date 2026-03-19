@@ -49,6 +49,129 @@ export type Database = {
           },
         ]
       }
+      category_content: {
+        Row: {
+          banner_image_url: string | null
+          description: string | null
+          id: string
+          meta_description: string | null
+          meta_title: string | null
+          name: string
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          banner_image_url?: string | null
+          description?: string | null
+          id?: string
+          meta_description?: string | null
+          meta_title?: string | null
+          name: string
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          banner_image_url?: string | null
+          description?: string | null
+          id?: string
+          meta_description?: string | null
+          meta_title?: string | null
+          name?: string
+          slug?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      homepage_content: {
+        Row: {
+          button_link: string | null
+          button_text: string | null
+          description: string | null
+          id: string
+          image_url: string | null
+          meta_description: string | null
+          meta_title: string | null
+          section: string
+          subtitle: string | null
+          title: string | null
+          updated_at: string
+        }
+        Insert: {
+          button_link?: string | null
+          button_text?: string | null
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          meta_description?: string | null
+          meta_title?: string | null
+          section: string
+          subtitle?: string | null
+          title?: string | null
+          updated_at?: string
+        }
+        Update: {
+          button_link?: string | null
+          button_text?: string | null
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          meta_description?: string | null
+          meta_title?: string | null
+          section?: string
+          subtitle?: string | null
+          title?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      journal_posts: {
+        Row: {
+          body: string | null
+          category: string | null
+          cover_image_url: string | null
+          created_at: string
+          excerpt: string | null
+          id: string
+          meta_description: string | null
+          meta_title: string | null
+          published: boolean
+          published_at: string | null
+          slug: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          body?: string | null
+          category?: string | null
+          cover_image_url?: string | null
+          created_at?: string
+          excerpt?: string | null
+          id?: string
+          meta_description?: string | null
+          meta_title?: string | null
+          published?: boolean
+          published_at?: string | null
+          slug: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          body?: string | null
+          category?: string | null
+          cover_image_url?: string | null
+          created_at?: string
+          excerpt?: string | null
+          id?: string
+          meta_description?: string | null
+          meta_title?: string | null
+          published?: boolean
+          published_at?: string | null
+          slug?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       product_images: {
         Row: {
           created_at: string
@@ -83,6 +206,7 @@ export type Database = {
       }
       products: {
         Row: {
+          best_seller: boolean
           category: string
           colors: Json | null
           created_at: string
@@ -91,6 +215,8 @@ export type Database = {
           featured: boolean
           id: string
           in_stock: boolean
+          meta_description: string | null
+          meta_title: string | null
           name: string
           original_price: number | null
           price: number
@@ -100,6 +226,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          best_seller?: boolean
           category: string
           colors?: Json | null
           created_at?: string
@@ -108,6 +235,8 @@ export type Database = {
           featured?: boolean
           id?: string
           in_stock?: boolean
+          meta_description?: string | null
+          meta_title?: string | null
           name: string
           original_price?: number | null
           price: number
@@ -117,6 +246,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          best_seller?: boolean
           category?: string
           colors?: Json | null
           created_at?: string
@@ -125,6 +255,8 @@ export type Database = {
           featured?: boolean
           id?: string
           in_stock?: boolean
+          meta_description?: string | null
+          meta_title?: string | null
           name?: string
           original_price?: number | null
           price?: number
@@ -135,15 +267,39 @@ export type Database = {
         }
         Relationships: []
       }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "moderator" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -270,6 +426,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "moderator", "user"],
+    },
   },
 } as const

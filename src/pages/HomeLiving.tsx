@@ -1,7 +1,9 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
+import SEOHead from "@/components/SEOHead";
 import { useProducts } from "@/hooks/useProducts";
+import { useCategoryContent } from "@/hooks/useCMS";
 import { useParams, Link } from "react-router-dom";
 
 const subCategories = [
@@ -17,22 +19,38 @@ const homeLivingCategories = ["windchimes", "letterings", "containers", "hair-ac
 const HomeLiving = () => {
   const { category } = useParams<{ category?: string }>();
   const { data: allProducts, isLoading } = useProducts(category || undefined);
+  const { data: catContent } = useCategoryContent(category);
 
   const products = category
     ? allProducts
     : allProducts?.filter((p) => homeLivingCategories.includes(p.category));
 
   const activeLabel = subCategories.find((s) => s.slug === (category || ""))?.label || "All";
+  const pageTitle = catContent?.meta_title || (category ? `${activeLabel} — Home & Living` : "Home & Living Collection");
+  const pageDesc = catContent?.meta_description || "Browse our handcrafted clay home & living collection.";
 
   return (
     <div className="min-h-screen flex flex-col">
+      <SEOHead
+        title={pageTitle}
+        description={pageDesc}
+        canonical={`${window.location.origin}${category ? `/home-living/${category}` : "/home-living"}`}
+      />
       <Navbar />
       <main className="flex-1 max-w-7xl mx-auto px-6 py-16 w-full">
+        {catContent?.banner_image_url && (
+          <div className="w-full h-48 md:h-64 rounded-sm overflow-hidden mb-8">
+            <img src={catContent.banner_image_url} alt={catContent.name} className="w-full h-full object-cover" />
+          </div>
+        )}
         <div className="text-center mb-12">
           <p className="text-sm tracking-[0.3em] uppercase text-muted-foreground mb-3">Collections</p>
           <h1 className="text-3xl md:text-4xl font-light text-foreground" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
-            Home & Living
+            {catContent?.name || "Home & Living"}
           </h1>
+          {catContent?.description && (
+            <p className="text-sm text-muted-foreground mt-3 max-w-lg mx-auto">{catContent.description}</p>
+          )}
         </div>
 
         <div className="flex flex-wrap justify-center gap-3 mb-12">
@@ -64,8 +82,10 @@ const HomeLiving = () => {
                     description: product.description || "",
                     price: product.price,
                     image: product.product_images?.[0]?.image_url || "/placeholder.svg",
-                    category: product.category as any,
+                    category: product.category,
                     tag: product.tag || undefined,
+                    featured: product.featured,
+                    best_seller: (product as any).best_seller,
                   }}
                 />
               </Link>

@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
+import SEOHead from "@/components/SEOHead";
 import { useProducts } from "@/hooks/useProducts";
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -20,6 +21,11 @@ const ShopAll = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <SEOHead
+        title="Shop All — Our Collection"
+        description="Browse the full BougenQila collection of handcrafted clay home decor, windchimes, lettering, and accessories."
+        canonical={`${window.location.origin}/shop`}
+      />
       <Navbar />
       <main className="flex-1 max-w-7xl mx-auto px-6 py-16 w-full">
         <div className="text-center mb-12">
@@ -58,8 +64,10 @@ const ShopAll = () => {
                     description: product.description || "",
                     price: product.price,
                     image: product.product_images?.[0]?.image_url || "/placeholder.svg",
-                    category: product.category as any,
+                    category: product.category,
                     tag: product.tag || undefined,
+                    featured: product.featured,
+                    best_seller: (product as any).best_seller,
                   }}
                 />
               </Link>
