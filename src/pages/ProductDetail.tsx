@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { ChevronDown, Heart, Minus, Plus, Truck, CreditCard, Hand, Gift } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import NewsletterBar from "@/components/NewsletterBar";
 import ProductCard from "@/components/ProductCard";
 import SEOHead from "@/components/SEOHead";
 import { useProduct, useRelatedProducts } from "@/hooks/useProducts";
@@ -314,6 +315,7 @@ const ProductDetail = () => {
           </div>
         )}
       </main>
+      <NewsletterBar />
       <Footer />
     </div>
   );

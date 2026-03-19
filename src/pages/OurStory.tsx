@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import NewsletterBar from "@/components/NewsletterBar";
 import { useOurStorySections } from "@/hooks/useOurStory";
 import { Link } from "react-router-dom";
 
@@ -128,6 +129,7 @@ const OurStory = () => {
           </div>
         </section>
       </main>
+      <NewsletterBar />
       <Footer />
     </div>
   );

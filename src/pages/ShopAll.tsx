@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import NewsletterBar from "@/components/NewsletterBar";
 import ProductCard from "@/components/ProductCard";
 import SEOHead from "@/components/SEOHead";
 import { useProducts } from "@/hooks/useProducts";
@@ -77,6 +78,7 @@ const ShopAll = () => {
           <p className="text-center text-muted-foreground">No products found. Add products via the admin panel.</p>
         )}
       </main>
+      <NewsletterBar />
       <Footer />
     </div>
   );
