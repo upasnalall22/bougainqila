@@ -289,6 +289,38 @@ const AdminProducts = () => {
                 />
                 Featured
               </label>
+              <label className="flex items-center gap-2 text-sm text-foreground cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={form.best_seller}
+                  onChange={(e) => setForm({ ...form, best_seller: e.target.checked })}
+                />
+                Best Seller
+              </label>
+            </div>
+          </div>
+
+          {/* SEO Fields */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label className="text-xs tracking-widest uppercase text-muted-foreground block mb-1">Meta Title</label>
+              <input
+                type="text"
+                value={form.meta_title}
+                onChange={(e) => setForm({ ...form, meta_title: e.target.value })}
+                placeholder="SEO title (optional)"
+                className="w-full border border-border bg-background px-3 py-2 text-sm rounded-sm focus:outline-none focus:ring-1 focus:ring-primary"
+              />
+            </div>
+            <div>
+              <label className="text-xs tracking-widest uppercase text-muted-foreground block mb-1">Meta Description</label>
+              <input
+                type="text"
+                value={form.meta_description}
+                onChange={(e) => setForm({ ...form, meta_description: e.target.value })}
+                placeholder="SEO description (optional)"
+                className="w-full border border-border bg-background px-3 py-2 text-sm rounded-sm focus:outline-none focus:ring-1 focus:ring-primary"
+              />
             </div>
           </div>
 
