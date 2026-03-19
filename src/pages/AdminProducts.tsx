@@ -27,6 +27,7 @@ const emptyProduct = {
   category: "windchimes",
   colors: [] as Array<{ name: string; hex: string }>,
   in_stock: true,
+  stock_quantity: 0,
   ships_within: "3-5 business days",
   tag: "",
   featured: false,
