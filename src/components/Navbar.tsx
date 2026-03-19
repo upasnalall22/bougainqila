@@ -114,9 +114,11 @@ const Navbar = () => {
           <button className="text-foreground hover:text-primary transition-colors" aria-label="Account">
             <User className="w-4 h-4" />
           </button>
-          <button className="text-foreground hover:text-primary transition-colors relative" aria-label="Cart">
+          <button onClick={openCart} className="text-foreground hover:text-primary transition-colors relative" aria-label="Cart">
             <ShoppingBag className="w-4 h-4" />
-            <span className="absolute -top-1.5 -right-1.5 bg-primary text-primary-foreground text-[9px] w-3.5 h-3.5 rounded-full flex items-center justify-center">0</span>
+            {totalItems > 0 && (
+              <span className="absolute -top-1.5 -right-1.5 bg-primary text-primary-foreground text-[9px] w-3.5 h-3.5 rounded-full flex items-center justify-center">{totalItems}</span>
+            )}
           </button>
           <button className="md:hidden text-foreground" onClick={() => setMobileOpen(!mobileOpen)} aria-label="Menu">
             {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}

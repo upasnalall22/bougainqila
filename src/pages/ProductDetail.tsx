@@ -182,7 +182,10 @@ const ProductDetail = () => {
             </div>
 
             {/* Add to Cart */}
-            <button className="w-full bg-primary text-primary-foreground py-3.5 text-xs tracking-[0.2em] uppercase rounded-sm hover:opacity-90 transition-opacity mb-3">
+            <button
+              onClick={() => addToCart(product.id, quantity)}
+              className="w-full bg-primary text-primary-foreground py-3.5 text-xs tracking-[0.2em] uppercase rounded-sm hover:opacity-90 transition-opacity mb-3"
+            >
               Add to Cart
             </button>
 
