@@ -22,7 +22,6 @@ const CategoryGrid = () => {
         <h2 className="text-3xl md:text-4xl font-light text-foreground" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
           Made by hand, meant to last
         </h2>
-        </h2>
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
