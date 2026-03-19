@@ -1,10 +1,16 @@
 import { Link } from "react-router-dom";
+import catLettering from "@/assets/cat-lettering.jpg";
+import catContainers from "@/assets/cat-containers.jpg";
+import catHair from "@/assets/cat-hair.jpg";
+
+// windchimes image imported after generation
+import catWindchimes from "@/assets/cat-windchimes.jpg";
 
 const categories = [
-  { name: "Clay Windchimes", description: "Melodic handmade pieces for your space", image: "🎐" },
-  { name: "Clay Lettering", description: "Personalized clay letter art", image: "✦" },
-  { name: "Clay Containers", description: "Functional art for everyday use", image: "🏺" },
-  { name: "Hair Accessories", description: "Handmade jooda stick pieces", image: "✿" },
+  { name: "Clay Windchimes", image: catWindchimes },
+  { name: "Clay Lettering", image: catLettering },
+  { name: "Clay Containers", image: catContainers },
+  { name: "Hair Accessories", image: catHair },
 ];
 
 const CategoryGrid = () => {
@@ -17,21 +23,25 @@ const CategoryGrid = () => {
         </h2>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {categories.map((cat) => (
           <Link
             key={cat.name}
             to="/"
-            className="group relative bg-card rounded-sm overflow-hidden aspect-[4/3] flex items-center justify-center hover:shadow-lg transition-shadow border border-border"
+            className="group relative rounded-sm overflow-hidden aspect-square"
           >
-            <div className="text-center p-8">
-              <span className="text-5xl mb-4 block">{cat.image}</span>
-              <h3 className="text-xl font-medium text-foreground mb-1" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
+            <img
+              src={cat.image}
+              alt={cat.name}
+              className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            />
+            <div className="absolute inset-0 bg-foreground/25 group-hover:bg-foreground/35 transition-colors" />
+            <div className="relative z-10 h-full flex flex-col items-center justify-end pb-6 text-center">
+              <h3 className="text-lg font-medium text-background mb-2" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
                 {cat.name}
               </h3>
-              <p className="text-sm text-muted-foreground mb-3">{cat.description}</p>
-              <span className="text-xs tracking-widest uppercase text-primary group-hover:underline">
-                Explore →
+              <span className="text-xs tracking-widest uppercase text-background/80 group-hover:text-background transition-colors">
+                Explore More →
               </span>
             </div>
           </Link>
