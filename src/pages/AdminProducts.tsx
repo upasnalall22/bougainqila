@@ -221,6 +221,7 @@ const AdminProducts = () => {
     setForm({
       name: product.name,
       slug: product.slug,
+      product_code: product.product_code || "",
       description: product.description || "",
       design_craft: product.design_craft || "",
       size: product.size || "",
