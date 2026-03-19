@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, ReactNode } from "react";
+import { createContext, useContext, useEffect, useRef, useState, ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import type { User, Session } from "@supabase/supabase-js";
 
@@ -20,23 +20,30 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAdmin, setIsAdmin] = useState(false);
   const [authLoading, setAuthLoading] = useState(true);
   const [roleLoading, setRoleLoading] = useState(true);
+  const hasInitializedSession = useRef(false);
 
   useEffect(() => {
     let isActive = true;
 
-    const applySession = (nextSession: Session | null) => {
+    const setAuthState = (nextSession: Session | null) => {
       if (!isActive) return;
       setSession(nextSession);
       setUser(nextSession?.user ?? null);
-      setAuthLoading(false);
     };
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, nextSession) => {
-      applySession(nextSession);
+      setAuthState(nextSession);
+
+      if (hasInitializedSession.current && isActive) {
+        setAuthLoading(false);
+      }
     });
 
-    supabase.auth.getSession().then(({ data: { session: nextSession } }) => {
-      applySession(nextSession);
+    void supabase.auth.getSession().then(({ data: { session: nextSession } }) => {
+      if (!isActive) return;
+      hasInitializedSession.current = true;
+      setAuthState(nextSession);
+      setAuthLoading(false);
     });
 
     return () => {
@@ -49,6 +56,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     let isActive = true;
 
     const loadAdminRole = async () => {
+      if (authLoading) {
+        return;
+      }
+
       if (!user) {
         setIsAdmin(false);
         setRoleLoading(false);
@@ -81,7 +92,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => {
       isActive = false;
     };
-  }, [user]);
+  }, [authLoading, user]);
 
   const signIn = async (email: string, password: string) => {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
