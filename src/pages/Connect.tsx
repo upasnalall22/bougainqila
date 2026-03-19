@@ -72,9 +72,10 @@ const Connect = () => {
             </div>
             <button
               type="submit"
-              className="bg-primary text-primary-foreground px-8 py-3 text-xs tracking-widest uppercase hover:opacity-90 transition-opacity rounded-sm"
+              disabled={sending}
+              className="bg-primary text-primary-foreground px-8 py-3 text-xs tracking-widest uppercase hover:opacity-90 transition-opacity rounded-sm disabled:opacity-50"
             >
-              Send Message
+              {sending ? "Sending..." : "Send Message"}
             </button>
           </form>
         )}

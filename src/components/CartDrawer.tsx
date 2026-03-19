@@ -246,9 +246,13 @@ const CartDrawer = () => {
               >
                 View Cart
               </Link>
-              <button className="flex-1 bg-primary text-primary-foreground text-[10px] tracking-[0.15em] uppercase py-3 rounded-sm hover:opacity-90 transition-opacity">
+              <Link
+                to="/checkout"
+                onClick={closeCart}
+                className="flex-1 bg-primary text-primary-foreground text-[10px] tracking-[0.15em] uppercase py-3 rounded-sm text-center hover:opacity-90 transition-opacity"
+              >
                 Checkout
-              </button>
+              </Link>
             </div>
           </div>
         )}
