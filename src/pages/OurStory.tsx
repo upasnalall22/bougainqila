@@ -75,7 +75,7 @@ const OurStory = () => {
                   <div className="w-full h-full flex items-center justify-center text-muted-foreground text-sm">Founder Photo</div>
                 )}
               </div>
-              <div>
+              <div className="bg-card border border-border rounded-sm p-6 md:p-10 flex flex-col justify-center h-full">
                 {founder1.quote && (
                   <blockquote
                     className="text-lg md:text-xl font-light text-foreground mb-6 leading-relaxed italic"
