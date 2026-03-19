@@ -62,6 +62,7 @@ const AdminProducts = () => {
         slug,
         description: form.description || null,
         design_craft: form.design_craft || null,
+        size: form.size || null,
         price: form.price,
         original_price: form.original_price || null,
         category: form.category,
