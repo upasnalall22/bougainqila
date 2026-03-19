@@ -1,14 +1,27 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 const Connect = () => {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSending(true);
+    try {
+      await supabase.functions.invoke("send-order-notification", {
+        body: { type: "query", ...form },
+      });
+    } catch {
+      // non-blocking
+    }
+    toast.success("Message sent! We'll get back to you shortly.");
     setSubmitted(true);
+    setSending(false);
   };
 
   return (
