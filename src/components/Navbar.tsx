@@ -2,6 +2,14 @@ import { ShoppingBag, User, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
+const navLinks = [
+  { label: "Products", to: "/" },
+  { label: "Category", to: "/" },
+  { label: "Offers", to: "/" },
+  { label: "Journal", to: "/" },
+  { label: "Connect with Us", to: "/" },
+];
+
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -14,10 +22,12 @@ const Navbar = () => {
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-8 text-sm tracking-widest uppercase text-muted-foreground">
-          <Link to="/" className="hover:text-foreground transition-colors">Shop</Link>
-          <Link to="/" className="hover:text-foreground transition-colors">About</Link>
-          <Link to="/" className="hover:text-foreground transition-colors">Contact</Link>
+        <nav className="hidden md:flex items-center gap-6 text-sm tracking-widest uppercase text-muted-foreground">
+          {navLinks.map((link) => (
+            <Link key={link.label} to={link.to} className="hover:text-foreground transition-colors whitespace-nowrap">
+              {link.label}
+            </Link>
+          ))}
         </nav>
 
         {/* Icons */}
@@ -38,9 +48,11 @@ const Navbar = () => {
       {/* Mobile Nav */}
       {mobileOpen && (
         <nav className="md:hidden border-t border-border px-6 py-4 flex flex-col gap-4 text-sm tracking-widest uppercase text-muted-foreground bg-background">
-          <Link to="/" className="hover:text-foreground transition-colors" onClick={() => setMobileOpen(false)}>Shop</Link>
-          <Link to="/" className="hover:text-foreground transition-colors" onClick={() => setMobileOpen(false)}>About</Link>
-          <Link to="/" className="hover:text-foreground transition-colors" onClick={() => setMobileOpen(false)}>Contact</Link>
+          {navLinks.map((link) => (
+            <Link key={link.label} to={link.to} className="hover:text-foreground transition-colors" onClick={() => setMobileOpen(false)}>
+              {link.label}
+            </Link>
+          ))}
         </nav>
       )}
     </header>
