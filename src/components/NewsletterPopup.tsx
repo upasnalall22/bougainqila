@@ -1,0 +1,84 @@
+import { useState, useEffect } from "react";
+import { X } from "lucide-react";
+
+const NewsletterPopup = () => {
+  const [open, setOpen] = useState(false);
+  const [email, setEmail] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => {
+    const dismissed = localStorage.getItem("newsletter_popup_dismissed");
+    if (!dismissed) {
+      const timer = setTimeout(() => setOpen(true), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
+  const close = () => {
+    setOpen(false);
+    localStorage.setItem("newsletter_popup_dismissed", "true");
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (email) {
+      setSubmitted(true);
+      setTimeout(close, 2000);
+    }
+  };
+
+  if (!open) return null;
+
+  return (
+    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-foreground/40 backdrop-blur-sm px-4">
+      <div className="bg-background rounded-sm shadow-lg max-w-md w-full p-8 relative">
+        <button
+          onClick={close}
+          className="absolute top-3 right-3 text-muted-foreground hover:text-foreground transition-colors"
+          aria-label="Close"
+        >
+          <X className="w-5 h-5" />
+        </button>
+
+        <div className="text-center">
+          <h2
+            className="text-2xl font-light text-foreground mb-2 italic"
+            style={{ fontFamily: "'Cormorant Garamond', serif" }}
+          >
+            Stay in the Loop
+          </h2>
+          <p className="text-xs text-muted-foreground tracking-wide mb-6">
+            Get 10% off your first order when you subscribe to our newsletter.
+          </p>
+
+          {submitted ? (
+            <p className="text-sm text-primary">Welcome aboard! Check your inbox.</p>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-3">
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter your email"
+                className="w-full border border-border bg-background px-4 py-2.5 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-primary rounded-sm"
+              />
+              <button
+                type="submit"
+                className="w-full bg-primary text-primary-foreground py-2.5 text-xs tracking-[0.15em] uppercase hover:opacity-90 transition-opacity rounded-sm"
+              >
+                Subscribe
+              </button>
+            </form>
+          )}
+
+          <p className="text-[10px] text-muted-foreground mt-4">
+            By subscribing, you agree to our Privacy Policy.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default NewsletterPopup;
