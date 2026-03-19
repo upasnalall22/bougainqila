@@ -90,7 +90,16 @@ export function useJournalPost(slug: string) {
         .eq("slug", slug)
         .maybeSingle();
       if (error) throw error;
-      return data;
+      if (!data) return null;
+
+      // Fetch images for this post
+      const { data: images } = await supabase
+        .from("journal_post_images" as any)
+        .select("*")
+        .eq("post_id", data.id)
+        .order("display_order");
+
+      return { ...data, images: images ?? [] };
     },
     enabled: !!slug,
   });

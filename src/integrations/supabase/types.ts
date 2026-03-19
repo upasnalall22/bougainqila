@@ -166,6 +166,41 @@ export type Database = {
         }
         Relationships: []
       }
+      journal_post_images: {
+        Row: {
+          caption: string | null
+          created_at: string
+          display_order: number
+          id: string
+          image_url: string
+          post_id: string
+        }
+        Insert: {
+          caption?: string | null
+          created_at?: string
+          display_order?: number
+          id?: string
+          image_url: string
+          post_id: string
+        }
+        Update: {
+          caption?: string | null
+          created_at?: string
+          display_order?: number
+          id?: string
+          image_url?: string
+          post_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "journal_post_images_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "journal_posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       journal_posts: {
         Row: {
           body: string | null
@@ -179,6 +214,7 @@ export type Database = {
           published: boolean
           published_at: string | null
           slug: string
+          template: string
           title: string
           updated_at: string
         }
@@ -194,6 +230,7 @@ export type Database = {
           published?: boolean
           published_at?: string | null
           slug: string
+          template?: string
           title: string
           updated_at?: string
         }
@@ -209,6 +246,7 @@ export type Database = {
           published?: boolean
           published_at?: string | null
           slug?: string
+          template?: string
           title?: string
           updated_at?: string
         }
