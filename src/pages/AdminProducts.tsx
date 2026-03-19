@@ -21,6 +21,7 @@ const emptyProduct = {
   slug: "",
   description: "",
   design_craft: "",
+  size: "",
   price: 0,
   original_price: null as number | null,
   category: "windchimes",
