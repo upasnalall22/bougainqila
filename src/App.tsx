@@ -42,10 +42,12 @@ const App = () => (
           <Route path="/terms" element={<Terms />} />
           <Route path="/product/:slug" element={<ProductDetail />} />
           <Route path="/admin/products" element={<AdminProducts />} />
+          <Route path="/cookie-policy" element={<CookiePolicy />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
         <WhatsAppButton />
+        <CookieConsent />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
