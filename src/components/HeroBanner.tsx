@@ -3,7 +3,7 @@ import heroBanner from "@/assets/hero-banner.jpg";
 
 const HeroBanner = () => {
   return (
-    <section className="relative w-full h-[70vh] min-h-[500px] overflow-hidden flex items-center justify-center">
+    <section className="relative w-full h-[50vh] md:h-[70vh] min-h-[400px] overflow-hidden flex items-center justify-center">
       <img
         src={heroBanner}
         alt="Handcrafted clay home decor collection"
