@@ -30,7 +30,7 @@ const OurStory = () => {
                 {brandStory?.description || ""}
               </p>
             </div>
-            <div className="max-w-[60%] mx-auto aspect-[4/5] bg-card rounded-sm overflow-hidden border border-border order-1 md:order-2">
+            <div className="aspect-[4/5] bg-card rounded-sm overflow-hidden border border-border order-1 md:order-2">
               {brandStory?.image_url ? (
                 <img src={brandStory.image_url} alt="Brand Story" className="w-full h-full object-cover" loading="lazy" />
               ) : (
