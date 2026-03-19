@@ -60,8 +60,30 @@ const ProductDetail = () => {
   const colors = (product.colors as Array<{ name: string; hex: string }>) || [];
   const mainImage = images[selectedImage]?.image_url || "/placeholder.svg";
 
+  const productJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.name,
+    description: product.description,
+    image: images.map((img) => img.image_url),
+    offers: {
+      "@type": "Offer",
+      price: product.price,
+      priceCurrency: "INR",
+      availability: product.in_stock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+    },
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
+      <SEOHead
+        title={(product as any).meta_title || product.name}
+        description={(product as any).meta_description || product.description || ""}
+        canonical={`${window.location.origin}/product/${product.slug}`}
+        ogImage={images[0]?.image_url}
+        type="product"
+        jsonLd={productJsonLd}
+      />
       <Navbar />
       <main className="flex-1 max-w-7xl mx-auto px-4 md:px-6 py-8 md:py-16 w-full">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
