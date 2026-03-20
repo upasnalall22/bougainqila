@@ -7,9 +7,10 @@ interface CmsImageUploadProps {
   onChange: (url: string) => void;
   folder?: string;
   label?: string;
+  hint?: string;
 }
 
-const CmsImageUpload = ({ value, onChange, folder = "general", label = "Image" }: CmsImageUploadProps) => {
+const CmsImageUpload = ({ value, onChange, folder = "general", label = "Image", hint }: CmsImageUploadProps) => {
   const [uploading, setUploading] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -72,6 +73,7 @@ const CmsImageUpload = ({ value, onChange, folder = "general", label = "Image" }
         </button>
         <input ref={fileRef} type="file" accept="image/*" onChange={handleUpload} className="hidden" />
       </div>
+      {hint && <p className="text-[10px] text-muted-foreground/70 mt-0.5 italic">{hint}</p>}
     </div>
   );
 };

@@ -58,7 +58,7 @@ const AdminDashboard = () => {
 };
 
 // Helper: renders a text/textarea field
-function CmsTextField({ label, value, onChange, multiline = false }: { label: string; value: string; onChange: (v: string) => void; multiline?: boolean }) {
+function CmsTextField({ label, value, onChange, multiline = false, hint }: { label: string; value: string; onChange: (v: string) => void; multiline?: boolean; hint?: string }) {
   return (
     <div>
       <label className="text-xs tracking-widest uppercase text-muted-foreground block mb-1">{label}</label>
@@ -67,6 +67,7 @@ function CmsTextField({ label, value, onChange, multiline = false }: { label: st
       ) : (
         <input type="text" value={value} onChange={(e) => onChange(e.target.value)} className="w-full border border-border bg-background px-3 py-2 text-sm rounded-sm focus:outline-none focus:ring-1 focus:ring-primary" />
       )}
+      {hint && <p className="text-[10px] text-muted-foreground/70 mt-0.5 italic">{hint}</p>}
     </div>
   );
 }
@@ -97,6 +98,11 @@ function HomepageTab() {
     });
   };
 
+  const fieldHints: Record<string, string> = {
+    title: "Max 60 chars", subtitle: "Max 80 chars", button_text: "Max 20 chars, e.g. SHOP NOW",
+    button_link: "Relative path, e.g. /shop", meta_title: "Max 60 chars for SEO",
+    description: "Max 300 chars", meta_description: "Max 160 chars for SEO",
+  };
   const textFields = ["title", "subtitle", "button_text", "button_link", "meta_title"];
   const multilineFields = ["description", "meta_description"];
 
@@ -108,12 +114,12 @@ function HomepageTab() {
             <div className="space-y-3">
               <p className="text-xs tracking-[0.2em] uppercase text-muted-foreground mb-2">Editing: {s.section}</p>
               {textFields.map((field) => (
-                <CmsTextField key={field} label={field.replace(/_/g, " ")} value={form[field] || ""} onChange={(v) => setForm({ ...form, [field]: v })} />
+                <CmsTextField key={field} label={field.replace(/_/g, " ")} value={form[field] || ""} onChange={(v) => setForm({ ...form, [field]: v })} hint={fieldHints[field]} />
               ))}
               {multilineFields.map((field) => (
-                <CmsTextField key={field} label={field.replace(/_/g, " ")} value={form[field] || ""} onChange={(v) => setForm({ ...form, [field]: v })} multiline />
+                <CmsTextField key={field} label={field.replace(/_/g, " ")} value={form[field] || ""} onChange={(v) => setForm({ ...form, [field]: v })} multiline hint={fieldHints[field]} />
               ))}
-              <CmsImageUpload label="Section Image" folder={`homepage/${s.section}`} value={form.image_url || ""} onChange={(url) => setForm({ ...form, image_url: url })} />
+              <CmsImageUpload label="Section Image" folder={`homepage/${s.section}`} value={form.image_url || ""} onChange={(url) => setForm({ ...form, image_url: url })} hint="Recommended: 600×600px (1:1) for thumbnails, 1920×1080px (16:9) for banners" />
               <div className="flex gap-2">
                 <button onClick={() => saveMutation.mutate()} disabled={saveMutation.isPending} className="bg-primary text-primary-foreground px-5 py-2 text-xs tracking-[0.15em] uppercase rounded-sm hover:opacity-90 disabled:opacity-50 inline-flex items-center gap-1.5">
                   <Save className="w-3.5 h-3.5" /> {saveMutation.isPending ? "Saving..." : "Save"}
@@ -172,11 +178,11 @@ function CategoriesTab() {
           {editing === c.slug ? (
             <div className="space-y-3">
               <p className="text-xs tracking-[0.2em] uppercase text-muted-foreground mb-2">Editing: {c.slug}</p>
-              <CmsTextField label="Name" value={form.name || ""} onChange={(v) => setForm({ ...form, name: v })} />
-              <CmsTextField label="Description" value={form.description || ""} onChange={(v) => setForm({ ...form, description: v })} multiline />
-              <CmsImageUpload label="Banner Image" folder={`categories/${c.slug}`} value={form.banner_image_url || ""} onChange={(url) => setForm({ ...form, banner_image_url: url })} />
-              <CmsTextField label="Meta Title" value={form.meta_title || ""} onChange={(v) => setForm({ ...form, meta_title: v })} />
-              <CmsTextField label="Meta Description" value={form.meta_description || ""} onChange={(v) => setForm({ ...form, meta_description: v })} multiline />
+              <CmsTextField label="Name" value={form.name || ""} onChange={(v) => setForm({ ...form, name: v })} hint="Max 40 chars" />
+              <CmsTextField label="Description" value={form.description || ""} onChange={(v) => setForm({ ...form, description: v })} multiline hint="Max 200 chars" />
+              <CmsImageUpload label="Banner Image" folder={`categories/${c.slug}`} value={form.banner_image_url || ""} onChange={(url) => setForm({ ...form, banner_image_url: url })} hint="Recommended: 600×600px (1:1 square)" />
+              <CmsTextField label="Meta Title" value={form.meta_title || ""} onChange={(v) => setForm({ ...form, meta_title: v })} hint="Max 60 chars for SEO" />
+              <CmsTextField label="Meta Description" value={form.meta_description || ""} onChange={(v) => setForm({ ...form, meta_description: v })} multiline hint="Max 160 chars for SEO" />
               <div className="flex gap-2">
                 <button onClick={() => saveMutation.mutate()} disabled={saveMutation.isPending} className="bg-primary text-primary-foreground px-5 py-2 text-xs tracking-[0.15em] uppercase rounded-sm hover:opacity-90 disabled:opacity-50 inline-flex items-center gap-1.5">
                   <Save className="w-3.5 h-3.5" /> {saveMutation.isPending ? "Saving..." : "Save"}
@@ -293,11 +299,11 @@ function JournalTab() {
       <div className="border border-border rounded-sm p-6 mb-8">
         <p className="text-xs tracking-[0.2em] uppercase text-muted-foreground mb-4">{editing ? "Edit Post" : "New Post"}</p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-          <CmsTextField label="Title *" value={form.title} onChange={(v) => setForm({ ...form, title: v })} />
-          <CmsTextField label="Slug" value={form.slug} onChange={(v) => setForm({ ...form, slug: v })} />
+          <CmsTextField label="Title *" value={form.title} onChange={(v) => setForm({ ...form, title: v })} hint="Max 80 chars" />
+          <CmsTextField label="Slug" value={form.slug} onChange={(v) => setForm({ ...form, slug: v })} hint="Auto-generated if left blank, e.g. my-post-title" />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-          <CmsTextField label="Category" value={form.category} onChange={(v) => setForm({ ...form, category: v })} />
+          <CmsTextField label="Category" value={form.category} onChange={(v) => setForm({ ...form, category: v })} hint="e.g. Lifestyle, Behind the Craft" />
           <div>
             <label className="text-xs tracking-widest uppercase text-muted-foreground block mb-1">Template</label>
             <div className="flex gap-2">
@@ -320,7 +326,7 @@ function JournalTab() {
           </div>
         </div>
         <div className="mb-4">
-          <CmsImageUpload label="Cover Image" folder="journal" value={form.cover_image_url} onChange={(url) => setForm({ ...form, cover_image_url: url })} />
+          <CmsImageUpload label="Cover Image" folder="journal" value={form.cover_image_url} onChange={(url) => setForm({ ...form, cover_image_url: url })} hint="Recommended: 1800×770px (21:9 wide)" />
         </div>
 
         {/* Additional images (up to 5) */}
@@ -337,9 +343,9 @@ function JournalTab() {
             <div key={idx} className="border border-border rounded-sm p-3 mb-2">
               <div className="flex items-start gap-2">
                 <div className="flex-1">
-                  <CmsImageUpload label={`Image ${idx + 1}`} folder="journal" value={img.image_url} onChange={(url) => updateImage(idx, "image_url", url)} />
+                  <CmsImageUpload label={`Image ${idx + 1}`} folder="journal" value={img.image_url} onChange={(url) => updateImage(idx, "image_url", url)} hint="Recommended: 800×800px (1:1) or 800×1000px (4:5)" />
                   <div className="mt-2">
-                    <CmsTextField label="Caption" value={img.caption} onChange={(v) => updateImage(idx, "caption", v)} />
+                    <CmsTextField label="Caption" value={img.caption} onChange={(v) => updateImage(idx, "caption", v)} hint="Max 120 chars" />
                   </div>
                 </div>
                 <button type="button" onClick={() => removeImage(idx)} className="text-muted-foreground hover:text-destructive mt-5">
@@ -351,15 +357,15 @@ function JournalTab() {
         </div>
 
         <div className="mb-4">
-          <CmsTextField label="Excerpt" value={form.excerpt} onChange={(v) => setForm({ ...form, excerpt: v })} multiline />
+          <CmsTextField label="Excerpt" value={form.excerpt} onChange={(v) => setForm({ ...form, excerpt: v })} multiline hint="Max 200 chars — shown on listing cards" />
         </div>
         <div className="mb-4">
           <label className="text-xs tracking-widest uppercase text-muted-foreground block mb-1">Body</label>
           <textarea value={form.body} onChange={(e) => setForm({ ...form, body: e.target.value })} rows={8} className="w-full border border-border bg-background px-3 py-2 text-sm rounded-sm focus:outline-none focus:ring-1 focus:ring-primary resize-none" />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-          <CmsTextField label="Meta Title" value={form.meta_title} onChange={(v) => setForm({ ...form, meta_title: v })} />
-          <CmsTextField label="Meta Description" value={form.meta_description} onChange={(v) => setForm({ ...form, meta_description: v })} />
+          <CmsTextField label="Meta Title" value={form.meta_title} onChange={(v) => setForm({ ...form, meta_title: v })} hint="Max 60 chars for SEO" />
+          <CmsTextField label="Meta Description" value={form.meta_description} onChange={(v) => setForm({ ...form, meta_description: v })} hint="Max 160 chars for SEO" />
         </div>
         <label className="flex items-center gap-2 text-sm text-foreground cursor-pointer mb-4">
           <input type="checkbox" checked={form.published} onChange={(e) => setForm({ ...form, published: e.target.checked })} />
@@ -420,8 +426,8 @@ function OurStoryTab() {
   const textFields = ["title", "subtitle", "button_text", "button_link"];
   const multilineFields = ["description", "quote"];
   const imageFields = [
-    { key: "image_url", label: "Image 1" },
-    { key: "image_url_2", label: "Image 2" },
+    { key: "image_url", label: "Image 1", hint: "Recommended: 800×1000px (4:5 portrait)" },
+    { key: "image_url_2", label: "Image 2", hint: "Recommended: 800×1000px (4:5 portrait)" },
   ];
 
   const startEdit = (s: any) => {
@@ -454,7 +460,7 @@ function OurStoryTab() {
                 <CmsTextField key={field} label={field.replace(/_/g, " ")} value={form[field] || ""} onChange={(v) => setForm({ ...form, [field]: v })} multiline />
               ))}
               {imageFields.map((img) => (
-                <CmsImageUpload key={img.key} label={img.label} folder={`our-story/${s.section_key}`} value={form[img.key] || ""} onChange={(url) => setForm({ ...form, [img.key]: url })} />
+                <CmsImageUpload key={img.key} label={img.label} folder={`our-story/${s.section_key}`} value={form[img.key] || ""} onChange={(url) => setForm({ ...form, [img.key]: url })} hint={img.hint} />
               ))}
               <div className="flex gap-2">
                 <button onClick={() => saveMutation.mutate()} disabled={saveMutation.isPending} className="bg-primary text-primary-foreground px-5 py-2 text-xs tracking-[0.15em] uppercase rounded-sm hover:opacity-90 disabled:opacity-50 inline-flex items-center gap-1.5">
@@ -742,11 +748,11 @@ function BannersTab() {
           {editing === b.id ? (
             <div className="space-y-3">
               <p className="text-xs tracking-[0.2em] uppercase text-muted-foreground mb-2">Banner Slide {idx + 1}</p>
-              <CmsImageUpload label="Banner Image" folder="hero-banners" value={form.image_url || ""} onChange={(url) => setForm({ ...form, image_url: url })} />
-              <CmsTextField label="Title" value={form.title || ""} onChange={(v) => setForm({ ...form, title: v })} />
-              <CmsTextField label="Description" value={form.description || ""} onChange={(v) => setForm({ ...form, description: v })} multiline />
-              <CmsTextField label="Button Text" value={form.button_text || ""} onChange={(v) => setForm({ ...form, button_text: v })} />
-              <CmsTextField label="Button Link" value={form.button_link || ""} onChange={(v) => setForm({ ...form, button_link: v })} />
+              <CmsImageUpload label="Banner Image" folder="hero-banners" value={form.image_url || ""} onChange={(url) => setForm({ ...form, image_url: url })} hint="Recommended: 1920×1080px (16:9)" />
+              <CmsTextField label="Title" value={form.title || ""} onChange={(v) => setForm({ ...form, title: v })} hint="Max 60 chars — the main headline" />
+              <CmsTextField label="Description" value={form.description || ""} onChange={(v) => setForm({ ...form, description: v })} multiline hint="Max 120 chars — subtext below headline" />
+              <CmsTextField label="Button Text" value={form.button_text || ""} onChange={(v) => setForm({ ...form, button_text: v })} hint="Max 20 chars, e.g. SHOP NOW" />
+              <CmsTextField label="Button Link" value={form.button_link || ""} onChange={(v) => setForm({ ...form, button_link: v })} hint="Relative path, e.g. /shop or /gift-shop" />
               
               {/* Title Formatting */}
               <p className="text-xs tracking-[0.2em] uppercase text-muted-foreground mt-3 mb-1">Title Formatting</p>
@@ -852,8 +858,8 @@ function InstaFeedTab() {
     return (
       <div className="space-y-4 max-w-xl">
         <h3 className="text-sm tracking-[0.2em] uppercase text-muted-foreground">{editing === "new" ? "Add Feed Item" : "Edit Feed Item"}</h3>
-        <CmsImageUpload value={form.image_url} onChange={(v) => setForm({ ...form, image_url: v })} folder="insta-feed" label="Image (600×600 square)" />
-        <CmsTextField label="Caption" value={form.caption} onChange={(v) => setForm({ ...form, caption: v })} />
+        <CmsImageUpload value={form.image_url} onChange={(v) => setForm({ ...form, image_url: v })} folder="insta-feed" label="Image (600×600 square)" hint="Recommended: 600×600px (1:1 square crop)" />
+        <CmsTextField label="Caption" value={form.caption} onChange={(v) => setForm({ ...form, caption: v })} hint="Max 100 chars — shown on hover" />
         <div>
           <label className="text-xs tracking-[0.15em] uppercase text-muted-foreground block mb-1">Link Type</label>
           <select value={form.link_type} onChange={(e) => setForm({ ...form, link_type: e.target.value })} className="w-full border border-border rounded px-3 py-2 text-sm bg-background text-foreground">
