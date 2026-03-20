@@ -303,7 +303,7 @@ function JournalTab() {
           <CmsTextField label="Slug" value={form.slug} onChange={(v) => setForm({ ...form, slug: v })} hint="Auto-generated if left blank, e.g. my-post-title" />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-          <CmsTextField label="Category" value={form.category} onChange={(v) => setForm({ ...form, category: v })} />
+          <CmsTextField label="Category" value={form.category} onChange={(v) => setForm({ ...form, category: v })} hint="e.g. Lifestyle, Behind the Craft" />
           <div>
             <label className="text-xs tracking-widest uppercase text-muted-foreground block mb-1">Template</label>
             <div className="flex gap-2">
