@@ -47,6 +47,7 @@ const AdminDashboard = () => {
         {tab === "homepage" && <HomepageTab />}
         {tab === "categories" && <CategoriesTab />}
         {tab === "journal" && <JournalTab />}
+        {tab === "insta-feed" && <InstaFeedTab />}
         {tab === "our-story" && <OurStoryTab />}
         {tab === "subscribers" && <SubscribersTab />}
         {tab === "reviews" && <BulkReviewsTab />}
