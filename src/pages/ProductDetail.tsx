@@ -225,11 +225,9 @@ const ProductDetail = () => {
               {product.in_stock ? "Bring Home" : "Sold Out"}
             </button>
 
-            {/* Pickup */}
-            <p className="text-xs text-muted-foreground mb-6 flex items-center gap-1.5">✓
-Free Shipping on orders above
-₹1,500<span className="text-green-600">✓</span>
-              Pickup available at select locations
+            {/* Free Shipping Notice */}
+            <p className="text-xs text-muted-foreground mb-6 flex items-center gap-1.5">
+              <span className="text-green-600">✓</span> Free Shipping on orders above ₹1,500
             </p>
 
             {/* Trust Badges */}
