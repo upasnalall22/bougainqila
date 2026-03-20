@@ -13,7 +13,7 @@ const HeroBanner = () => {
   const bgImage = content?.image_url || heroBanner;
 
   return (
-    <section className="relative w-full h-[50vh] md:h-[70vh] min-h-[400px] overflow-hidden flex items-center justify-center">
+    <section className="relative w-full h-[50vh] md:h-[70vh] min-h-[400px] overflow-hidden flex items-end">
       <img
         src={bgImage}
         alt="Handcrafted clay home decor collection"
@@ -22,19 +22,20 @@ const HeroBanner = () => {
       />
       <div className="absolute inset-0 bg-foreground/30" />
 
-      <div className="relative z-10 text-center px-6 max-w-2xl">
-        <p className="text-sm tracking-[0.3em] uppercase text-background/80 mb-4">{subtitle}</p>
-        <h1 className="text-4xl md:text-6xl lg:text-7xl font-light leading-tight text-background mb-6" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
-          {title.split("\n").map((line, i) => (
-            <span key={i}>{line}{i === 0 && <br />}</span>
-          ))}
-        </h1>
-        <p className="text-background/80 text-base md:text-lg mb-8 max-w-md mx-auto">
-          {description}
-        </p>
+      <div className="relative z-10 w-full px-8 md:px-16 pb-10 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+        <div className="text-left max-w-2xl">
+          <h1 className="text-[31px] md:text-[53px] lg:text-[64px] font-light leading-tight text-background mb-4" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
+            {title.split("\n").map((line, i) => (
+              <span key={i}>{line}{i === 0 && <br />}</span>
+            ))}
+          </h1>
+          <p className="text-background/80 text-base md:text-lg max-w-md">
+            {description}
+          </p>
+        </div>
         <Link
           to={buttonLink}
-          className="inline-block bg-primary text-primary-foreground px-8 py-3 text-sm tracking-widest uppercase hover:opacity-90 transition-opacity rounded-sm"
+          className="inline-block bg-primary text-primary-foreground px-8 py-3 text-sm tracking-widest uppercase hover:opacity-90 transition-opacity rounded-sm self-start md:self-end"
         >
           {buttonText}
         </Link>
