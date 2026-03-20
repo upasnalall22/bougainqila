@@ -28,17 +28,14 @@ const FeaturedProducts = () => {
                 <Link to={`/product/${product.slug}`}>
                   <div className="aspect-square bg-muted rounded-sm mb-3 overflow-hidden border border-border group-hover:shadow-md transition-shadow relative">
                     <img src={image} alt={product.name} className="w-full h-full object-cover" loading="lazy" />
-                    <div className="absolute top-2 left-2 flex gap-1">
-                      {product.featured && (
-                        <span className="bg-primary text-primary-foreground text-[10px] px-2 py-0.5 rounded-sm uppercase tracking-wider">Featured</span>
-                      )}
-                      {(product as any).best_seller && (
-                        <span className="bg-foreground text-background text-[10px] px-2 py-0.5 rounded-sm uppercase tracking-wider">Bestseller</span>
-                      )}
-                      {product.tag && (
-                        <span className="bg-accent text-accent-foreground text-[10px] px-2 py-0.5 rounded-sm uppercase tracking-wider">{product.tag}</span>
-                      )}
-                    </div>
+                    {(() => {
+                      const label = product.tag || ((product as any).best_seller ? "Bestseller" : null);
+                      return label ? (
+                        <div className="absolute top-2 left-2">
+                          <span className="bg-primary text-primary-foreground text-[10px] px-2 py-0.5 rounded-sm uppercase tracking-wider">{label}</span>
+                        </div>
+                      ) : null;
+                    })()}
                   </div>
                 </Link>
                 <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">{product.category}</p>
