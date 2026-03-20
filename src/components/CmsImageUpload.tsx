@@ -10,7 +10,7 @@ interface CmsImageUploadProps {
   hint?: string;
 }
 
-const CmsImageUpload = ({ value, onChange, folder = "general", label = "Image" }: CmsImageUploadProps) => {
+const CmsImageUpload = ({ value, onChange, folder = "general", label = "Image", hint }: CmsImageUploadProps) => {
   const [uploading, setUploading] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
