@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useAllHomepageContent, useAllCategoryContent, useJournalPosts } from "@/hooks/useCMS";
 import { useOurStorySections } from "@/hooks/useOurStory";
+import { useHeroBanners } from "@/hooks/useHeroBanners";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CmsImageUpload from "@/components/CmsImageUpload";
