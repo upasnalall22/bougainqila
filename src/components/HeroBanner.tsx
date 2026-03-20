@@ -15,14 +15,9 @@ const HeroBanner = () => {
       ? [{
           title: fallbackContent.title || "There is beauty in the broken\nand magic in the slow.",
           description: fallbackContent.description || "Handmade home decor born from a terrace garden. Each piece carries the warmth of slow craft and an organic spirit.",
-          button_text: fallbackContent.button_text || "Shop Now",
-          button_link: fallbackContent.button_link || "/shop",
-          image_url: fallbackContent.image_url || heroBanner,
-        }]
-      : [{
-          title: "There is beauty in the broken\nand magic in the slow.",
-          description: "Handmade home decor born from a terrace garden. Each piece carries the warmth of slow craft and an organic spirit.",
-          button_text: "Shop Now",
+          button_text: fallbackContent.button_text || "SHOP",
+...
+          button_text: "SHOP",
           button_link: "/shop",
           image_url: heroBanner,
         }];
