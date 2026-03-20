@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import logo from "@/assets/logo.png";
 import { useCart } from "@/hooks/useCart";
 import AnnouncementTicker from "@/components/AnnouncementTicker";
+import SearchOverlay from "@/components/SearchOverlay";
 
 const subCategories = [
   { label: "Windchimes", to: "/home-living/windchimes" },
@@ -15,7 +16,6 @@ const navLinks = [
   { label: "Home & Living", to: "/home-living", hasMega: true },
   { label: "The Gift Shop", to: "/gift-shop" },
   { label: "Journal", to: "/journal" },
-  
   { label: "Our Story", to: "/our-story" },
   { label: "Connect", to: "/connect" },
 ];
@@ -24,6 +24,7 @@ const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [megaOpen, setMegaOpen] = useState(false);
   const [mobileSubOpen, setMobileSubOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const megaRef = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const { totalItems, openCart } = useCart();
@@ -53,7 +54,7 @@ const Navbar = () => {
           <img src={logo} alt="BougenQila" className="h-14 md:h-16 w-auto object-contain" />
         </Link>
 
-        {/* Desktop Nav - Centered */}
+        {/* Desktop Nav */}
         <nav className="hidden md:flex items-center justify-center flex-1 gap-6 text-[10px] lg:text-xs tracking-[0.15em] uppercase text-foreground/70">
           {navLinks.map((link) =>
             link.hasMega ? (
@@ -71,7 +72,6 @@ const Navbar = () => {
                   <ChevronDown className="w-3 h-3" />
                 </Link>
 
-                {/* Mega Menu Dropdown */}
                 {megaOpen && (
                   <div
                     ref={megaRef}
@@ -109,7 +109,7 @@ const Navbar = () => {
 
         {/* Icons */}
         <div className="flex items-center gap-3">
-          <button className="text-foreground hover:text-primary transition-colors" aria-label="Search">
+          <button onClick={() => setSearchOpen(true)} className="text-foreground hover:text-primary transition-colors" aria-label="Search">
             <Search className="w-4 h-4" />
           </button>
           <button className="text-foreground hover:text-primary transition-colors" aria-label="Account">
@@ -169,6 +169,8 @@ const Navbar = () => {
         </nav>
       )}
     </header>
+
+    <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
     </>
   );
 };
