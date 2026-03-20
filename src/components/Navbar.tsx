@@ -14,7 +14,7 @@ const subCategories = [
 const navLinks = [
   { label: "Shop All", to: "/shop" },
   { label: "Home & Living", to: "/home-living", hasMega: true },
-  { label: "The Gift Shop", to: "/gift-shop" },
+  { label: "GIFT SHOP", to: "/gift-shop" },
   { label: "Journal", to: "/journal" },
   { label: "Our Story", to: "/our-story" },
   { label: "Connect", to: "/connect" },
