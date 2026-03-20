@@ -10,7 +10,7 @@ import Footer from "@/components/Footer";
 import CmsImageUpload from "@/components/CmsImageUpload";
 import { Save, Plus, Trash2, Edit, LogOut } from "lucide-react";
 
-type Tab = "banners" | "homepage" | "categories" | "journal" | "our-story" | "subscribers" | "reviews";
+type Tab = "banners" | "homepage" | "categories" | "journal" | "insta-feed" | "our-story" | "subscribers" | "reviews";
 
 const AdminDashboard = () => {
   const { signOut } = useAuth();
