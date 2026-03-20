@@ -701,6 +701,9 @@ function BannersTab() {
         button_link: form.button_link,
         image_url: form.image_url,
         is_active: form.is_active,
+        title_italic: form.title_italic ?? false,
+        title_color: form.title_color || null,
+        title_size: form.title_size || null,
       }).eq("id", editing!);
       if (error) throw error;
     },
