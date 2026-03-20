@@ -57,16 +57,21 @@ const HeroBanner = () => {
       <div className="absolute inset-0 bg-foreground/30" />
 
       <div className="relative z-10 w-full px-8 md:px-16 pb-10 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
-        <div className="text-left max-w-2xl">
+        <div className="text-left max-w-2xl bg-foreground/40 backdrop-blur-sm rounded-lg px-6 py-5">
           <h1
             className="text-[31px] md:text-[53px] lg:text-[64px] font-light leading-tight text-background mb-4"
-            style={{ fontFamily: "'Cormorant Garamond', serif" }}
+            style={{
+              fontFamily: "'Cormorant Garamond', serif",
+              fontStyle: (slide as any)?.title_italic ? "italic" : "normal",
+              color: (slide as any)?.title_color || undefined,
+              fontSize: (slide as any)?.title_size || undefined,
+            }}
           >
             {(slide?.title || "").split("\n").map((line: string, i: number) => (
               <span key={i}>{line}{i === 0 && <br />}</span>
             ))}
           </h1>
-          <p className="text-background/80 text-base md:text-lg max-w-md">
+          <p className="text-background/90 text-base md:text-lg max-w-md">
             {slide?.description}
           </p>
         </div>
