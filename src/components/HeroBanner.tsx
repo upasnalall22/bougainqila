@@ -57,7 +57,7 @@ const HeroBanner = () => {
       <div className="absolute inset-0 bg-foreground/30" />
 
       <div className="relative z-10 w-full px-8 md:px-16 pb-10 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
-        <div className="text-left max-w-2xl bg-foreground/40 backdrop-blur-sm rounded-lg px-6 py-5">
+        <div className="text-left max-w-2xl">
           <h1
             className="text-[31px] md:text-[53px] lg:text-[64px] font-light leading-tight text-background mb-4"
             style={{
