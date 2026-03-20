@@ -858,8 +858,8 @@ function InstaFeedTab() {
     return (
       <div className="space-y-4 max-w-xl">
         <h3 className="text-sm tracking-[0.2em] uppercase text-muted-foreground">{editing === "new" ? "Add Feed Item" : "Edit Feed Item"}</h3>
-        <CmsImageUpload value={form.image_url} onChange={(v) => setForm({ ...form, image_url: v })} folder="insta-feed" label="Image (600×600 square)" />
-        <CmsTextField label="Caption" value={form.caption} onChange={(v) => setForm({ ...form, caption: v })} />
+        <CmsImageUpload value={form.image_url} onChange={(v) => setForm({ ...form, image_url: v })} folder="insta-feed" label="Image (600×600 square)" hint="Recommended: 600×600px (1:1 square crop)" />
+        <CmsTextField label="Caption" value={form.caption} onChange={(v) => setForm({ ...form, caption: v })} hint="Max 100 chars — shown on hover" />
         <div>
           <label className="text-xs tracking-[0.15em] uppercase text-muted-foreground block mb-1">Link Type</label>
           <select value={form.link_type} onChange={(e) => setForm({ ...form, link_type: e.target.value })} className="w-full border border-border rounded px-3 py-2 text-sm bg-background text-foreground">
