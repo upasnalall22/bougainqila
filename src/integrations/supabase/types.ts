@@ -214,6 +214,53 @@ export type Database = {
         }
         Relationships: []
       }
+      insta_feed_items: {
+        Row: {
+          caption: string | null
+          created_at: string
+          display_order: number
+          id: string
+          image_url: string
+          is_active: boolean
+          journal_post_id: string | null
+          link_type: string
+          link_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          caption?: string | null
+          created_at?: string
+          display_order?: number
+          id?: string
+          image_url: string
+          is_active?: boolean
+          journal_post_id?: string | null
+          link_type?: string
+          link_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          caption?: string | null
+          created_at?: string
+          display_order?: number
+          id?: string
+          image_url?: string
+          is_active?: boolean
+          journal_post_id?: string | null
+          link_type?: string
+          link_url?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "insta_feed_items_journal_post_id_fkey"
+            columns: ["journal_post_id"]
+            isOneToOne: false
+            referencedRelation: "journal_posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       journal_post_images: {
         Row: {
           caption: string | null
