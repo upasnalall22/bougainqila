@@ -748,11 +748,11 @@ function BannersTab() {
           {editing === b.id ? (
             <div className="space-y-3">
               <p className="text-xs tracking-[0.2em] uppercase text-muted-foreground mb-2">Banner Slide {idx + 1}</p>
-              <CmsImageUpload label="Banner Image" folder="hero-banners" value={form.image_url || ""} onChange={(url) => setForm({ ...form, image_url: url })} />
-              <CmsTextField label="Title" value={form.title || ""} onChange={(v) => setForm({ ...form, title: v })} />
-              <CmsTextField label="Description" value={form.description || ""} onChange={(v) => setForm({ ...form, description: v })} multiline />
-              <CmsTextField label="Button Text" value={form.button_text || ""} onChange={(v) => setForm({ ...form, button_text: v })} />
-              <CmsTextField label="Button Link" value={form.button_link || ""} onChange={(v) => setForm({ ...form, button_link: v })} />
+              <CmsImageUpload label="Banner Image" folder="hero-banners" value={form.image_url || ""} onChange={(url) => setForm({ ...form, image_url: url })} hint="Recommended: 1920×1080px (16:9)" />
+              <CmsTextField label="Title" value={form.title || ""} onChange={(v) => setForm({ ...form, title: v })} hint="Max 60 chars — the main headline" />
+              <CmsTextField label="Description" value={form.description || ""} onChange={(v) => setForm({ ...form, description: v })} multiline hint="Max 120 chars — subtext below headline" />
+              <CmsTextField label="Button Text" value={form.button_text || ""} onChange={(v) => setForm({ ...form, button_text: v })} hint="Max 20 chars, e.g. SHOP NOW" />
+              <CmsTextField label="Button Link" value={form.button_link || ""} onChange={(v) => setForm({ ...form, button_link: v })} hint="Relative path, e.g. /shop or /gift-shop" />
               
               {/* Title Formatting */}
               <p className="text-xs tracking-[0.2em] uppercase text-muted-foreground mt-3 mb-1">Title Formatting</p>
