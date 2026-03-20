@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import HeroBanner from "@/components/HeroBanner";
+import TrustBadges from "@/components/TrustBadges";
 import CategoryGrid from "@/components/CategoryGrid";
 import FeaturedProducts from "@/components/FeaturedProducts";
 import AboutSection from "@/components/AboutSection";
@@ -37,6 +38,7 @@ const Index = () => {
       <Navbar />
       <main className="flex-1">
         <HeroBanner />
+        <TrustBadges />
         <CategoryGrid />
         <AboutSection />
         <FeaturedProducts />
