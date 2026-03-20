@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
-import { useAllHomepageContent, useAllCategoryContent, useJournalPosts } from "@/hooks/useCMS";
+import { useAllHomepageContent, useAllCategoryContent, useJournalPosts, useAllInstaFeedItems } from "@/hooks/useCMS";
 import { useOurStorySections } from "@/hooks/useOurStory";
 import { useHeroBanners } from "@/hooks/useHeroBanners";
 import Navbar from "@/components/Navbar";
