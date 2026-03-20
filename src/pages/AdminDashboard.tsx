@@ -725,6 +725,9 @@ function BannersTab() {
       button_link: b.button_link || "",
       image_url: b.image_url || "",
       is_active: b.is_active ?? true,
+      title_italic: b.title_italic ?? false,
+      title_color: b.title_color || "",
+      title_size: b.title_size || "",
     });
   };
 
