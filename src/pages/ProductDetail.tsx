@@ -222,7 +222,7 @@ const ProductDetail = () => {
               disabled={!product.in_stock}
               className="w-full bg-primary text-primary-foreground py-3.5 text-xs tracking-[0.2em] uppercase rounded-sm hover:opacity-90 transition-opacity mb-3 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {product.in_stock ? "Bring Home" : "Sold Out"}
+              {product.in_stock ? "Add to Cart" : "Sold Out"}
             </button>
 
             {/* Pickup */}
