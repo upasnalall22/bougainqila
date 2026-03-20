@@ -357,7 +357,7 @@ function JournalTab() {
         </div>
 
         <div className="mb-4">
-          <CmsTextField label="Excerpt" value={form.excerpt} onChange={(v) => setForm({ ...form, excerpt: v })} multiline />
+          <CmsTextField label="Excerpt" value={form.excerpt} onChange={(v) => setForm({ ...form, excerpt: v })} multiline hint="Max 200 chars — shown on listing cards" />
         </div>
         <div className="mb-4">
           <label className="text-xs tracking-widest uppercase text-muted-foreground block mb-1">Body</label>
