@@ -76,7 +76,7 @@ const HeroBanner = () => {
             to={slide?.button_link || "/shop"}
             className="inline-block bg-primary text-primary-foreground px-8 py-3 text-sm tracking-widest uppercase hover:opacity-90 transition-opacity rounded-full"
           >
-            {slide?.button_text || "Shop Now"} →
+            {slide?.button_text || "SHOP"}
           </Link>
 
           {/* Dots indicator */}
