@@ -5,10 +5,10 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import NewsletterBar from "@/components/NewsletterBar";
 import ProductCard from "@/components/ProductCard";
+import ProductReviews from "@/components/ProductReviews";
 import SEOHead from "@/components/SEOHead";
 import { useProduct, useRelatedProducts } from "@/hooks/useProducts";
 import { useCart } from "@/hooks/useCart";
-
 const trustBadges = [
   { icon: Truck, label: "Hassle-free Shipping" },
   { icon: CreditCard, label: "COD Available" },
