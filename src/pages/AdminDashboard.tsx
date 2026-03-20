@@ -364,8 +364,8 @@ function JournalTab() {
           <textarea value={form.body} onChange={(e) => setForm({ ...form, body: e.target.value })} rows={8} className="w-full border border-border bg-background px-3 py-2 text-sm rounded-sm focus:outline-none focus:ring-1 focus:ring-primary resize-none" />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-          <CmsTextField label="Meta Title" value={form.meta_title} onChange={(v) => setForm({ ...form, meta_title: v })} />
-          <CmsTextField label="Meta Description" value={form.meta_description} onChange={(v) => setForm({ ...form, meta_description: v })} />
+          <CmsTextField label="Meta Title" value={form.meta_title} onChange={(v) => setForm({ ...form, meta_title: v })} hint="Max 60 chars for SEO" />
+          <CmsTextField label="Meta Description" value={form.meta_description} onChange={(v) => setForm({ ...form, meta_description: v })} hint="Max 160 chars for SEO" />
         </div>
         <label className="flex items-center gap-2 text-sm text-foreground cursor-pointer mb-4">
           <input type="checkbox" checked={form.published} onChange={(e) => setForm({ ...form, published: e.target.checked })} />
