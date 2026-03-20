@@ -60,12 +60,13 @@ const ProductCard = ({ product }: ProductCardProps) => {
         >
           Add to Cart
         </button>
-        <button
-          onClick={(e) => { e.preventDefault(); addToCart(product.id); }}
-          className="flex-1 bg-primary text-primary-foreground text-[10px] tracking-[0.1em] uppercase py-2 rounded-sm hover:opacity-90 transition-opacity"
+        <a
+          href={`/checkout?buy=${product.id}`}
+          onClick={(e) => { e.preventDefault(); addToCart(product.id); window.location.href = "/checkout"; }}
+          className="flex-1 bg-primary text-primary-foreground text-[10px] tracking-[0.1em] uppercase py-2 rounded-sm hover:opacity-90 transition-opacity text-center"
         >
           Buy Now
-        </button>
+        </a>
       </div>
     </div>
   );
