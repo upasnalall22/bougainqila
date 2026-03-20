@@ -14,7 +14,7 @@ type Tab = "banners" | "homepage" | "categories" | "journal" | "our-story" | "su
 
 const AdminDashboard = () => {
   const { signOut } = useAuth();
-  const [tab, setTab] = useState<Tab>("homepage");
+  const [tab, setTab] = useState<Tab>("banners");
 
   return (
     <div className="min-h-screen flex flex-col">
