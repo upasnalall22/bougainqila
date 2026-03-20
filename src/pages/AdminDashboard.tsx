@@ -426,8 +426,8 @@ function OurStoryTab() {
   const textFields = ["title", "subtitle", "button_text", "button_link"];
   const multilineFields = ["description", "quote"];
   const imageFields = [
-    { key: "image_url", label: "Image 1" },
-    { key: "image_url_2", label: "Image 2" },
+    { key: "image_url", label: "Image 1", hint: "Recommended: 800×1000px (4:5 portrait)" },
+    { key: "image_url_2", label: "Image 2", hint: "Recommended: 800×1000px (4:5 portrait)" },
   ];
 
   const startEdit = (s: any) => {
