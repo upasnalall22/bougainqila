@@ -524,4 +524,163 @@ function SubscribersTab() {
   );
 }
 
+// ─── Bulk Reviews Tab ─────────────────────────────────────────
+function BulkReviewsTab() {
+  const queryClient = useQueryClient();
+  const [uploading, setUploading] = useState(false);
+  const [results, setResults] = useState<{ success: number; failed: number; errors: string[] } | null>(null);
+
+  const { data: reviews, isLoading } = useQuery({
+    queryKey: ["all-reviews"],
+    queryFn: async () => {
+      const { data, error } = await (supabase as any)
+        .from("product_reviews")
+        .select("*, products(name, product_code)")
+        .order("created_at", { ascending: false })
+        .limit(50);
+      if (error) throw error;
+      return data as any[];
+    },
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await (supabase as any).from("product_reviews").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["all-reviews"] }),
+  });
+
+  const handleCSVUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    setResults(null);
+
+    try {
+      const text = await file.text();
+      const lines = text.split("\n").filter((l) => l.trim());
+      if (lines.length < 2) throw new Error("CSV must have a header row and at least one data row");
+
+      const header = lines[0].split(",").map((h) => h.trim().toLowerCase());
+      const prodCodeIdx = header.indexOf("product_code");
+      const nameIdx = header.indexOf("reviewer_name");
+      const ratingIdx = header.indexOf("rating");
+      const reviewIdx = header.indexOf("review_text");
+
+      if (prodCodeIdx === -1 || nameIdx === -1 || ratingIdx === -1) {
+        throw new Error("CSV must have columns: product_code, reviewer_name, rating (optional: review_text)");
+      }
+
+      // Fetch all products by product_code
+      const { data: allProducts } = await supabase.from("products").select("id, product_code");
+      const codeMap = new Map<string, string>();
+      (allProducts ?? []).forEach((p) => { if (p.product_code) codeMap.set(p.product_code, p.id); });
+
+      let success = 0;
+      let failed = 0;
+      const errors: string[] = [];
+
+      const rows = lines.slice(1).map((line) => {
+        // Simple CSV parse (handles quoted fields)
+        const cols: string[] = [];
+        let current = "";
+        let inQuotes = false;
+        for (const char of line) {
+          if (char === '"') { inQuotes = !inQuotes; continue; }
+          if (char === ',' && !inQuotes) { cols.push(current.trim()); current = ""; continue; }
+          current += char;
+        }
+        cols.push(current.trim());
+        return cols;
+      });
+
+      const reviewsToInsert: any[] = [];
+      rows.forEach((cols, i) => {
+        const code = cols[prodCodeIdx];
+        const productId = codeMap.get(code);
+        if (!productId) { errors.push(`Row ${i + 2}: Unknown product_code "${code}"`); failed++; return; }
+        const rating = parseInt(cols[ratingIdx]);
+        if (isNaN(rating) || rating < 1 || rating > 5) { errors.push(`Row ${i + 2}: Invalid rating`); failed++; return; }
+        reviewsToInsert.push({
+          product_id: productId,
+          reviewer_name: cols[nameIdx] || "Customer",
+          rating,
+          review_text: reviewIdx !== -1 ? cols[reviewIdx] || "" : "",
+          approved: true,
+        });
+      });
+
+      if (reviewsToInsert.length > 0) {
+        const { error } = await (supabase as any).from("product_reviews").insert(reviewsToInsert);
+        if (error) throw error;
+        success = reviewsToInsert.length;
+      }
+
+      setResults({ success, failed, errors: errors.slice(0, 10) });
+      queryClient.invalidateQueries({ queryKey: ["all-reviews"] });
+    } catch (err: any) {
+      setResults({ success: 0, failed: 0, errors: [err.message] });
+    } finally {
+      setUploading(false);
+      e.target.value = "";
+    }
+  };
+
+  return (
+    <div>
+      <div className="border border-border rounded-sm p-6 mb-8">
+        <p className="text-xs tracking-[0.2em] uppercase text-muted-foreground mb-3">Bulk Upload Reviews via CSV</p>
+        <p className="text-sm text-muted-foreground mb-4">
+          CSV format: <code className="bg-muted px-1 py-0.5 rounded text-xs">product_code,reviewer_name,rating,review_text</code>
+        </p>
+        <div className="flex items-center gap-3">
+          <label className="bg-primary text-primary-foreground px-5 py-2 text-xs tracking-[0.15em] uppercase rounded-sm hover:opacity-90 cursor-pointer inline-flex items-center gap-1.5">
+            <Plus className="w-3.5 h-3.5" /> {uploading ? "Uploading..." : "Upload CSV"}
+            <input type="file" accept=".csv" onChange={handleCSVUpload} className="hidden" disabled={uploading} />
+          </label>
+          <a
+            href={`data:text/csv;charset=utf-8,${encodeURIComponent("product_code,reviewer_name,rating,review_text\nBQ-001,Priya,5,Beautiful craftsmanship!")}`}
+            download="reviews_template.csv"
+            className="text-xs text-primary hover:underline"
+          >
+            Download Template
+          </a>
+        </div>
+        {results && (
+          <div className="mt-4 p-3 rounded-sm border border-border bg-muted text-sm">
+            <p className="text-foreground">{results.success} reviews uploaded, {results.failed} failed</p>
+            {results.errors.length > 0 && (
+              <ul className="mt-2 text-xs text-destructive space-y-1">
+                {results.errors.map((err, i) => <li key={i}>{err}</li>)}
+              </ul>
+            )}
+          </div>
+        )}
+      </div>
+
+      <p className="text-xs tracking-[0.2em] uppercase text-muted-foreground mb-4">Recent Reviews ({reviews?.length ?? 0})</p>
+      {isLoading ? (
+        <p className="text-muted-foreground text-sm">Loading...</p>
+      ) : (
+        <div className="space-y-3">
+          {reviews?.map((r: any) => (
+            <div key={r.id} className="border border-border rounded-sm p-4 flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-foreground">{r.reviewer_name} — {"★".repeat(r.rating)}{"☆".repeat(5 - r.rating)}</p>
+                <p className="text-xs text-muted-foreground">{r.products?.name} ({r.products?.product_code || "no code"}) · {new Date(r.created_at).toLocaleDateString()}</p>
+                {r.review_text && <p className="text-xs text-foreground/70 mt-1 truncate max-w-lg">{r.review_text}</p>}
+              </div>
+              <button onClick={() => { if (confirm("Delete this review?")) deleteMutation.mutate(r.id); }} className="text-foreground hover:text-destructive">
+                <Trash2 className="w-4 h-4" />
+              </button>
+            </div>
+          ))}
+          {reviews?.length === 0 && <p className="text-muted-foreground text-sm text-center py-8">No reviews yet.</p>}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default AdminDashboard;
