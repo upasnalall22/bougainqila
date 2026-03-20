@@ -812,4 +812,109 @@ function BannersTab() {
   );
 }
 
+function InstaFeedTab() {
+  const queryClient = useQueryClient();
+  const { data: items } = useAllInstaFeedItems();
+  const { data: journalPosts } = useJournalPosts(false);
+  const [editing, setEditing] = useState<any>(null);
+  const [form, setForm] = useState({ image_url: "", caption: "", link_type: "external", link_url: "", journal_post_id: "", display_order: 0, is_active: true });
+
+  const startEdit = (item?: any) => {
+    if (item) {
+      setForm({ image_url: item.image_url, caption: item.caption || "", link_type: item.link_type, link_url: item.link_url || "", journal_post_id: item.journal_post_id || "", display_order: item.display_order, is_active: item.is_active });
+      setEditing(item);
+    } else {
+      setForm({ image_url: "", caption: "", link_type: "external", link_url: "", journal_post_id: "", display_order: (items?.length ?? 0), is_active: true });
+      setEditing("new");
+    }
+  };
+
+  const save = async () => {
+    const payload: any = { image_url: form.image_url, caption: form.caption || null, link_type: form.link_type, link_url: form.link_url || null, journal_post_id: form.link_type === "journal" && form.journal_post_id ? form.journal_post_id : null, display_order: form.display_order, is_active: form.is_active };
+    if (editing === "new") {
+      await supabase.from("insta_feed_items").insert(payload);
+    } else {
+      await supabase.from("insta_feed_items").update(payload).eq("id", editing.id);
+    }
+    queryClient.invalidateQueries({ queryKey: ["all-insta-feed-items"] });
+    queryClient.invalidateQueries({ queryKey: ["insta-feed-items"] });
+    setEditing(null);
+  };
+
+  const remove = async (id: string) => {
+    if (!confirm("Delete this feed item?")) return;
+    await supabase.from("insta_feed_items").delete().eq("id", id);
+    queryClient.invalidateQueries({ queryKey: ["all-insta-feed-items"] });
+    queryClient.invalidateQueries({ queryKey: ["insta-feed-items"] });
+  };
+
+  if (editing) {
+    return (
+      <div className="space-y-4 max-w-xl">
+        <h3 className="text-sm tracking-[0.2em] uppercase text-muted-foreground">{editing === "new" ? "Add Feed Item" : "Edit Feed Item"}</h3>
+        <CmsImageUpload value={form.image_url} onChange={(v) => setForm({ ...form, image_url: v })} folder="insta-feed" label="Image (600×600 square)" />
+        <CmsTextField label="Caption" value={form.caption} onChange={(v) => setForm({ ...form, caption: v })} />
+        <div>
+          <label className="text-xs tracking-[0.15em] uppercase text-muted-foreground block mb-1">Link Type</label>
+          <select value={form.link_type} onChange={(e) => setForm({ ...form, link_type: e.target.value })} className="w-full border border-border rounded px-3 py-2 text-sm bg-background text-foreground">
+            <option value="external">External URL (Instagram)</option>
+            <option value="journal">Journal Post</option>
+          </select>
+        </div>
+        {form.link_type === "external" ? (
+          <CmsTextField label="External URL" value={form.link_url} onChange={(v) => setForm({ ...form, link_url: v })} />
+        ) : (
+          <div>
+            <label className="text-xs tracking-[0.15em] uppercase text-muted-foreground block mb-1">Journal Post</label>
+            <select value={form.journal_post_id} onChange={(e) => { const p = journalPosts?.find((j: any) => j.id === e.target.value); setForm({ ...form, journal_post_id: e.target.value, link_url: p?.slug || "" }); }} className="w-full border border-border rounded px-3 py-2 text-sm bg-background text-foreground">
+              <option value="">Select a post</option>
+              {journalPosts?.map((p: any) => <option key={p.id} value={p.id}>{p.title}</option>)}
+            </select>
+          </div>
+        )}
+        <CmsTextField label="Display Order" value={String(form.display_order)} onChange={(v) => setForm({ ...form, display_order: parseInt(v) || 0 })} />
+        <label className="flex items-center gap-2 text-sm text-foreground">
+          <input type="checkbox" checked={form.is_active} onChange={(e) => setForm({ ...form, is_active: e.target.checked })} /> Active
+        </label>
+        <div className="flex gap-2 pt-2">
+          <button onClick={save} className="bg-primary text-primary-foreground px-4 py-2 rounded text-xs tracking-widest uppercase inline-flex items-center gap-1.5"><Save className="w-3.5 h-3.5" /> Save</button>
+          <button onClick={() => setEditing(null)} className="px-4 py-2 rounded text-xs tracking-widest uppercase border border-border text-muted-foreground hover:text-foreground">Cancel</button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <h3 className="text-sm tracking-[0.2em] uppercase text-muted-foreground">Insta Feed Grid (Homepage)</h3>
+        <button onClick={() => startEdit()} className="bg-primary text-primary-foreground px-3 py-1.5 rounded text-xs tracking-widest uppercase inline-flex items-center gap-1.5"><Plus className="w-3.5 h-3.5" /> Add Item</button>
+      </div>
+      {items?.map((item: any, idx: number) => (
+        <div key={item.id} className="flex items-center justify-between p-3 border border-border rounded-sm">
+          <div className="flex items-center gap-3">
+            {item.image_url ? (
+              <img src={item.image_url} alt="" className="h-12 w-12 rounded-sm object-cover border border-border" />
+            ) : (
+              <div className="h-12 w-12 rounded-sm bg-muted border border-border flex items-center justify-center"><span className="text-[10px] text-muted-foreground">No img</span></div>
+            )}
+            <div>
+              <p className="text-xs tracking-[0.15em] uppercase text-muted-foreground">
+                #{item.display_order} · {item.link_type === "external" ? "Instagram" : "Journal"}
+                {!item.is_active && <span className="text-destructive ml-1">(Inactive)</span>}
+              </p>
+              <p className="text-sm text-foreground">{item.caption || "—"}</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <button onClick={() => startEdit(item)} className="text-foreground hover:text-primary"><Edit className="w-4 h-4" /></button>
+            <button onClick={() => remove(item.id)} className="text-muted-foreground hover:text-destructive"><Trash2 className="w-4 h-4" /></button>
+          </div>
+        </div>
+      ))}
+      {(!items || items.length === 0) && <p className="text-sm text-muted-foreground">No feed items yet. Add your first one!</p>}
+    </div>
+  );
+}
+
 export default AdminDashboard;
