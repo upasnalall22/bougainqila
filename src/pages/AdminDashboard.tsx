@@ -701,6 +701,9 @@ function BannersTab() {
         button_link: form.button_link,
         image_url: form.image_url,
         is_active: form.is_active,
+        title_italic: form.title_italic ?? false,
+        title_color: form.title_color || null,
+        title_size: form.title_size || null,
       }).eq("id", editing!);
       if (error) throw error;
     },
@@ -722,6 +725,9 @@ function BannersTab() {
       button_link: b.button_link || "",
       image_url: b.image_url || "",
       is_active: b.is_active ?? true,
+      title_italic: b.title_italic ?? false,
+      title_color: b.title_color || "",
+      title_size: b.title_size || "",
     });
   };
 
@@ -740,6 +746,32 @@ function BannersTab() {
               <CmsTextField label="Description" value={form.description || ""} onChange={(v) => setForm({ ...form, description: v })} multiline />
               <CmsTextField label="Button Text" value={form.button_text || ""} onChange={(v) => setForm({ ...form, button_text: v })} />
               <CmsTextField label="Button Link" value={form.button_link || ""} onChange={(v) => setForm({ ...form, button_link: v })} />
+              
+              {/* Title Formatting */}
+              <p className="text-xs tracking-[0.2em] uppercase text-muted-foreground mt-3 mb-1">Title Formatting</p>
+              <div className="flex flex-wrap items-center gap-4">
+                <div className="flex items-center gap-2">
+                  <input type="checkbox" id={`italic-${b.id}`} checked={form.title_italic || false} onChange={(e) => setForm({ ...form, title_italic: e.target.checked })} />
+                  <label htmlFor={`italic-${b.id}`} className="text-xs text-muted-foreground italic">Italic</label>
+                </div>
+                <div className="flex items-center gap-2">
+                  <label className="text-xs text-muted-foreground">Color</label>
+                  <input type="color" value={form.title_color || "#ffffff"} onChange={(e) => setForm({ ...form, title_color: e.target.value })} className="w-8 h-8 rounded cursor-pointer border border-border" />
+                  {form.title_color && <button onClick={() => setForm({ ...form, title_color: "" })} className="text-[10px] text-muted-foreground underline">Reset</button>}
+                </div>
+                <div className="flex items-center gap-2">
+                  <label className="text-xs text-muted-foreground">Size</label>
+                  <select value={form.title_size || ""} onChange={(e) => setForm({ ...form, title_size: e.target.value })} className="text-xs border border-border rounded px-2 py-1 bg-background">
+                    <option value="">Default</option>
+                    <option value="28px">Small (28px)</option>
+                    <option value="36px">Medium (36px)</option>
+                    <option value="48px">Large (48px)</option>
+                    <option value="64px">XL (64px)</option>
+                    <option value="80px">XXL (80px)</option>
+                  </select>
+                </div>
+              </div>
+
               <div className="flex items-center gap-2">
                 <input type="checkbox" id={`active-${b.id}`} checked={form.is_active} onChange={(e) => setForm({ ...form, is_active: e.target.checked })} />
                 <label htmlFor={`active-${b.id}`} className="text-xs text-muted-foreground">Active</label>
