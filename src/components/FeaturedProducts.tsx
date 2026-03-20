@@ -47,7 +47,7 @@ const FeaturedProducts = () => {
                   onClick={() => addToCart(product.id)}
                   className="text-xs tracking-widest uppercase text-muted-foreground hover:text-primary transition-colors"
                 >
-                  Bring Home
+                  Add to Cart
                 </button>
               </div>
             );
