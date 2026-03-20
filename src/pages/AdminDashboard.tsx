@@ -98,6 +98,11 @@ function HomepageTab() {
     });
   };
 
+  const fieldHints: Record<string, string> = {
+    title: "Max 60 chars", subtitle: "Max 80 chars", button_text: "Max 20 chars, e.g. SHOP NOW",
+    button_link: "Relative path, e.g. /shop", meta_title: "Max 60 chars for SEO",
+    description: "Max 300 chars", meta_description: "Max 160 chars for SEO",
+  };
   const textFields = ["title", "subtitle", "button_text", "button_link", "meta_title"];
   const multilineFields = ["description", "meta_description"];
 
@@ -109,12 +114,12 @@ function HomepageTab() {
             <div className="space-y-3">
               <p className="text-xs tracking-[0.2em] uppercase text-muted-foreground mb-2">Editing: {s.section}</p>
               {textFields.map((field) => (
-                <CmsTextField key={field} label={field.replace(/_/g, " ")} value={form[field] || ""} onChange={(v) => setForm({ ...form, [field]: v })} />
+                <CmsTextField key={field} label={field.replace(/_/g, " ")} value={form[field] || ""} onChange={(v) => setForm({ ...form, [field]: v })} hint={fieldHints[field]} />
               ))}
               {multilineFields.map((field) => (
-                <CmsTextField key={field} label={field.replace(/_/g, " ")} value={form[field] || ""} onChange={(v) => setForm({ ...form, [field]: v })} multiline />
+                <CmsTextField key={field} label={field.replace(/_/g, " ")} value={form[field] || ""} onChange={(v) => setForm({ ...form, [field]: v })} multiline hint={fieldHints[field]} />
               ))}
-              <CmsImageUpload label="Section Image" folder={`homepage/${s.section}`} value={form.image_url || ""} onChange={(url) => setForm({ ...form, image_url: url })} />
+              <CmsImageUpload label="Section Image" folder={`homepage/${s.section}`} value={form.image_url || ""} onChange={(url) => setForm({ ...form, image_url: url })} hint="Recommended: 600×600px (1:1) for thumbnails, 1920×1080px (16:9) for banners" />
               <div className="flex gap-2">
                 <button onClick={() => saveMutation.mutate()} disabled={saveMutation.isPending} className="bg-primary text-primary-foreground px-5 py-2 text-xs tracking-[0.15em] uppercase rounded-sm hover:opacity-90 disabled:opacity-50 inline-flex items-center gap-1.5">
                   <Save className="w-3.5 h-3.5" /> {saveMutation.isPending ? "Saving..." : "Save"}
