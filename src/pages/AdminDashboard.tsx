@@ -299,8 +299,8 @@ function JournalTab() {
       <div className="border border-border rounded-sm p-6 mb-8">
         <p className="text-xs tracking-[0.2em] uppercase text-muted-foreground mb-4">{editing ? "Edit Post" : "New Post"}</p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-          <CmsTextField label="Title *" value={form.title} onChange={(v) => setForm({ ...form, title: v })} />
-          <CmsTextField label="Slug" value={form.slug} onChange={(v) => setForm({ ...form, slug: v })} />
+          <CmsTextField label="Title *" value={form.title} onChange={(v) => setForm({ ...form, title: v })} hint="Max 80 chars" />
+          <CmsTextField label="Slug" value={form.slug} onChange={(v) => setForm({ ...form, slug: v })} hint="Auto-generated if left blank, e.g. my-post-title" />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <CmsTextField label="Category" value={form.category} onChange={(v) => setForm({ ...form, category: v })} />
