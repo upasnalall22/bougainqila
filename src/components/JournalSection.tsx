@@ -1,15 +1,14 @@
 import { Link } from "react-router-dom";
-import { Instagram } from "lucide-react";
-import { useInstaFeedItems, useHomepageContent } from "@/hooks/useCMS";
+import { useJournalPosts, useHomepageContent } from "@/hooks/useCMS";
 
 const JournalSection = () => {
-  const { data: items } = useInstaFeedItems();
+  const { data: posts } = useJournalPosts(true);
   const { data: content } = useHomepageContent("journal");
 
   const title = content?.title || "From the Terrace";
   const subtitle = content?.description || "Journal";
 
-  const feedItems = items?.slice(0, 5) ?? [];
+  const feedPosts = posts?.slice(0, 5) ?? [];
 
   return (
     <section className="max-w-7xl mx-auto px-6 py-20">
@@ -23,46 +22,35 @@ const JournalSection = () => {
         </h2>
       </div>
 
-      {feedItems.length > 0 ? (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
-          {feedItems.map((item: any) => {
-            const isExternal = item.link_type === "external";
-            const href = isExternal
-              ? item.link_url || "#"
-              : item.journal_post_id
-                ? `/journal/${item.link_url || ""}`
-                : "#";
-
-            const Wrapper = isExternal ? "a" : Link;
-            const wrapperProps = isExternal
-              ? { href, target: "_blank", rel: "noopener noreferrer" }
-              : { to: href };
-
-            return (
-              <Wrapper
-                key={item.id}
-                {...(wrapperProps as any)}
-                className="group relative aspect-square overflow-hidden rounded-sm bg-muted block"
-              >
+      {feedPosts.length > 0 ? (
+        <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+          {feedPosts.map((post: any) => (
+            <Link
+              key={post.id}
+              to={`/journal/${post.slug}`}
+              className="group relative flex-shrink-0 w-40 sm:w-48 md:w-56 aspect-square overflow-hidden rounded-sm bg-muted block"
+            >
+              {post.cover_image_url ? (
                 <img
-                  src={item.image_url}
-                  alt={item.caption || ""}
+                  src={post.cover_image_url}
+                  alt={post.title || ""}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/40 transition-colors duration-300 flex items-center justify-center">
-                  <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-center px-2">
-                    <Instagram className="w-5 h-5 text-background mx-auto mb-1.5" />
-                    {item.caption && (
-                      <p className="text-[10px] text-background leading-tight line-clamp-2">
-                        {item.caption}
-                      </p>
-                    )}
-                  </div>
+              ) : (
+                <div className="w-full h-full flex items-center justify-center bg-muted">
+                  <span className="text-xs text-muted-foreground">No image</span>
                 </div>
-              </Wrapper>
-            );
-          })}
+              )}
+              <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/40 transition-colors duration-300 flex items-end justify-center">
+                <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-center px-2 pb-3">
+                  <p className="text-[11px] text-background leading-tight line-clamp-2 font-medium">
+                    {post.title}
+                  </p>
+                </div>
+              </div>
+            </Link>
+          ))}
         </div>
       ) : (
         <p className="text-center text-muted-foreground text-sm">
@@ -70,7 +58,7 @@ const JournalSection = () => {
         </p>
       )}
 
-      {feedItems.length > 0 && (
+      {feedPosts.length > 0 && (
         <div className="text-center mt-10">
           <Link
             to="/journal"
