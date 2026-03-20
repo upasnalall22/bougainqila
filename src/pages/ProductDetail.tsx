@@ -117,13 +117,27 @@ const ProductDetail = () => {
               )}
               </div>
             }
-            {/* Main Image */}
-            <div className="relative flex-1 aspect-square rounded-sm overflow-hidden bg-muted">
-              <img src={mainImage} alt={product.name} className="w-full h-full object-cover" />
+            {/* Main Image with Zoom */}
+            <div
+              ref={imageContainerRef}
+              className="relative flex-1 aspect-square rounded-sm overflow-hidden bg-muted cursor-crosshair"
+              onMouseEnter={() => setIsZoomed(true)}
+              onMouseLeave={() => setIsZoomed(false)}
+              onMouseMove={handleMouseMove}
+            >
+              <img
+                src={mainImage}
+                alt={product.name}
+                className="w-full h-full object-cover transition-transform duration-200"
+                style={isZoomed ? {
+                  transform: "scale(2.5)",
+                  transformOrigin: `${zoomPos.x}% ${zoomPos.y}%`,
+                } : undefined}
+              />
               <button
                 onClick={() => setWishlisted(!wishlisted)}
-                className="absolute top-4 right-4 w-10 h-10 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center hover:bg-background transition-colors">
-                
+                className="absolute top-4 right-4 w-10 h-10 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center hover:bg-background transition-colors z-10"
+              >
                 <Heart className={`w-5 h-5 ${wishlisted ? "fill-red-500 text-red-500" : "text-foreground/60"}`} />
               </button>
             </div>
