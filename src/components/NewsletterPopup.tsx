@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { X } from "lucide-react";
+import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 
 const NewsletterPopup = () => {
@@ -24,7 +25,7 @@ const NewsletterPopup = () => {
     e.preventDefault();
     if (email) {
       try {
-        await supabase.from("newsletter_subscribers" as any).insert({ email, source: "popup" } as any);
+        await supabase.from("newsletter_subscribers").insert({ email, source: "popup" });
       } catch {
         // non-blocking
       }
@@ -37,7 +38,7 @@ const NewsletterPopup = () => {
 
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center bg-foreground/40 backdrop-blur-sm px-4">
-      <div className="bg-background rounded-sm shadow-lg max-w-md w-full p-8 relative">
+      <div className="bg-background rounded-lg shadow-lg max-w-sm w-full p-8 relative">
         <button
           onClick={close}
           className="absolute top-3 right-3 text-muted-foreground hover:text-foreground transition-colors"
@@ -47,39 +48,47 @@ const NewsletterPopup = () => {
         </button>
 
         <div className="text-center">
+          <p className="text-xs tracking-[0.2em] uppercase text-primary mb-2">Join the</p>
           <h2
-            className="text-2xl font-light text-foreground mb-2 italic"
+            className="text-2xl font-light text-foreground mb-3"
             style={{ fontFamily: "'Cormorant Garamond', serif" }}
           >
-            Before you go
+            Qila Tribe
           </h2>
-          <p className="text-xs text-muted-foreground tracking-wide mb-6">
-            New pieces, stories from the terrace and the occasional quiet thought. We will only write when we have something worth saying.
+          <p className="text-sm text-muted-foreground leading-relaxed mb-6">
+            Be the first to know about new products, secret drops and maker stories.
           </p>
 
           {submitted ? (
-            <p className="text-sm text-primary">Welcome. You will hear from us soon.</p>
+            <p className="text-sm text-primary">Welcome to the tribe! You'll hear from us soon.</p>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-3">
+            <form onSubmit={handleSubmit} className="space-y-4">
               <input
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email"
-                className="w-full border border-border bg-background px-4 py-2.5 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-primary rounded-sm"
+                placeholder="Your email"
+                className="w-full border border-border bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-1 focus:ring-primary rounded-full"
               />
               <button
                 type="submit"
-                className="w-full bg-primary text-primary-foreground py-2.5 text-xs tracking-[0.15em] uppercase hover:opacity-90 transition-opacity rounded-sm"
+                className="w-full bg-primary text-primary-foreground py-3 text-sm tracking-wide rounded-full hover:opacity-90 transition-opacity font-medium"
               >
-                Join
+                Join the Waitlist
               </button>
             </form>
           )}
 
-          <p className="text-[10px] text-muted-foreground mt-4">
-            By subscribing, you agree to our Privacy Policy.
+          <p className="text-[11px] text-muted-foreground mt-4">
+            No spam, ever. Just soulful updates.
+          </p>
+          <p className="text-[10px] text-muted-foreground/60 mt-2">
+            By subscribing, you agree to our{" "}
+            <Link to="/terms" onClick={close} className="underline hover:text-foreground transition-colors">
+              Terms & Conditions
+            </Link>
+            .
           </p>
         </div>
       </div>
