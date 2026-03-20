@@ -685,4 +685,98 @@ function BulkReviewsTab() {
   );
 }
 
+// ─── Banners Tab ──────────────────────────────────────────────
+function BannersTab() {
+  const queryClient = useQueryClient();
+  const { data: banners, isLoading } = useHeroBanners();
+  const [editing, setEditing] = useState<string | null>(null);
+  const [form, setForm] = useState<Record<string, any>>({});
+
+  const saveMutation = useMutation({
+    mutationFn: async () => {
+      const { error } = await (supabase as any).from("hero_banners").update({
+        title: form.title,
+        description: form.description,
+        button_text: form.button_text,
+        button_link: form.button_link,
+        image_url: form.image_url,
+        is_active: form.is_active,
+      }).eq("id", editing!);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["hero-banners"] });
+      queryClient.invalidateQueries({ queryKey: ["hero-banners-active"] });
+      setEditing(null);
+    },
+  });
+
+  if (isLoading) return <p className="text-muted-foreground text-sm">Loading...</p>;
+
+  const startEdit = (b: any) => {
+    setEditing(b.id);
+    setForm({
+      title: b.title || "",
+      description: b.description || "",
+      button_text: b.button_text || "",
+      button_link: b.button_link || "",
+      image_url: b.image_url || "",
+      is_active: b.is_active ?? true,
+    });
+  };
+
+  return (
+    <div className="space-y-4">
+      <p className="text-xs text-muted-foreground mb-2">
+        Upload an image and add text to activate each banner slide. Banners without an image and title will not appear on the homepage.
+      </p>
+      {banners?.map((b: any, idx: number) => (
+        <div key={b.id} className="border border-border rounded-sm p-4">
+          {editing === b.id ? (
+            <div className="space-y-3">
+              <p className="text-xs tracking-[0.2em] uppercase text-muted-foreground mb-2">Banner Slide {idx + 1}</p>
+              <CmsImageUpload label="Banner Image" folder="hero-banners" value={form.image_url || ""} onChange={(url) => setForm({ ...form, image_url: url })} />
+              <CmsTextField label="Title" value={form.title || ""} onChange={(v) => setForm({ ...form, title: v })} />
+              <CmsTextField label="Description" value={form.description || ""} onChange={(v) => setForm({ ...form, description: v })} multiline />
+              <CmsTextField label="Button Text" value={form.button_text || ""} onChange={(v) => setForm({ ...form, button_text: v })} />
+              <CmsTextField label="Button Link" value={form.button_link || ""} onChange={(v) => setForm({ ...form, button_link: v })} />
+              <div className="flex items-center gap-2">
+                <input type="checkbox" id={`active-${b.id}`} checked={form.is_active} onChange={(e) => setForm({ ...form, is_active: e.target.checked })} />
+                <label htmlFor={`active-${b.id}`} className="text-xs text-muted-foreground">Active</label>
+              </div>
+              <div className="flex gap-2">
+                <button onClick={() => saveMutation.mutate()} disabled={saveMutation.isPending} className="bg-primary text-primary-foreground px-5 py-2 text-xs tracking-[0.15em] uppercase rounded-sm hover:opacity-90 disabled:opacity-50 inline-flex items-center gap-1.5">
+                  <Save className="w-3.5 h-3.5" /> {saveMutation.isPending ? "Saving..." : "Save"}
+                </button>
+                <button onClick={() => setEditing(null)} className="border border-border px-5 py-2 text-xs tracking-[0.15em] uppercase rounded-sm hover:bg-muted">Cancel</button>
+              </div>
+            </div>
+          ) : (
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                {b.image_url ? (
+                  <img src={b.image_url} alt="" className="h-12 w-20 rounded-sm object-cover border border-border" />
+                ) : (
+                  <div className="h-12 w-20 rounded-sm bg-muted border border-border flex items-center justify-center">
+                    <span className="text-[10px] text-muted-foreground">No image</span>
+                  </div>
+                )}
+                <div>
+                  <p className="text-xs tracking-[0.2em] uppercase text-muted-foreground mb-1">
+                    Slide {idx + 1} {!b.is_active && <span className="text-destructive">(Inactive)</span>}
+                    {b.is_active && (!b.image_url || !b.title) && <span className="text-amber-500"> (Needs image & title)</span>}
+                  </p>
+                  <p className="text-sm font-medium text-foreground">{b.title || "—"}</p>
+                  <p className="text-xs text-muted-foreground">{b.button_text || "—"} → {b.button_link || "—"}</p>
+                </div>
+              </div>
+              <button onClick={() => startEdit(b)} className="text-foreground hover:text-primary"><Edit className="w-4 h-4" /></button>
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export default AdminDashboard;
