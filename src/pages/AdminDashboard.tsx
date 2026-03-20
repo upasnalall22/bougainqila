@@ -460,7 +460,7 @@ function OurStoryTab() {
                 <CmsTextField key={field} label={field.replace(/_/g, " ")} value={form[field] || ""} onChange={(v) => setForm({ ...form, [field]: v })} multiline />
               ))}
               {imageFields.map((img) => (
-                <CmsImageUpload key={img.key} label={img.label} folder={`our-story/${s.section_key}`} value={form[img.key] || ""} onChange={(url) => setForm({ ...form, [img.key]: url })} />
+                <CmsImageUpload key={img.key} label={img.label} folder={`our-story/${s.section_key}`} value={form[img.key] || ""} onChange={(url) => setForm({ ...form, [img.key]: url })} hint={img.hint} />
               ))}
               <div className="flex gap-2">
                 <button onClick={() => saveMutation.mutate()} disabled={saveMutation.isPending} className="bg-primary text-primary-foreground px-5 py-2 text-xs tracking-[0.15em] uppercase rounded-sm hover:opacity-90 disabled:opacity-50 inline-flex items-center gap-1.5">
