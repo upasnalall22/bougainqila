@@ -58,7 +58,7 @@ const AdminDashboard = () => {
 };
 
 // Helper: renders a text/textarea field
-function CmsTextField({ label, value, onChange, multiline = false }: { label: string; value: string; onChange: (v: string) => void; multiline?: boolean }) {
+function CmsTextField({ label, value, onChange, multiline = false, hint }: { label: string; value: string; onChange: (v: string) => void; multiline?: boolean; hint?: string }) {
   return (
     <div>
       <label className="text-xs tracking-widest uppercase text-muted-foreground block mb-1">{label}</label>
@@ -67,6 +67,7 @@ function CmsTextField({ label, value, onChange, multiline = false }: { label: st
       ) : (
         <input type="text" value={value} onChange={(e) => onChange(e.target.value)} className="w-full border border-border bg-background px-3 py-2 text-sm rounded-sm focus:outline-none focus:ring-1 focus:ring-primary" />
       )}
+      {hint && <p className="text-[10px] text-muted-foreground/70 mt-0.5 italic">{hint}</p>}
     </div>
   );
 }

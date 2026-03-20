@@ -7,6 +7,7 @@ interface CmsImageUploadProps {
   onChange: (url: string) => void;
   folder?: string;
   label?: string;
+  hint?: string;
 }
 
 const CmsImageUpload = ({ value, onChange, folder = "general", label = "Image" }: CmsImageUploadProps) => {
