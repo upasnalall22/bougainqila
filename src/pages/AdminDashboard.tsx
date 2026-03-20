@@ -178,11 +178,11 @@ function CategoriesTab() {
           {editing === c.slug ? (
             <div className="space-y-3">
               <p className="text-xs tracking-[0.2em] uppercase text-muted-foreground mb-2">Editing: {c.slug}</p>
-              <CmsTextField label="Name" value={form.name || ""} onChange={(v) => setForm({ ...form, name: v })} />
-              <CmsTextField label="Description" value={form.description || ""} onChange={(v) => setForm({ ...form, description: v })} multiline />
-              <CmsImageUpload label="Banner Image" folder={`categories/${c.slug}`} value={form.banner_image_url || ""} onChange={(url) => setForm({ ...form, banner_image_url: url })} />
-              <CmsTextField label="Meta Title" value={form.meta_title || ""} onChange={(v) => setForm({ ...form, meta_title: v })} />
-              <CmsTextField label="Meta Description" value={form.meta_description || ""} onChange={(v) => setForm({ ...form, meta_description: v })} multiline />
+              <CmsTextField label="Name" value={form.name || ""} onChange={(v) => setForm({ ...form, name: v })} hint="Max 40 chars" />
+              <CmsTextField label="Description" value={form.description || ""} onChange={(v) => setForm({ ...form, description: v })} multiline hint="Max 200 chars" />
+              <CmsImageUpload label="Banner Image" folder={`categories/${c.slug}`} value={form.banner_image_url || ""} onChange={(url) => setForm({ ...form, banner_image_url: url })} hint="Recommended: 600×600px (1:1 square)" />
+              <CmsTextField label="Meta Title" value={form.meta_title || ""} onChange={(v) => setForm({ ...form, meta_title: v })} hint="Max 60 chars for SEO" />
+              <CmsTextField label="Meta Description" value={form.meta_description || ""} onChange={(v) => setForm({ ...form, meta_description: v })} multiline hint="Max 160 chars for SEO" />
               <div className="flex gap-2">
                 <button onClick={() => saveMutation.mutate()} disabled={saveMutation.isPending} className="bg-primary text-primary-foreground px-5 py-2 text-xs tracking-[0.15em] uppercase rounded-sm hover:opacity-90 disabled:opacity-50 inline-flex items-center gap-1.5">
                   <Save className="w-3.5 h-3.5" /> {saveMutation.isPending ? "Saving..." : "Save"}
