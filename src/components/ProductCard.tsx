@@ -1,6 +1,6 @@
 import { Heart } from "lucide-react";
-import { useState } from "react";
 import { useCart } from "@/hooks/useCart";
+import { useWishlist } from "@/hooks/useWishlist";
 
 interface ProductCardProps {
   product: {
@@ -17,8 +17,9 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
-  const [wishlisted, setWishlisted] = useState(false);
   const { addToCart } = useCart();
+  const { isWishlisted, toggleWishlist } = useWishlist();
+  const wishlisted = isWishlisted(product.id);
 
   return (
     <div className="group">
@@ -31,7 +32,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
           loading="lazy"
         />
         <button
-          onClick={(e) => { e.preventDefault(); setWishlisted(!wishlisted); }}
+          onClick={(e) => { e.preventDefault(); toggleWishlist(product.id); }}
           className="absolute top-3 right-3 w-8 h-8 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center hover:bg-background transition-colors"
           aria-label="Add to wishlist"
         >
