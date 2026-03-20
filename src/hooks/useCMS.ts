@@ -104,3 +104,32 @@ export function useJournalPost(slug: string) {
     enabled: !!slug,
   });
 }
+
+export function useInstaFeedItems() {
+  return useQuery({
+    queryKey: ["insta-feed-items"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("insta_feed_items")
+        .select("*")
+        .eq("is_active", true)
+        .order("display_order");
+      if (error) throw error;
+      return data ?? [];
+    },
+  });
+}
+
+export function useAllInstaFeedItems() {
+  return useQuery({
+    queryKey: ["all-insta-feed-items"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("insta_feed_items")
+        .select("*")
+        .order("display_order");
+      if (error) throw error;
+      return data ?? [];
+    },
+  });
+}
