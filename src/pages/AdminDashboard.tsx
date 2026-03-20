@@ -343,9 +343,9 @@ function JournalTab() {
             <div key={idx} className="border border-border rounded-sm p-3 mb-2">
               <div className="flex items-start gap-2">
                 <div className="flex-1">
-                  <CmsImageUpload label={`Image ${idx + 1}`} folder="journal" value={img.image_url} onChange={(url) => updateImage(idx, "image_url", url)} />
+                  <CmsImageUpload label={`Image ${idx + 1}`} folder="journal" value={img.image_url} onChange={(url) => updateImage(idx, "image_url", url)} hint="Recommended: 800×800px (1:1) or 800×1000px (4:5)" />
                   <div className="mt-2">
-                    <CmsTextField label="Caption" value={img.caption} onChange={(v) => updateImage(idx, "caption", v)} />
+                    <CmsTextField label="Caption" value={img.caption} onChange={(v) => updateImage(idx, "caption", v)} hint="Max 120 chars" />
                   </div>
                 </div>
                 <button type="button" onClick={() => removeImage(idx)} className="text-muted-foreground hover:text-destructive mt-5">
