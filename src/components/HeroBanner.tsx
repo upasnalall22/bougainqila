@@ -6,7 +6,7 @@ const HeroBanner = () => {
   const { data: content } = useHomepageContent("hero");
 
   const title = content?.title || "There is beauty in the broken\nand magic in the slow.";
-  const subtitle = content?.subtitle || "Imperfectly Perfect";
+  // subtitle not used in UI
   const description = content?.description || "Handmade home decor born from a terrace garden. Each piece carries the warmth of slow craft and an organic spirit.";
   const buttonText = content?.button_text || "Shop Now";
   const buttonLink = content?.button_link || "/shop";

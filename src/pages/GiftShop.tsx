@@ -4,28 +4,23 @@ import Footer from "@/components/Footer";
 import NewsletterBar from "@/components/NewsletterBar";
 import ProductCard from "@/components/ProductCard";
 import { useProducts } from "@/hooks/useProducts";
+import { useHomepageContent } from "@/hooks/useCMS";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 
-const curatedSets = [
-  {
-    title: "The Housewarming Edit",
-    description: "A curated collection of handcrafted pieces to make any new house feel like home.",
-  },
-  {
-    title: "The Festive Edit",
-    description: "Celebrate the season with thoughtfully chosen decor that brings warmth and joy.",
-  },
-  {
-    title: "The Everyday Edit",
-    description: "Small touches of beauty for daily living — perfect for gifting just because.",
-  },
-];
-
 const GiftShop = () => {
   const { data: products, isLoading } = useProducts("gift-set");
+  const { data: set1 } = useHomepageContent("gift-set-1");
+  const { data: set2 } = useHomepageContent("gift-set-2");
+  const { data: set3 } = useHomepageContent("gift-set-3");
   const [form, setForm] = useState({ name: "", mobile: "", note: "" });
   const [submitted, setSubmitted] = useState(false);
+
+  const curatedSets = [
+    { title: set1?.title || "The Housewarming Edit", description: set1?.description || "A curated collection of handcrafted pieces to make any new house feel like home.", image: set1?.image_url },
+    { title: set2?.title || "The Festive Edit", description: set2?.description || "Celebrate the season with thoughtfully chosen decor that brings warmth and joy.", image: set2?.image_url },
+    { title: set3?.title || "The Everyday Edit", description: set3?.description || "Small touches of beauty for daily living — perfect for gifting just because.", image: set3?.image_url },
+  ];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -62,13 +57,17 @@ const GiftShop = () => {
           </p>
         </div>
 
-        {/* Curated Gift Sets - 3 image placeholders in a row */}
+        {/* Curated Gift Sets */}
         <section className="max-w-7xl mx-auto px-6 pb-16">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {curatedSets.map((set, i) => (
               <div key={i} className="text-center">
                 <div className="aspect-[4/5] bg-muted border border-border rounded-sm overflow-hidden mb-4 flex items-center justify-center">
-                  <span className="text-muted-foreground text-xs tracking-widest uppercase">Coming Soon</span>
+                  {set.image ? (
+                    <img src={set.image} alt={set.title} className="w-full h-full object-cover" loading="lazy" />
+                  ) : (
+                    <span className="text-muted-foreground text-xs tracking-widest uppercase">Coming Soon</span>
+                  )}
                 </div>
                 <h3
                   className="text-lg font-light text-foreground mb-1"
