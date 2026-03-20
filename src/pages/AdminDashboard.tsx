@@ -326,7 +326,7 @@ function JournalTab() {
           </div>
         </div>
         <div className="mb-4">
-          <CmsImageUpload label="Cover Image" folder="journal" value={form.cover_image_url} onChange={(url) => setForm({ ...form, cover_image_url: url })} />
+          <CmsImageUpload label="Cover Image" folder="journal" value={form.cover_image_url} onChange={(url) => setForm({ ...form, cover_image_url: url })} hint="Recommended: 1800×770px (21:9 wide)" />
         </div>
 
         {/* Additional images (up to 5) */}
