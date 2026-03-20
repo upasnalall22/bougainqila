@@ -6,6 +6,7 @@ import SEOHead from "@/components/SEOHead";
 import { useProducts } from "@/hooks/useProducts";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { ChevronDown } from "lucide-react";
 
 const filters = [
   { label: "All", value: "" },
@@ -16,9 +17,30 @@ const filters = [
   { label: "Gift Sets", value: "gift-set" },
 ];
 
+type SortOption = "newest" | "price-asc" | "price-desc" | "bestseller";
+
+const sortOptions: { label: string; value: SortOption }[] = [
+  { label: "Newest", value: "newest" },
+  { label: "Price: Low to High", value: "price-asc" },
+  { label: "Price: High to Low", value: "price-desc" },
+  { label: "Bestsellers", value: "bestseller" },
+];
+
 const ShopAll = () => {
   const [active, setActive] = useState("");
+  const [sort, setSort] = useState<SortOption>("newest");
+  const [sortOpen, setSortOpen] = useState(false);
   const { data: products, isLoading } = useProducts(active || undefined);
+
+  const sortedProducts = [...(products ?? [])].sort((a, b) => {
+    switch (sort) {
+      case "price-asc": return a.price - b.price;
+      case "price-desc": return b.price - a.price;
+      case "bestseller": return (b.best_seller ? 1 : 0) - (a.best_seller ? 1 : 0);
+      case "newest":
+      default: return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+    }
+  });
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -36,27 +58,56 @@ const ShopAll = () => {
           </h1>
         </div>
 
-        <div className="flex flex-wrap justify-center gap-3 mb-12">
-          {filters.map((f) => (
+        {/* Filters + Sort */}
+        <div className="flex flex-wrap items-center justify-between gap-4 mb-12">
+          <div className="flex flex-wrap gap-3">
+            {filters.map((f) => (
+              <button
+                key={f.value}
+                onClick={() => setActive(f.value)}
+                className={`text-[10px] tracking-[0.2em] uppercase px-4 py-2 rounded-sm border transition-colors ${
+                  active === f.value
+                    ? "bg-primary text-primary-foreground border-primary"
+                    : "border-border text-muted-foreground hover:text-foreground hover:border-foreground"
+                }`}
+              >
+                {f.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Sort Dropdown */}
+          <div className="relative">
             <button
-              key={f.value}
-              onClick={() => setActive(f.value)}
-              className={`text-[10px] tracking-[0.2em] uppercase px-4 py-2 rounded-sm border transition-colors ${
-                active === f.value
-                  ? "bg-primary text-primary-foreground border-primary"
-                  : "border-border text-muted-foreground hover:text-foreground hover:border-foreground"
-              }`}
+              onClick={() => setSortOpen(!sortOpen)}
+              className="text-[10px] tracking-[0.2em] uppercase px-4 py-2 rounded-sm border border-border text-muted-foreground hover:text-foreground hover:border-foreground transition-colors inline-flex items-center gap-1.5"
             >
-              {f.label}
+              Sort: {sortOptions.find((s) => s.value === sort)?.label}
+              <ChevronDown className={`w-3 h-3 transition-transform ${sortOpen ? "rotate-180" : ""}`} />
             </button>
-          ))}
+            {sortOpen && (
+              <div className="absolute right-0 top-full mt-1 bg-background border border-border rounded-sm shadow-lg z-20 min-w-[180px]">
+                {sortOptions.map((opt) => (
+                  <button
+                    key={opt.value}
+                    onClick={() => { setSort(opt.value); setSortOpen(false); }}
+                    className={`block w-full text-left px-4 py-2.5 text-xs tracking-wide transition-colors ${
+                      sort === opt.value ? "text-primary bg-muted" : "text-foreground/80 hover:bg-muted"
+                    }`}
+                  >
+                    {opt.label}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
         {isLoading ? (
           <p className="text-center text-muted-foreground">Loading products...</p>
-        ) : products && products.length > 0 ? (
+        ) : sortedProducts.length > 0 ? (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {products.map((product) => (
+            {sortedProducts.map((product) => (
               <Link key={product.id} to={`/product/${product.slug}`}>
                 <ProductCard
                   product={{
