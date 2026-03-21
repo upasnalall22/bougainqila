@@ -88,11 +88,14 @@ export type Database = {
           city: string | null
           created_at: string
           email: string | null
+          first_name: string | null
           id: string
+          last_name: string | null
           name: string
           notes: string | null
           phone: string
           pincode: string | null
+          salutation: string | null
           state: string | null
           updated_at: string
         }
@@ -101,11 +104,14 @@ export type Database = {
           city?: string | null
           created_at?: string
           email?: string | null
+          first_name?: string | null
           id?: string
+          last_name?: string | null
           name: string
           notes?: string | null
           phone: string
           pincode?: string | null
+          salutation?: string | null
           state?: string | null
           updated_at?: string
         }
@@ -114,11 +120,14 @@ export type Database = {
           city?: string | null
           created_at?: string
           email?: string | null
+          first_name?: string | null
           id?: string
+          last_name?: string | null
           name?: string
           notes?: string | null
           phone?: string
           pincode?: string | null
+          salutation?: string | null
           state?: string | null
           updated_at?: string
         }
@@ -126,37 +135,55 @@ export type Database = {
       }
       gift_enquiries: {
         Row: {
+          city: string | null
           contact_method: string | null
           created_at: string
           email: string
           enquiry_type: string
+          first_name: string | null
           full_name: string
           id: string
+          last_name: string | null
           message: string | null
           mobile: string
+          pincode: string | null
+          salutation: string | null
           service_type: string | null
+          state: string | null
         }
         Insert: {
+          city?: string | null
           contact_method?: string | null
           created_at?: string
           email: string
           enquiry_type?: string
+          first_name?: string | null
           full_name: string
           id?: string
+          last_name?: string | null
           message?: string | null
           mobile: string
+          pincode?: string | null
+          salutation?: string | null
           service_type?: string | null
+          state?: string | null
         }
         Update: {
+          city?: string | null
           contact_method?: string | null
           created_at?: string
           email?: string
           enquiry_type?: string
+          first_name?: string | null
           full_name?: string
           id?: string
+          last_name?: string | null
           message?: string | null
           mobile?: string
+          pincode?: string | null
+          salutation?: string | null
           service_type?: string | null
+          state?: string | null
         }
         Relationships: []
       }

@@ -4,18 +4,48 @@ import NewsletterBar from "@/components/NewsletterBar";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import CustomerFormFields, {
+  type CustomerFormData,
+  type CustomerFormErrors,
+  emptyCustomerForm,
+  validateCustomerForm,
+} from "@/components/CustomerFormFields";
 
 const Connect = () => {
-  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [customerForm, setCustomerForm] = useState<CustomerFormData>(emptyCustomerForm);
+  const [customerErrors, setCustomerErrors] = useState<CustomerFormErrors>({});
+  const [message, setMessage] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [sending, setSending] = useState(false);
 
+  const handleBlurValidate = (field: keyof CustomerFormErrors) => {
+    const allErrors = validateCustomerForm(customerForm);
+    setCustomerErrors((prev) => ({ ...prev, [field]: allErrors[field] }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const validationErrors = validateCustomerForm(customerForm);
+    setCustomerErrors(validationErrors);
+    if (Object.keys(validationErrors).length > 0) return;
+    if (!message.trim()) {
+      toast.error("Please enter a message");
+      return;
+    }
     setSending(true);
+
+    const fullName = [customerForm.salutation, customerForm.firstName, customerForm.lastName].filter(Boolean).join(" ");
+
     try {
       await supabase.functions.invoke("send-order-notification", {
-        body: { type: "query", ...form },
+        body: {
+          type: "query",
+          name: fullName,
+          email: customerForm.email,
+          phone: "+91" + customerForm.mobile.replace(/\s/g, ""),
+          city: customerForm.city,
+          message,
+        },
       });
     } catch {
       // non-blocking
@@ -41,33 +71,21 @@ const Connect = () => {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-5">
+            <CustomerFormFields
+              form={customerForm}
+              onChange={setCustomerForm}
+              errors={customerErrors}
+              onBlurValidate={handleBlurValidate}
+            />
             <div>
-              <label className="text-xs tracking-widest uppercase text-muted-foreground block mb-2">Name</label>
-              <input
-                type="text"
-                required
-                value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
-                className="w-full border border-border bg-background px-4 py-3 text-sm text-foreground rounded-sm focus:outline-none focus:ring-1 focus:ring-primary"
-              />
-            </div>
-            <div>
-              <label className="text-xs tracking-widest uppercase text-muted-foreground block mb-2">Email</label>
-              <input
-                type="email"
-                required
-                value={form.email}
-                onChange={(e) => setForm({ ...form, email: e.target.value })}
-                className="w-full border border-border bg-background px-4 py-3 text-sm text-foreground rounded-sm focus:outline-none focus:ring-1 focus:ring-primary"
-              />
-            </div>
-            <div>
-              <label className="text-xs tracking-widest uppercase text-muted-foreground block mb-2">Message</label>
+              <label className="text-xs tracking-widest uppercase text-muted-foreground block mb-2">Message *</label>
               <textarea
                 required
                 rows={5}
-                value={form.message}
-                onChange={(e) => setForm({ ...form, message: e.target.value })}
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                maxLength={1000}
+                placeholder="Tell us what's on your mind..."
                 className="w-full border border-border bg-background px-4 py-3 text-sm text-foreground rounded-sm focus:outline-none focus:ring-1 focus:ring-primary resize-none"
               />
             </div>
