@@ -127,30 +127,26 @@ const Checkout = () => {
       const { error: itemsErr } = await supabase.from("order_items").insert(orderItems);
       if (itemsErr) throw new Error("Could not save order items");
 
-      // 4. Send notification email
-      try {
-        await supabase.functions.invoke("send-order-notification", {
-          body: {
-            type: "order",
-            order_number: order.order_number,
-            customer_name: form.name,
-            customer_email: form.email,
-            customer_phone: form.phone,
-            shipping_address: shippingAddress,
-            payment_method: "upi",
-            items: items.map((i) => ({
-              name: i.product.name,
-              quantity: i.quantity,
-              price: i.product.price,
-            })),
-            subtotal,
-            shipping,
-            total,
-          },
-        });
-      } catch {
-        // Non-blocking
-      }
+      // 4. Send notification email (non-blocking, never throw)
+      supabase.functions.invoke("send-order-notification", {
+        body: {
+          type: "order",
+          order_number: order.order_number,
+          customer_name: form.name,
+          customer_email: form.email,
+          customer_phone: form.phone,
+          shipping_address: shippingAddress,
+          payment_method: "upi",
+          items: items.map((i) => ({
+            name: i.product.name,
+            quantity: i.quantity,
+            price: i.product.price,
+          })),
+          subtotal,
+          shipping,
+          total,
+        },
+      }).catch(() => {});
 
       // 5. Clear cart & redirect to thank you page
       await clearCart();
