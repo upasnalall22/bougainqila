@@ -22,7 +22,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
   const wishlisted = isWishlisted(product.id);
 
   return (
-    <div className="group">
+    <div className="group flex flex-col h-full">
       {/* Image */}
       <div className="relative aspect-square rounded-sm overflow-hidden bg-muted mb-3">
         <img
@@ -56,7 +56,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
       {/* Button */}
       <button
         onClick={(e) => { e.preventDefault(); addToCart(product.id); }}
-        className="w-full border border-border text-foreground text-[10px] tracking-[0.1em] uppercase py-2.5 rounded-sm hover:bg-muted transition-colors"
+        className="w-full mt-auto border border-border text-foreground text-[10px] tracking-[0.1em] uppercase py-2.5 rounded-sm hover:bg-muted transition-colors"
       >
         Add to Cart
       </button>
