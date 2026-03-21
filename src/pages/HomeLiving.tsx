@@ -54,20 +54,22 @@ const HomeLiving = () => {
           }
         </div>
 
-        <div className="flex flex-wrap justify-center gap-3 mb-12">
-          {subCategories.map((sub) =>
-          <Link
-            key={sub.slug}
-            to={sub.slug ? `/home-living/${sub.slug}` : "/home-living"}
-            className={`text-[10px] tracking-[0.2em] uppercase px-4 py-2 rounded-sm border transition-colors ${
-            activeLabel === sub.label ?
-            "bg-primary text-primary-foreground border-primary" :
-            "border-border text-muted-foreground hover:text-foreground hover:border-foreground"}`
-            }>
-            
-              {sub.label}
-            </Link>
-          )}
+        <div className="flex flex-wrap items-center justify-between gap-4 mb-12">
+          <div className="flex flex-wrap gap-3">
+            {subCategories.map((sub) =>
+            <Link
+              key={sub.slug}
+              to={sub.slug ? `/home-living/${sub.slug}` : "/home-living"}
+              className={`text-[10px] tracking-[0.2em] uppercase px-4 py-2 rounded-sm border transition-colors ${
+              activeLabel === sub.label ?
+              "bg-primary text-primary-foreground border-primary" :
+              "border-border text-muted-foreground hover:text-foreground hover:border-foreground"}`
+              }>
+                {sub.label}
+              </Link>
+            )}
+          </div>
+          <SortDropdown sort={sort} onSortChange={setSort} />
         </div>
 
         {isLoading ?
