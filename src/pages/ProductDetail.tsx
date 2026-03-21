@@ -34,6 +34,15 @@ const ProductDetail = () => {
   const [askOpen, setAskOpen] = useState(false);
   const [isZoomed, setIsZoomed] = useState(false);
   const [zoomPos, setZoomPos] = useState({ x: 50, y: 50 });
+
+  // Fire view_item (GA4) + ViewContent (Meta Pixel) once per product
+  useEffect(() => {
+    if (!product) return;
+    const payload = { id: product.id, name: product.name, category: product.category, price: product.price };
+    trackViewItem(payload);
+    trackMetaViewContent(payload);
+  }, [product?.id]);
+
   const imageContainerRef = useRef<HTMLDivElement>(null);
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
