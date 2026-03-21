@@ -74,7 +74,7 @@ const HomeLiving = () => {
 
         {isLoading ?
         <p className="text-center text-muted-foreground">Loading products...</p> :
-        products && products.length > 0 ?
+        products.length > 0 ?
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {products.map((product) =>
           <Link key={product.id} to={`/product/${product.slug}`}>
