@@ -25,6 +25,7 @@ import Terms from "./pages/Terms.tsx";
 import ProductDetail from "./pages/ProductDetail.tsx";
 import Checkout from "./pages/Checkout.tsx";
 import ThankYou from "./pages/ThankYou.tsx";
+import Cart from "./pages/Cart.tsx";
 import AdminProducts from "./pages/AdminProducts.tsx";
 import AdminDashboard from "./pages/AdminDashboard.tsx";
 import AdminOrders from "./pages/AdminOrders.tsx";
@@ -60,6 +61,7 @@ const App = () => (
                 <Route path="/terms" element={<Terms />} />
                 <Route path="/product/:slug" element={<ProductDetail />} />
                 <Route path="/checkout" element={<Checkout />} />
+                <Route path="/cart" element={<Cart />} />
                 <Route path="/thank-you" element={<ThankYou />} />
                 <Route path="/admin/login" element={<AdminLogin />} />
                 <Route path="/admin/products" element={<AdminRoute><AdminProducts /></AdminRoute>} />
