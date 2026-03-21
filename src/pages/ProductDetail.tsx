@@ -8,6 +8,7 @@ import ProductCard from "@/components/ProductCard";
 import SEOHead from "@/components/SEOHead";
 import { useProduct, useRelatedProducts } from "@/hooks/useProducts";
 import { useCart } from "@/hooks/useCart";
+import { trackViewItem, trackMetaViewContent } from "@/lib/analytics";
 
 const trustBadges = [
 { icon: Truck, label: "Hassle-free Shipping" },
