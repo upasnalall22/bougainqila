@@ -124,6 +124,42 @@ export type Database = {
         }
         Relationships: []
       }
+      gift_enquiries: {
+        Row: {
+          contact_method: string | null
+          created_at: string
+          email: string
+          enquiry_type: string
+          full_name: string
+          id: string
+          message: string | null
+          mobile: string
+          service_type: string | null
+        }
+        Insert: {
+          contact_method?: string | null
+          created_at?: string
+          email: string
+          enquiry_type?: string
+          full_name: string
+          id?: string
+          message?: string | null
+          mobile: string
+          service_type?: string | null
+        }
+        Update: {
+          contact_method?: string | null
+          created_at?: string
+          email?: string
+          enquiry_type?: string
+          full_name?: string
+          id?: string
+          message?: string | null
+          mobile?: string
+          service_type?: string | null
+        }
+        Relationships: []
+      }
       hero_banners: {
         Row: {
           button_link: string | null
@@ -427,6 +463,7 @@ export type Database = {
           payment_status: string | null
           shipping_address: string | null
           shipping_cost: number
+          shipping_fee: number
           status: Database["public"]["Enums"]["order_status"]
           subtotal: number
           total: number
@@ -443,6 +480,7 @@ export type Database = {
           payment_status?: string | null
           shipping_address?: string | null
           shipping_cost?: number
+          shipping_fee?: number
           status?: Database["public"]["Enums"]["order_status"]
           subtotal?: number
           total?: number
@@ -459,6 +497,7 @@ export type Database = {
           payment_status?: string | null
           shipping_address?: string | null
           shipping_cost?: number
+          shipping_fee?: number
           status?: Database["public"]["Enums"]["order_status"]
           subtotal?: number
           total?: number
