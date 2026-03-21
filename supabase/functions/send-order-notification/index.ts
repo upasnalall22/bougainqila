@@ -103,8 +103,8 @@ serve(async (req) => {
   } catch (err) {
     console.error("Notification error:", err);
     return new Response(
-      JSON.stringify({ error: "Internal error" }),
-      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      JSON.stringify({ success: false, warning: "Internal error" }),
+      { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }
 });
