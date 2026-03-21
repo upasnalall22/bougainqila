@@ -54,17 +54,17 @@ const ProductCard = ({ product }: ProductCardProps) => {
       </p>
 
       {/* Buttons */}
-      <div className="flex gap-2">
+      <div className="flex gap-1.5">
         <button
           onClick={(e) => { e.preventDefault(); addToCart(product.id); }}
-          className="flex-1 border border-border text-foreground text-[10px] tracking-[0.1em] uppercase py-2 rounded-sm hover:bg-muted transition-colors"
+          className="flex-1 min-w-0 border border-border text-foreground text-[9px] sm:text-[10px] tracking-[0.05em] sm:tracking-[0.1em] uppercase py-2 px-1 rounded-sm hover:bg-muted transition-colors whitespace-nowrap"
         >
           Add to Cart
         </button>
         <a
           href={`/checkout?buy=${product.id}`}
           onClick={(e) => { e.preventDefault(); addToCart(product.id); window.location.href = "/checkout"; }}
-          className="flex-1 bg-primary text-primary-foreground text-[10px] tracking-[0.1em] uppercase py-2 rounded-sm hover:opacity-90 transition-opacity text-center"
+          className="flex-1 min-w-0 bg-primary text-primary-foreground text-[9px] sm:text-[10px] tracking-[0.05em] sm:tracking-[0.1em] uppercase py-2 px-1 rounded-sm hover:opacity-90 transition-opacity text-center whitespace-nowrap"
         >
           Buy Now
         </a>
