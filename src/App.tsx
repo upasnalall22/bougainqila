@@ -10,6 +10,7 @@ import { AuthProvider } from "@/hooks/useAuth";
 import CartDrawer from "@/components/CartDrawer";
 import CookieConsent from "@/components/CookieConsent";
 import AdminRoute from "@/components/AdminRoute";
+import ScrollToTop from "@/components/ScrollToTop";
 import Index from "./pages/Index.tsx";
 import ShopAll from "./pages/ShopAll.tsx";
 import HomeLiving from "./pages/HomeLiving.tsx";
