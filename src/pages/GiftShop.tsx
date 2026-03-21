@@ -3,6 +3,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import NewsletterBar from "@/components/NewsletterBar";
 import ProductCard from "@/components/ProductCard";
+import SortDropdown, { sortProducts, type SortOption } from "@/components/SortDropdown";
 import { useProducts } from "@/hooks/useProducts";
 import { useHomepageContent } from "@/hooks/useCMS";
 import { Link } from "react-router-dom";
@@ -15,6 +16,9 @@ const GiftShop = () => {
   const { data: set3 } = useHomepageContent("gift-set-3");
   const [form, setForm] = useState({ name: "", mobile: "", note: "" });
   const [submitted, setSubmitted] = useState(false);
+  const [sort, setSort] = useState<SortOption>("newest");
+
+  const sortedProducts = products ? sortProducts(products, sort) : [];
 
   const curatedSets = [
     { title: set1?.title || "The Housewarming Edit", description: set1?.description || "A curated collection of handcrafted pieces to make any new house feel like home.", image: set1?.image_url },
@@ -25,11 +29,9 @@ const GiftShop = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.name.trim() || !form.mobile.trim()) return;
-
     const sanitizedMobile = form.mobile.replace(/[^0-9+\- ]/g, "").slice(0, 15);
     const sanitizedName = form.name.trim().slice(0, 100);
     const sanitizedNote = form.note.trim().slice(0, 500);
-
     try {
       await supabase.from("customers").insert({
         name: sanitizedName,
@@ -69,15 +71,10 @@ const GiftShop = () => {
                     <span className="text-muted-foreground text-xs tracking-widest uppercase">Coming Soon</span>
                   )}
                 </div>
-                <h3
-                  className="text-lg font-light text-foreground mb-1"
-                  style={{ fontFamily: "'Cormorant Garamond', serif" }}
-                >
+                <h3 className="text-lg font-light text-foreground mb-1" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
                   {set.title}
                 </h3>
-                <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2">
-                  {set.description}
-                </p>
+                <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2">{set.description}</p>
               </div>
             ))}
           </div>
@@ -86,50 +83,20 @@ const GiftShop = () => {
         {/* Contact Form */}
         <section className="bg-muted py-12 md:py-16">
           <div className="max-w-md mx-auto px-6">
-            <h2
-              className="text-xl md:text-2xl font-light text-foreground text-center mb-2 italic"
-              style={{ fontFamily: "'Cormorant Garamond', serif" }}
-            >
+            <h2 className="text-xl md:text-2xl font-light text-foreground text-center mb-2 italic" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
               Let's curate your gift
             </h2>
             <p className="text-xs text-muted-foreground tracking-wide text-center mb-8">
               Share your details and we'll get in touch to help create the perfect gift.
             </p>
-
             {submitted ? (
               <p className="text-sm text-primary text-center">Thank you! We'll be in touch soon.</p>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
-                <input
-                  type="text"
-                  required
-                  maxLength={100}
-                  value={form.name}
-                  onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
-                  placeholder="Your name"
-                  className="w-full border border-border bg-background px-4 py-2.5 text-sm text-foreground rounded-sm focus:outline-none focus:ring-1 focus:ring-primary"
-                />
-                <input
-                  type="tel"
-                  required
-                  maxLength={15}
-                  value={form.mobile}
-                  onChange={(e) => setForm((f) => ({ ...f, mobile: e.target.value }))}
-                  placeholder="Mobile number"
-                  className="w-full border border-border bg-background px-4 py-2.5 text-sm text-foreground rounded-sm focus:outline-none focus:ring-1 focus:ring-primary"
-                />
-                <textarea
-                  maxLength={500}
-                  rows={3}
-                  value={form.note}
-                  onChange={(e) => setForm((f) => ({ ...f, note: e.target.value }))}
-                  placeholder="A note about what you're looking for (optional)"
-                  className="w-full border border-border bg-background px-4 py-2.5 text-sm text-foreground rounded-sm focus:outline-none focus:ring-1 focus:ring-primary resize-none"
-                />
-                <button
-                  type="submit"
-                  className="w-full bg-primary text-primary-foreground py-2.5 text-xs tracking-[0.15em] uppercase hover:opacity-90 transition-opacity rounded-sm"
-                >
+                <input type="text" required maxLength={100} value={form.name} onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))} placeholder="Your name" className="w-full border border-border bg-background px-4 py-2.5 text-sm text-foreground rounded-sm focus:outline-none focus:ring-1 focus:ring-primary" />
+                <input type="tel" required maxLength={15} value={form.mobile} onChange={(e) => setForm((f) => ({ ...f, mobile: e.target.value }))} placeholder="Mobile number" className="w-full border border-border bg-background px-4 py-2.5 text-sm text-foreground rounded-sm focus:outline-none focus:ring-1 focus:ring-primary" />
+                <textarea maxLength={500} rows={3} value={form.note} onChange={(e) => setForm((f) => ({ ...f, note: e.target.value }))} placeholder="A note about what you're looking for (optional)" className="w-full border border-border bg-background px-4 py-2.5 text-sm text-foreground rounded-sm focus:outline-none focus:ring-1 focus:ring-primary resize-none" />
+                <button type="submit" className="w-full bg-primary text-primary-foreground py-2.5 text-xs tracking-[0.15em] uppercase hover:opacity-90 transition-opacity rounded-sm">
                   Connect with Us
                 </button>
               </form>
@@ -142,16 +109,16 @@ const GiftShop = () => {
           <div className="max-w-7xl mx-auto px-6 py-16">
             <p className="text-center text-muted-foreground">Loading products...</p>
           </div>
-        ) : products && products.length > 0 ? (
+        ) : sortedProducts.length > 0 ? (
           <div className="max-w-7xl mx-auto px-6 py-16">
-            <h2
-              className="text-xl md:text-2xl font-light text-foreground text-center mb-10"
-              style={{ fontFamily: "'Cormorant Garamond', serif" }}
-            >
-              Gift Sets
-            </h2>
+            <div className="flex items-center justify-between mb-10">
+              <h2 className="text-xl md:text-2xl font-light text-foreground" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
+                Gift Sets
+              </h2>
+              <SortDropdown sort={sort} onSortChange={setSort} />
+            </div>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {products.map((product) => (
+              {sortedProducts.map((product) => (
                 <Link key={product.id} to={`/product/${product.slug}`}>
                   <ProductCard
                     product={{
