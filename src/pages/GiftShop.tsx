@@ -8,15 +8,35 @@ import { useProducts } from "@/hooks/useProducts";
 import { useHomepageContent } from "@/hooks/useCMS";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
+
+const INDIAN_STATES = [
+  "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh",
+  "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka",
+  "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram",
+  "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu",
+  "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal",
+  "Delhi", "Jammu & Kashmir", "Ladakh", "Chandigarh", "Puducherry",
+];
 
 const GiftShop = () => {
   const { data: products, isLoading } = useProducts("gift-set");
   const { data: set1 } = useHomepageContent("gift-set-1");
   const { data: set2 } = useHomepageContent("gift-set-2");
   const { data: set3 } = useHomepageContent("gift-set-3");
-  const [form, setForm] = useState({ name: "", mobile: "", note: "" });
-  const [submitted, setSubmitted] = useState(false);
   const [sort, setSort] = useState<SortOption>("newest");
+  const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
+
+  const [form, setForm] = useState({
+    fullName: "",
+    email: "",
+    mobile: "",
+    enquiryType: "enquire" as "enquire" | "appointment",
+    serviceType: "",
+    contactMethod: "",
+    message: "",
+  });
 
   const sortedProducts = products ? sortProducts(products, sort) : [];
 
@@ -28,20 +48,41 @@ const GiftShop = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.name.trim() || !form.mobile.trim()) return;
-    const sanitizedMobile = form.mobile.replace(/[^0-9+\- ]/g, "").slice(0, 15);
-    const sanitizedName = form.name.trim().slice(0, 100);
-    const sanitizedNote = form.note.trim().slice(0, 500);
+    if (!form.fullName.trim() || !form.email.trim() || !form.mobile.trim()) return;
+    setSending(true);
+
     try {
-      await supabase.from("customers").insert({
-        name: sanitizedName,
-        phone: sanitizedMobile,
-        notes: sanitizedNote || null,
+      await supabase.from("gift_enquiries").insert({
+        full_name: form.fullName.trim().slice(0, 100),
+        email: form.email.trim().slice(0, 255),
+        mobile: form.mobile.replace(/[^0-9+\- ]/g, "").slice(0, 15),
+        enquiry_type: form.enquiryType,
+        service_type: form.serviceType || null,
+        contact_method: form.contactMethod || null,
+        message: form.message.trim().slice(0, 1000) || null,
       });
+
+      // Also send notification
+      try {
+        await supabase.functions.invoke("send-order-notification", {
+          body: {
+            type: "query",
+            name: form.fullName,
+            email: form.email,
+            message: `[Gift Enquiry - ${form.enquiryType}] Service: ${form.serviceType || "N/A"}, Contact: ${form.contactMethod || "N/A"}, Message: ${form.message || "N/A"}`,
+          },
+        });
+      } catch {
+        // non-blocking
+      }
+
+      toast.success("Thank you! We'll be in touch soon.");
+      setSubmitted(true);
     } catch {
-      // non-blocking
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setSending(false);
     }
-    setSubmitted(true);
   };
 
   return (
@@ -80,24 +121,151 @@ const GiftShop = () => {
           </div>
         </section>
 
-        {/* Contact Form */}
+        {/* Contact Form - India focused */}
         <section className="bg-muted py-12 md:py-16">
-          <div className="max-w-md mx-auto px-6">
+          <div className="max-w-lg mx-auto px-6">
             <h2 className="text-xl md:text-2xl font-light text-foreground text-center mb-2 italic" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
-              Let's curate your gift
+              Let's Connect
             </h2>
             <p className="text-xs text-muted-foreground tracking-wide text-center mb-8">
-              Share your details and we'll get in touch to help create the perfect gift.
+              Need assistance? Our team is here for you. Available across India.
             </p>
+
             {submitted ? (
-              <p className="text-sm text-primary text-center">Thank you! We'll be in touch soon.</p>
+              <div className="text-center py-8">
+                <p className="text-sm text-primary mb-2">Thank you for reaching out!</p>
+                <p className="text-xs text-muted-foreground">We'll get back to you shortly.</p>
+              </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
-                <input type="text" required maxLength={100} value={form.name} onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))} placeholder="Your name" className="w-full border border-border bg-background px-4 py-2.5 text-sm text-foreground rounded-sm focus:outline-none focus:ring-1 focus:ring-primary" />
-                <input type="tel" required maxLength={15} value={form.mobile} onChange={(e) => setForm((f) => ({ ...f, mobile: e.target.value }))} placeholder="Mobile number" className="w-full border border-border bg-background px-4 py-2.5 text-sm text-foreground rounded-sm focus:outline-none focus:ring-1 focus:ring-primary" />
-                <textarea maxLength={500} rows={3} value={form.note} onChange={(e) => setForm((f) => ({ ...f, note: e.target.value }))} placeholder="A note about what you're looking for (optional)" className="w-full border border-border bg-background px-4 py-2.5 text-sm text-foreground rounded-sm focus:outline-none focus:ring-1 focus:ring-primary resize-none" />
-                <button type="submit" className="w-full bg-primary text-primary-foreground py-2.5 text-xs tracking-[0.15em] uppercase hover:opacity-90 transition-opacity rounded-sm">
-                  Connect with Us
+                {/* Full Name */}
+                <div>
+                  <label className="text-xs tracking-widest uppercase text-muted-foreground block mb-1">Full Name</label>
+                  <input
+                    type="text"
+                    required
+                    maxLength={100}
+                    value={form.fullName}
+                    onChange={(e) => setForm((f) => ({ ...f, fullName: e.target.value }))}
+                    placeholder="Enter your full name"
+                    className="w-full border border-border bg-background px-4 py-2.5 text-sm text-foreground rounded-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                  />
+                </div>
+
+                {/* Email */}
+                <div>
+                  <label className="text-xs tracking-widest uppercase text-muted-foreground block mb-1">Email ID</label>
+                  <input
+                    type="email"
+                    required
+                    maxLength={255}
+                    value={form.email}
+                    onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
+                    placeholder="Enter your email"
+                    className="w-full border border-border bg-background px-4 py-2.5 text-sm text-foreground rounded-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                  />
+                </div>
+
+                {/* Mobile with India prefix */}
+                <div>
+                  <label className="text-xs tracking-widest uppercase text-muted-foreground block mb-1">Mobile Number</label>
+                  <div className="flex gap-2">
+                    <div className="border border-border bg-background px-3 py-2.5 text-sm text-muted-foreground rounded-sm flex items-center gap-1 flex-shrink-0">
+                      <span>🇮🇳</span>
+                      <span>+91</span>
+                    </div>
+                    <input
+                      type="tel"
+                      required
+                      maxLength={10}
+                      pattern="[0-9]{10}"
+                      value={form.mobile}
+                      onChange={(e) => setForm((f) => ({ ...f, mobile: e.target.value.replace(/\D/g, "").slice(0, 10) }))}
+                      placeholder="10-digit mobile number"
+                      className="w-full border border-border bg-background px-4 py-2.5 text-sm text-foreground rounded-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                    />
+                  </div>
+                </div>
+
+                {/* Enquiry Type */}
+                <div>
+                  <label className="text-xs tracking-widest uppercase text-muted-foreground block mb-2">I'd like to</label>
+                  <div className="flex gap-4">
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="enquiryType"
+                        value="enquire"
+                        checked={form.enquiryType === "enquire"}
+                        onChange={() => setForm((f) => ({ ...f, enquiryType: "enquire" }))}
+                        className="accent-primary"
+                      />
+                      <span className="text-sm text-foreground">Enquire</span>
+                    </label>
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="enquiryType"
+                        value="appointment"
+                        checked={form.enquiryType === "appointment"}
+                        onChange={() => setForm((f) => ({ ...f, enquiryType: "appointment" }))}
+                        className="accent-primary"
+                      />
+                      <span className="text-sm text-foreground">Book a Consultation</span>
+                    </label>
+                  </div>
+                </div>
+
+                {/* Service Type */}
+                <div>
+                  <label className="text-xs tracking-widest uppercase text-muted-foreground block mb-1">Select Service</label>
+                  <select
+                    value={form.serviceType}
+                    onChange={(e) => setForm((f) => ({ ...f, serviceType: e.target.value }))}
+                    className="w-full border border-border bg-background px-4 py-2.5 text-sm text-foreground rounded-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                  >
+                    <option value="">Select Service</option>
+                    <option value="gifting">Gifting Consultation</option>
+                    <option value="bulk">Bulk / Corporate Orders</option>
+                    <option value="custom">Custom Curation</option>
+                    <option value="general">General Enquiry</option>
+                  </select>
+                </div>
+
+                {/* Preferred Contact Method */}
+                <div>
+                  <label className="text-xs tracking-widest uppercase text-muted-foreground block mb-1">Preferred Contact Method</label>
+                  <select
+                    value={form.contactMethod}
+                    onChange={(e) => setForm((f) => ({ ...f, contactMethod: e.target.value }))}
+                    className="w-full border border-border bg-background px-4 py-2.5 text-sm text-foreground rounded-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                  >
+                    <option value="">Select a method</option>
+                    <option value="email">Email</option>
+                    <option value="call">Call</option>
+                    <option value="whatsapp">WhatsApp</option>
+                  </select>
+                </div>
+
+                {/* Message */}
+                <div>
+                  <label className="text-xs tracking-widest uppercase text-muted-foreground block mb-1">Message</label>
+                  <textarea
+                    maxLength={1000}
+                    rows={4}
+                    value={form.message}
+                    onChange={(e) => setForm((f) => ({ ...f, message: e.target.value }))}
+                    placeholder="Tell us what you're looking for..."
+                    className="w-full border border-border bg-background px-4 py-2.5 text-sm text-foreground rounded-sm focus:outline-none focus:ring-1 focus:ring-primary resize-none"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={sending}
+                  className="w-full bg-primary text-primary-foreground py-3 text-xs tracking-[0.15em] uppercase hover:opacity-90 transition-opacity rounded-sm disabled:opacity-50"
+                >
+                  {sending ? "Submitting..." : "Submit"}
                 </button>
               </form>
             )}

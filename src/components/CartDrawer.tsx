@@ -5,6 +5,9 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useRef, useState, useEffect } from "react";
 
+const FREE_SHIPPING_THRESHOLD = 800;
+const SHIPPING_COST = 100;
+
 function RecommendationStrip({ cartProductIds }: { cartProductIds: string[] }) {
   const { addToCart } = useCart();
   const { data: recommendations } = useQuery({
@@ -20,7 +23,6 @@ function RecommendationStrip({ cartProductIds }: { cartProductIds: string[] }) {
 
       const { data, error } = await query;
       if (error) throw error;
-      // filter out items already in cart, take top 5
       return (data || [])
         .filter((p: any) => !cartProductIds.includes(p.id))
         .slice(0, 5)
@@ -165,8 +167,9 @@ function CartItemRow({ item }: { item: CartItem }) {
 
 const CartDrawer = () => {
   const { items, isOpen, closeCart, subtotal } = useCart();
-  const shipping = 0; // calculated later at checkout
   const cartProductIds = items.map((i) => i.product_id);
+  const shipping = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_COST;
+  const displayTotal = subtotal + shipping;
 
   if (!isOpen) return null;
 
@@ -226,11 +229,22 @@ const CartDrawer = () => {
             </div>
             <div className="flex justify-between text-sm mb-1">
               <span className="text-muted-foreground">Shipping</span>
-              <span className="text-foreground text-xs">Calculated at checkout</span>
+              <span className="text-foreground text-xs">
+                {shipping === 0 ? (
+                  <span className="text-green-600">Free</span>
+                ) : (
+                  `₹${shipping}`
+                )}
+              </span>
             </div>
+            {shipping > 0 && (
+              <p className="text-[10px] text-muted-foreground mb-1">
+                Free shipping on orders ₹{FREE_SHIPPING_THRESHOLD}+
+              </p>
+            )}
             <div className="flex justify-between text-sm font-medium mt-2 pt-2 border-t border-border">
               <span className="text-foreground">Total</span>
-              <span className="text-foreground">₹{subtotal.toLocaleString("en-IN")}.00</span>
+              <span className="text-foreground">₹{displayTotal.toLocaleString("en-IN")}.00</span>
             </div>
 
             <div className="flex gap-3 mt-4">

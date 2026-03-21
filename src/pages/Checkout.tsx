@@ -5,10 +5,10 @@ import Footer from "@/components/Footer";
 import { useCart } from "@/hooks/useCart";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Loader2, CheckCircle2, Copy } from "lucide-react";
+import { Loader2, Copy } from "lucide-react";
 
-const SHIPPING_COST = 99;
-const FREE_SHIPPING_THRESHOLD = 1499;
+const SHIPPING_COST = 100;
+const FREE_SHIPPING_THRESHOLD = 800;
 
 const UPI_ID = "kavely@upi"; // Replace with actual UPI ID
 
@@ -36,9 +36,7 @@ const Checkout = () => {
   const { items, subtotal, clearCart } = useCart();
   const navigate = useNavigate();
   const [form, setForm] = useState<ShippingForm>(emptyForm);
-  const [paymentMethod, setPaymentMethod] = useState<"cod" | "upi">("cod");
   const [placing, setPlacing] = useState(false);
-  const [orderPlaced, setOrderPlaced] = useState<string | null>(null);
   const [upiCopied, setUpiCopied] = useState(false);
 
   const shipping = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_COST;
@@ -96,7 +94,7 @@ const Checkout = () => {
         customerId = newCustomer.id;
       }
 
-      // 2. Create order
+      // 2. Create order (UPI only)
       const shippingAddress = `${form.address}, ${form.city}, ${form.state} - ${form.pincode}`;
       const { data: order, error: orderErr } = await supabase
         .from("orders")
@@ -104,9 +102,10 @@ const Checkout = () => {
           customer_id: customerId,
           subtotal,
           shipping_cost: shipping,
+          shipping_fee: shipping,
           total,
-          payment_method: paymentMethod,
-          payment_status: paymentMethod === "cod" ? "unpaid" : "pending",
+          payment_method: "upi",
+          payment_status: "pending",
           shipping_address: shippingAddress,
           notes: `Customer: ${form.name}, Phone: ${form.phone}, Email: ${form.email}`,
         })
@@ -138,7 +137,7 @@ const Checkout = () => {
             customer_email: form.email,
             customer_phone: form.phone,
             shipping_address: shippingAddress,
-            payment_method: paymentMethod,
+            payment_method: "upi",
             items: items.map((i) => ({
               name: i.product.name,
               quantity: i.quantity,
@@ -150,57 +149,18 @@ const Checkout = () => {
           },
         });
       } catch {
-        // Non-blocking — order still placed
+        // Non-blocking
       }
 
-      // 5. Clear cart
+      // 5. Clear cart & redirect to thank you page
       await clearCart();
-      setOrderPlaced(order.order_number);
+      navigate(`/thank-you?order=${encodeURIComponent(order.order_number)}&total=${total}&shipping=${shipping}&items=${items.length}`);
     } catch (err: any) {
       toast.error(err.message || "Failed to place order");
     } finally {
       setPlacing(false);
     }
   };
-
-  if (orderPlaced) {
-    return (
-      <div className="min-h-screen flex flex-col">
-        <Navbar />
-        <main className="flex-1 flex items-center justify-center px-6 py-20">
-          <div className="text-center max-w-md">
-            <CheckCircle2 className="w-16 h-16 text-green-600 mx-auto mb-4" />
-            <h1
-              className="text-2xl md:text-3xl font-light text-foreground mb-2"
-              style={{ fontFamily: "'Cormorant Garamond', serif" }}
-            >
-              Order Placed!
-            </h1>
-            <p className="text-muted-foreground text-sm mb-2">
-              Your order <span className="font-medium text-foreground">{orderPlaced}</span> has been placed successfully.
-            </p>
-            {paymentMethod === "upi" && (
-              <p className="text-muted-foreground text-xs mb-4">
-                Please complete your UPI payment to <span className="font-medium">{UPI_ID}</span> for ₹{total.toLocaleString("en-IN")}.
-              </p>
-            )}
-            {paymentMethod === "cod" && (
-              <p className="text-muted-foreground text-xs mb-4">
-                Pay ₹{total.toLocaleString("en-IN")} at the time of delivery.
-              </p>
-            )}
-            <button
-              onClick={() => navigate("/shop")}
-              className="bg-primary text-primary-foreground px-8 py-3 text-xs tracking-widest uppercase hover:opacity-90 transition-opacity rounded-sm"
-            >
-              Continue Shopping
-            </button>
-          </div>
-        </main>
-        <Footer />
-      </div>
-    );
-  }
 
   if (items.length === 0) {
     return (
@@ -290,63 +250,27 @@ const Checkout = () => {
               </div>
             </div>
 
-            {/* Payment */}
+            {/* Payment - UPI Only */}
             <div>
               <h2 className="text-sm tracking-[0.2em] uppercase text-foreground mb-4">Payment Method</h2>
-              <div className="space-y-2">
-                <label
-                  className={`flex items-center gap-3 border rounded-sm px-4 py-3 cursor-pointer transition-colors ${
-                    paymentMethod === "cod" ? "border-primary bg-primary/5" : "border-border"
-                  }`}
-                >
-                  <input
-                    type="radio"
-                    name="payment"
-                    value="cod"
-                    checked={paymentMethod === "cod"}
-                    onChange={() => setPaymentMethod("cod")}
-                    className="accent-primary"
-                  />
-                  <div>
-                    <p className="text-sm text-foreground">Cash on Delivery</p>
-                    <p className="text-xs text-muted-foreground">Pay when you receive your order</p>
-                  </div>
-                </label>
-                <label
-                  className={`flex items-center gap-3 border rounded-sm px-4 py-3 cursor-pointer transition-colors ${
-                    paymentMethod === "upi" ? "border-primary bg-primary/5" : "border-border"
-                  }`}
-                >
-                  <input
-                    type="radio"
-                    name="payment"
-                    value="upi"
-                    checked={paymentMethod === "upi"}
-                    onChange={() => setPaymentMethod("upi")}
-                    className="accent-primary"
-                  />
-                  <div>
-                    <p className="text-sm text-foreground">UPI Payment</p>
-                    <p className="text-xs text-muted-foreground">Pay via Google Pay, PhonePe, Paytm, etc.</p>
-                  </div>
-                </label>
+              <div className="border border-primary bg-primary/5 rounded-sm px-4 py-3">
+                <p className="text-sm text-foreground font-medium">UPI Payment</p>
+                <p className="text-xs text-muted-foreground">Pay via Google Pay, PhonePe, Paytm, etc.</p>
               </div>
 
-              {paymentMethod === "upi" && (
-                <div className="mt-3 border border-border rounded-sm p-4 bg-card">
-                  <p className="text-xs text-muted-foreground mb-2">Send payment to this UPI ID:</p>
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-medium text-foreground">{UPI_ID}</span>
-                    <button type="button" onClick={copyUPI} className="text-primary hover:opacity-70">
-                      <Copy className="w-4 h-4" />
-                    </button>
-                    {upiCopied && <span className="text-xs text-green-600">Copied!</span>}
-                  </div>
-                  <p className="text-xs text-muted-foreground mt-2">
-                    Amount: <span className="font-medium text-foreground">₹{total.toLocaleString("en-IN")}</span>
-                  </p>
+              <div className="mt-3 border border-border rounded-sm p-4 bg-card">
+                <p className="text-xs text-muted-foreground mb-2">Send payment to this UPI ID:</p>
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-medium text-foreground">{UPI_ID}</span>
+                  <button type="button" onClick={copyUPI} className="text-primary hover:opacity-70">
+                    <Copy className="w-4 h-4" />
+                  </button>
+                  {upiCopied && <span className="text-xs text-green-600">Copied!</span>}
                 </div>
-              )}
+                <p className="text-xs text-muted-foreground mt-2">
+                  Amount: <span className="font-medium text-foreground">₹{total.toLocaleString("en-IN")}</span>
+                </p>
+              </div>
             </div>
           </div>
 
@@ -384,7 +308,12 @@ const Checkout = () => {
                 </div>
                 {shipping > 0 && (
                   <p className="text-xs text-muted-foreground">
-                    Free shipping on orders above ₹{FREE_SHIPPING_THRESHOLD.toLocaleString("en-IN")}
+                    Free shipping on orders ₹{FREE_SHIPPING_THRESHOLD}+
+                  </p>
+                )}
+                {shipping === 0 && (
+                  <p className="text-xs text-green-600">
+                    ✓ Free shipping applied
                   </p>
                 )}
                 <div className="flex justify-between text-sm font-medium pt-2 border-t border-border mt-2">
