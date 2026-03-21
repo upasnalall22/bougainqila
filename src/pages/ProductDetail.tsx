@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { ChevronDown, Heart, Minus, Plus, Truck, CreditCard, Hand, Gift } from "lucide-react";
 import Navbar from "@/components/Navbar";
