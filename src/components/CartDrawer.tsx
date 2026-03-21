@@ -249,7 +249,7 @@ const CartDrawer = () => {
 
             <div className="flex gap-3 mt-4">
               <Link
-                to="/shop"
+                to="/cart"
                 onClick={closeCart}
                 className="flex-1 border border-primary text-primary text-[10px] tracking-[0.15em] uppercase py-3 rounded-sm text-center hover:bg-primary/5 transition-colors"
               >
