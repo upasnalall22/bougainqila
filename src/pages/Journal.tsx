@@ -16,39 +16,79 @@ const Journal = () => {
         canonical={`${window.location.origin}/journal`}
       />
       <Navbar />
-      <main className="flex-1 max-w-4xl mx-auto px-6 py-20 w-full">
-        <p className="text-sm tracking-[0.3em] uppercase text-muted-foreground mb-3">Stories & Inspiration</p>
-        <h1 className="text-3xl md:text-4xl font-light text-foreground mb-12" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
-          Journal
-        </h1>
+      <main className="flex-1 w-full">
+        {/* Breadcrumb */}
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-6 pb-2">
+          <nav className="flex items-center gap-1.5 text-xs text-muted-foreground">
+            <Link to="/" className="hover:text-primary transition-colors">Home</Link>
+            <span>/</span>
+            <span className="text-foreground font-medium">Journal</span>
+          </nav>
+        </div>
 
-        {isLoading ? (
-          <p className="text-muted-foreground text-sm">Loading...</p>
-        ) : posts && posts.length > 0 ? (
-          <div className="space-y-12">
-            {posts.map((article: any) => (
-              <article key={article.id} className="border-b border-border pb-10 last:border-b-0">
-                {article.cover_image_url && (
-                  <img src={article.cover_image_url} alt={article.title} className="w-full aspect-[21/9] object-cover rounded-sm mb-4" loading="lazy" />
-                )}
-                <p className="text-[10px] tracking-[0.2em] uppercase text-muted-foreground mb-2">
-                  {article.category}{article.published_at && ` · ${new Date(article.published_at).toLocaleDateString("en-IN", { year: "numeric", month: "long", day: "numeric" })}`}
-                </p>
-                <Link to={`/journal/${article.slug}`}>
-                  <h2
-                    className="text-xl md:text-2xl font-light text-foreground mb-3 hover:text-primary transition-colors cursor-pointer"
-                    style={{ fontFamily: "'Cormorant Garamond', serif" }}
-                  >
-                    {article.title}
-                  </h2>
+        {/* Header */}
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-4 pb-10">
+          <h1
+            className="text-3xl md:text-4xl font-light text-foreground"
+            style={{ fontFamily: "'Cormorant Garamond', serif" }}
+          >
+            Stories & Inspiration
+          </h1>
+        </div>
+
+        {/* Posts grid */}
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 pb-20">
+          {isLoading ? (
+            <p className="text-muted-foreground text-sm">Loading...</p>
+          ) : posts && posts.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {posts.map((article: any) => (
+                <Link
+                  key={article.id}
+                  to={`/journal/${article.slug}`}
+                  className="group block"
+                >
+                  <article className="flex flex-col h-full">
+                    {article.cover_image_url ? (
+                      <div className="aspect-[16/10] overflow-hidden rounded-sm mb-4">
+                        <img
+                          src={article.cover_image_url}
+                          alt={article.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          loading="lazy"
+                        />
+                      </div>
+                    ) : (
+                      <div className="aspect-[16/10] bg-muted rounded-sm mb-4 flex items-center justify-center">
+                        <span className="text-muted-foreground text-xs">No image</span>
+                      </div>
+                    )}
+                    <p className="text-[10px] tracking-[0.2em] uppercase text-muted-foreground mb-2">
+                      {article.category}
+                      {article.published_at &&
+                        ` · ${new Date(article.published_at).toLocaleDateString("en-IN", {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        })}`}
+                    </p>
+                    <h2
+                      className="text-lg font-light text-foreground mb-2 group-hover:text-primary transition-colors leading-snug"
+                      style={{ fontFamily: "'Cormorant Garamond', serif" }}
+                    >
+                      {article.title}
+                    </h2>
+                    <p className="text-xs text-muted-foreground leading-relaxed line-clamp-3 mt-auto">
+                      {article.excerpt}
+                    </p>
+                  </article>
                 </Link>
-                <p className="text-sm text-muted-foreground leading-relaxed">{article.excerpt}</p>
-              </article>
-            ))}
-          </div>
-        ) : (
-          <p className="text-muted-foreground text-sm">No articles yet. Check back soon!</p>
-        )}
+              ))}
+            </div>
+          ) : (
+            <p className="text-muted-foreground text-sm">No articles yet. Check back soon!</p>
+          )}
+        </div>
       </main>
       <NewsletterBar />
       <Footer />

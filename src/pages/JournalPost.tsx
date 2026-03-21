@@ -4,118 +4,87 @@ import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
 import { useJournalPost } from "@/hooks/useCMS";
 
-type PostImage = { id: string; image_url: string; caption: string | null; display_order: number };
+type PostImage = {
+  id: string;
+  image_url: string;
+  caption: string | null;
+  display_order: number;
+};
 
-// ─── Classic Template ─────────────────────────────────────────
-function ClassicLayout({ post, images }: { post: any; images: PostImage[] }) {
-  return (
-    <>
-      {post.cover_image_url && (
-        <img src={post.cover_image_url} alt={post.title} className="w-full aspect-[21/9] object-cover rounded-sm mb-8" />
-      )}
-      <p className="text-[10px] tracking-[0.2em] uppercase text-muted-foreground mb-3">
-        {post.category}{post.published_at && ` · ${new Date(post.published_at).toLocaleDateString("en-IN", { year: "numeric", month: "long", day: "numeric" })}`}
-      </p>
-      <h1 className="text-3xl md:text-4xl font-light text-foreground mb-8" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
-        {post.title}
-      </h1>
-      <div className="prose prose-neutral max-w-none text-foreground mb-10">
-        {post.body?.split("\n").map((p: string, i: number) => (
-          <p key={i} className="text-muted-foreground leading-relaxed mb-4">{p}</p>
-        ))}
-      </div>
-      {images.length > 0 && (
-        <div className="space-y-4">
-          {images.map((img) => (
-            <figure key={img.id}>
-              <img src={img.image_url} alt={img.caption || ""} className="w-full rounded-sm object-cover" />
-              {img.caption && <figcaption className="text-xs text-muted-foreground mt-2 text-center italic">{img.caption}</figcaption>}
-            </figure>
-          ))}
-        </div>
-      )}
-    </>
-  );
+/**
+ * Extracts headings (lines starting with ## or bold **...**) from the body
+ * to build a Table of Contents, similar to the Philips blog style.
+ */
+function extractHeadings(body: string | null): { id: string; text: string }[] {
+  if (!body) return [];
+  const headings: { id: string; text: string }[] = [];
+  body.split("\n").forEach((line) => {
+    const trimmed = line.trim();
+    // Match markdown-style headings ## Heading
+    const mdMatch = trimmed.match(/^#{1,3}\s+(.+)/);
+    if (mdMatch) {
+      const text = mdMatch[1].trim();
+      const id = text.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+      headings.push({ id, text });
+      return;
+    }
+    // Match bold lines used as section titles **Title**
+    const boldMatch = trimmed.match(/^\*\*(.+)\*\*$/);
+    if (boldMatch) {
+      const text = boldMatch[1].trim();
+      const id = text.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+      headings.push({ id, text });
+    }
+  });
+  return headings;
 }
 
-// ─── Gallery Template ─────────────────────────────────────────
-function GalleryLayout({ post, images }: { post: any; images: PostImage[] }) {
-  return (
-    <>
-      {post.cover_image_url && (
-        <img src={post.cover_image_url} alt={post.title} className="w-full aspect-[16/9] object-cover rounded-sm mb-8" />
-      )}
-      <p className="text-[10px] tracking-[0.2em] uppercase text-muted-foreground mb-3">
-        {post.category}{post.published_at && ` · ${new Date(post.published_at).toLocaleDateString("en-IN", { year: "numeric", month: "long", day: "numeric" })}`}
+/**
+ * Renders body text, converting ## headings and **bold** lines into
+ * proper HTML headings with anchor IDs for TOC linking.
+ */
+function renderBody(body: string | null) {
+  if (!body) return null;
+  return body.split("\n").map((line, i) => {
+    const trimmed = line.trim();
+    if (!trimmed) return <div key={i} className="h-4" />;
+
+    const mdMatch = trimmed.match(/^#{1,3}\s+(.+)/);
+    if (mdMatch) {
+      const text = mdMatch[1].trim();
+      const id = text.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+      return (
+        <h2
+          key={i}
+          id={id}
+          className="text-xl md:text-2xl font-semibold text-foreground mt-10 mb-4 scroll-mt-24"
+        >
+          {text}
+        </h2>
+      );
+    }
+
+    const boldMatch = trimmed.match(/^\*\*(.+)\*\*$/);
+    if (boldMatch) {
+      const text = boldMatch[1].trim();
+      const id = text.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+      return (
+        <h3
+          key={i}
+          id={id}
+          className="text-lg font-semibold text-foreground mt-8 mb-3 scroll-mt-24"
+        >
+          {text}
+        </h3>
+      );
+    }
+
+    return (
+      <p key={i} className="text-muted-foreground leading-relaxed mb-4 text-sm md:text-base">
+        {trimmed}
       </p>
-      <h1 className="text-3xl md:text-4xl font-light text-foreground mb-6" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
-        {post.title}
-      </h1>
-      <div className="prose prose-neutral max-w-none text-foreground mb-10">
-        {post.body?.split("\n").map((p: string, i: number) => (
-          <p key={i} className="text-muted-foreground leading-relaxed mb-4">{p}</p>
-        ))}
-      </div>
-      {images.length > 0 && (
-        <div className={`grid gap-3 ${images.length === 1 ? "grid-cols-1" : images.length === 2 ? "grid-cols-2" : "grid-cols-2 md:grid-cols-3"}`}>
-          {images.map((img) => (
-            <figure key={img.id} className="group">
-              <div className="aspect-square overflow-hidden rounded-sm">
-                <img src={img.image_url} alt={img.caption || ""} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-              </div>
-              {img.caption && <figcaption className="text-xs text-muted-foreground mt-1.5 text-center">{img.caption}</figcaption>}
-            </figure>
-          ))}
-        </div>
-      )}
-    </>
-  );
-}
-
-// ─── Editorial Template ───────────────────────────────────────
-function EditorialLayout({ post, images }: { post: any; images: PostImage[] }) {
-  const paragraphs = post.body?.split("\n").filter((p: string) => p.trim()) || [];
-
-  return (
-    <>
-      <p className="text-[10px] tracking-[0.2em] uppercase text-muted-foreground mb-3">
-        {post.category}{post.published_at && ` · ${new Date(post.published_at).toLocaleDateString("en-IN", { year: "numeric", month: "long", day: "numeric" })}`}
-      </p>
-      <h1 className="text-3xl md:text-5xl font-light text-foreground mb-10" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
-        {post.title}
-      </h1>
-
-      {/* Cover image full bleed */}
-      {post.cover_image_url && (
-        <img src={post.cover_image_url} alt={post.title} className="w-full aspect-[21/9] object-cover rounded-sm mb-10" />
-      )}
-
-      {/* Interleave text and images */}
-      {paragraphs.map((text: string, i: number) => {
-        const img = images[i];
-        const isEven = i % 2 === 0;
-        return (
-          <div key={i} className={`mb-10 ${img ? `md:flex md:gap-8 ${isEven ? "" : "md:flex-row-reverse"}` : ""}`}>
-            {img && (
-              <figure className="md:w-1/2 mb-4 md:mb-0 shrink-0">
-                <img src={img.image_url} alt={img.caption || ""} className="w-full rounded-sm object-cover aspect-[4/3]" />
-                {img.caption && <figcaption className="text-xs text-muted-foreground mt-1.5 italic">{img.caption}</figcaption>}
-              </figure>
-            )}
-            <p className={`text-muted-foreground leading-relaxed ${img ? "md:w-1/2 self-center" : ""}`}>{text}</p>
-          </div>
-        );
-      })}
-
-      {/* Remaining images not paired with paragraphs */}
-      {images.slice(paragraphs.length).map((img) => (
-        <figure key={img.id} className="mb-6">
-          <img src={img.image_url} alt={img.caption || ""} className="w-full rounded-sm object-cover" />
-          {img.caption && <figcaption className="text-xs text-muted-foreground mt-1.5 text-center italic">{img.caption}</figcaption>}
-        </figure>
-      ))}
-    </>
-  );
+    );
+  });
 }
 
 const JournalPost = () => {
@@ -140,7 +109,9 @@ const JournalPost = () => {
         <Navbar />
         <main className="flex-1 flex items-center justify-center flex-col gap-4">
           <p className="text-muted-foreground">Article not found.</p>
-          <Link to="/journal" className="text-primary text-sm hover:underline">← Back to Journal</Link>
+          <Link to="/journal" className="text-primary text-sm hover:underline">
+            ← Back to Journal
+          </Link>
         </main>
         <Footer />
       </div>
@@ -148,7 +119,7 @@ const JournalPost = () => {
   }
 
   const images: PostImage[] = (post as any).images || [];
-  const template = (post as any).template || "classic";
+  const headings = extractHeadings(post.body);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -171,13 +142,112 @@ const JournalPost = () => {
         jsonLd={jsonLd}
       />
       <Navbar />
-      <main className="flex-1 max-w-3xl mx-auto px-6 py-20 w-full">
-        <Link to="/journal" className="text-xs tracking-widest uppercase text-muted-foreground hover:text-primary mb-8 inline-block">
-          ← Back to Journal
-        </Link>
-        {template === "gallery" && <GalleryLayout post={post} images={images} />}
-        {template === "editorial" && <EditorialLayout post={post} images={images} />}
-        {(template === "classic" || !template) && <ClassicLayout post={post} images={images} />}
+      <main className="flex-1 w-full">
+        {/* Breadcrumb */}
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 pt-6 pb-2">
+          <nav className="flex items-center gap-1.5 text-xs text-muted-foreground flex-wrap">
+            <Link to="/journal" className="hover:text-primary transition-colors">
+              Journal
+            </Link>
+            <span>/</span>
+            {post.category && (
+              <>
+                <span className="hover:text-primary transition-colors">{post.category}</span>
+                <span>/</span>
+              </>
+            )}
+            <span className="text-foreground font-medium truncate max-w-[200px] sm:max-w-none">
+              {post.title}
+            </span>
+          </nav>
+        </div>
+
+        {/* Cover image — full-width */}
+        {post.cover_image_url && (
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 mt-4">
+            <img
+              src={post.cover_image_url}
+              alt={post.title}
+              className="w-full aspect-[21/9] object-cover rounded-sm"
+            />
+          </div>
+        )}
+
+        {/* Article content */}
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10">
+          {/* Table of Contents */}
+          {headings.length > 0 && (
+            <div className="border border-border rounded-sm p-5 mb-10 bg-muted/30">
+              <h4 className="text-sm font-semibold text-foreground mb-3">Table of Contents</h4>
+              <ol className="space-y-1.5">
+                {headings.map((h, i) => (
+                  <li key={h.id}>
+                    <a
+                      href={`#${h.id}`}
+                      className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-start gap-1.5"
+                    >
+                      <span className="text-muted-foreground/60 shrink-0">{i + 1}.</span>
+                      <span>{h.text}</span>
+                    </a>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          )}
+
+          {/* Date & Category */}
+          <p className="text-[10px] tracking-[0.2em] uppercase text-muted-foreground mb-4">
+            {post.category}
+            {post.published_at &&
+              ` · ${new Date(post.published_at).toLocaleDateString("en-IN", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}`}
+          </p>
+
+          {/* Title */}
+          <h1
+            className="text-2xl md:text-4xl font-light text-foreground mb-8"
+            style={{ fontFamily: "'Cormorant Garamond', serif" }}
+          >
+            {post.title}
+          </h1>
+
+          {/* Body */}
+          <div className="mb-10">{renderBody(post.body)}</div>
+
+          {/* Additional images */}
+          {images.length > 0 && (
+            <div className="space-y-6">
+              {images.map((img) => (
+                <figure key={img.id}>
+                  <img
+                    src={img.image_url}
+                    alt={img.caption || ""}
+                    className="w-full rounded-sm object-cover"
+                    loading="lazy"
+                  />
+                  {img.caption && (
+                    <figcaption className="text-xs text-muted-foreground mt-2 text-center italic">
+                      {img.caption}
+                    </figcaption>
+                  )}
+                </figure>
+              ))}
+            </div>
+          )}
+
+          {/* Back link */}
+          <div className="mt-12 pt-8 border-t border-border">
+            <Link
+              to="/journal"
+              className="text-xs tracking-widest uppercase text-muted-foreground hover:text-primary transition-colors"
+            >
+              ← Back to Journal
+            </Link>
+          </div>
+        </div>
       </main>
       <Footer />
     </div>
