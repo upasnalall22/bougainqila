@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { ChevronDown, Heart, Minus, Plus, Truck, CreditCard, Hand, Gift } from "lucide-react";
 import Navbar from "@/components/Navbar";
@@ -8,6 +8,7 @@ import ProductCard from "@/components/ProductCard";
 import SEOHead from "@/components/SEOHead";
 import { useProduct, useRelatedProducts } from "@/hooks/useProducts";
 import { useCart } from "@/hooks/useCart";
+import { trackViewItem, trackMetaViewContent } from "@/lib/analytics";
 
 const trustBadges = [
 { icon: Truck, label: "Hassle-free Shipping" },
@@ -33,6 +34,15 @@ const ProductDetail = () => {
   const [askOpen, setAskOpen] = useState(false);
   const [isZoomed, setIsZoomed] = useState(false);
   const [zoomPos, setZoomPos] = useState({ x: 50, y: 50 });
+
+  // Fire view_item (GA4) + ViewContent (Meta Pixel) once per product
+  useEffect(() => {
+    if (!product) return;
+    const payload = { id: product.id, name: product.name, category: product.category, price: product.price };
+    trackViewItem(payload);
+    trackMetaViewContent(payload);
+  }, [product?.id]);
+
   const imageContainerRef = useRef<HTMLDivElement>(null);
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
