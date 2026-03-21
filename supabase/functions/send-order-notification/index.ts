@@ -91,8 +91,8 @@ serve(async (req) => {
       const errText = await emailRes.text();
       console.error("Resend error:", errText);
       return new Response(
-        JSON.stringify({ error: "Failed to send email" }),
-        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        JSON.stringify({ success: false, warning: "Email delivery failed" }),
+        { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
