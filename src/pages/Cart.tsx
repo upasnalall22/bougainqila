@@ -128,7 +128,7 @@ function RecommendationStrip({ cartProductIds }: { cartProductIds: string[] }) {
       </div>
       <div ref={scrollRef} onScroll={checkScroll} className="flex gap-4 overflow-x-auto scrollbar-hide pb-2" style={{ scrollbarWidth: "none" }}>
         {recommendations.map((rec) => (
-          <div key={rec.id} className="flex-shrink-0 w-[160px] sm:w-[180px]">
+          <div key={rec.id} className="flex flex-col flex-shrink-0 w-[160px] sm:w-[180px]">
             <Link to={`/product/${rec.slug}`} className="block">
               <div className="aspect-square rounded-sm overflow-hidden bg-muted mb-2">
                 <img src={rec.image_url} alt={rec.name} className="w-full h-full object-cover" />
@@ -138,7 +138,7 @@ function RecommendationStrip({ cartProductIds }: { cartProductIds: string[] }) {
             <p className="text-xs font-medium text-foreground mb-2">₹{rec.price.toLocaleString("en-IN")}.00</p>
             <button
               onClick={() => addToCart(rec.id)}
-              className="w-full border border-border text-foreground text-[10px] tracking-[0.1em] uppercase py-2 rounded-sm hover:bg-muted transition-colors"
+              className="w-full mt-auto border border-border text-foreground text-[10px] tracking-[0.1em] uppercase py-2 rounded-sm hover:bg-muted transition-colors"
             >
               Add to Cart
             </button>
@@ -214,7 +214,7 @@ function FrequentlyBoughtTogether({ cartProductIds }: { cartProductIds: string[]
       </div>
       <div ref={scrollRef} onScroll={checkScroll} className="flex gap-4 overflow-x-auto scrollbar-hide pb-2" style={{ scrollbarWidth: "none" }}>
         {products.map((p) => (
-          <div key={p.id} className="flex-shrink-0 w-[160px] sm:w-[200px]">
+          <div key={p.id} className="flex flex-col flex-shrink-0 w-[160px] sm:w-[200px]">
             <Link to={`/product/${p.slug}`} className="block group">
               <div className="aspect-square rounded-sm overflow-hidden bg-muted mb-2">
                 <img src={p.image_url} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
@@ -224,7 +224,7 @@ function FrequentlyBoughtTogether({ cartProductIds }: { cartProductIds: string[]
             <p className="text-xs font-medium text-foreground mb-2">MRP ₹{p.price.toLocaleString("en-IN")}.00</p>
             <button
               onClick={() => addToCart(p.id)}
-              className="w-full border border-border text-foreground text-[10px] tracking-[0.1em] uppercase py-2.5 rounded-sm hover:bg-muted transition-colors"
+              className="w-full mt-auto border border-border text-foreground text-[10px] tracking-[0.1em] uppercase py-2.5 rounded-sm hover:bg-muted transition-colors"
             >
               Add to Cart
             </button>

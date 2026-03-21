@@ -94,7 +94,7 @@ function RecommendationStrip({ cartProductIds }: { cartProductIds: string[] }) {
         style={{ scrollbarWidth: "none" }}
       >
         {recommendations.map((rec) => (
-          <div key={rec.id} className="flex-shrink-0 w-[140px] border border-border rounded-sm p-2">
+          <div key={rec.id} className="flex flex-col flex-shrink-0 w-[140px] border border-border rounded-sm p-2">
             <Link to={`/product/${rec.slug}`} className="block">
               <div className="aspect-square rounded-sm overflow-hidden bg-muted mb-2">
                 <img src={rec.image_url} alt={rec.name} className="w-full h-full object-cover" />
@@ -106,7 +106,7 @@ function RecommendationStrip({ cartProductIds }: { cartProductIds: string[] }) {
             </div>
             <button
               onClick={() => addToCart(rec.id)}
-              className="w-full bg-primary text-primary-foreground text-[9px] tracking-[0.1em] uppercase py-1.5 rounded-sm hover:opacity-90 transition-opacity"
+              className="w-full mt-auto bg-primary text-primary-foreground text-[9px] tracking-[0.1em] uppercase py-1.5 rounded-sm hover:opacity-90 transition-opacity"
             >
               Add
             </button>

@@ -69,7 +69,7 @@ const FeaturedProducts = () => {
             return (
               <div
                 key={product.id}
-                className="group flex-shrink-0 w-[45vw] sm:w-[30vw] md:w-[22vw] lg:w-[18vw] snap-start"
+                className="group flex flex-col flex-shrink-0 w-[45vw] sm:w-[30vw] md:w-[22vw] lg:w-[18vw] snap-start"
               >
                 <Link to={`/product/${product.slug}`}>
                   <div className="aspect-square bg-muted rounded-sm mb-2 overflow-hidden border border-border group-hover:shadow-md transition-shadow relative">
@@ -96,7 +96,7 @@ const FeaturedProducts = () => {
                 </p>
                 <button
                   onClick={() => addToCart(product.id)}
-                  className="w-full border border-border text-foreground text-[10px] tracking-[0.1em] uppercase py-2 rounded-sm hover:bg-muted transition-colors whitespace-nowrap"
+                  className="w-full mt-auto border border-border text-foreground text-[10px] tracking-[0.1em] uppercase py-2 rounded-sm hover:bg-muted transition-colors whitespace-nowrap"
                 >
                   Add to Cart
                 </button>
