@@ -4,23 +4,20 @@ import { supabase } from "@/integrations/supabase/client";
 import { Plus, Edit, Trash2, X, Save, Search } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-
-const emptyCustomer = {
-  name: "",
-  email: "",
-  phone: "",
-  address: "",
-  city: "",
-  state: "",
-  pincode: "",
-  notes: "",
-};
+import CustomerFormFields, {
+  type CustomerFormData,
+  type CustomerFormErrors,
+  emptyCustomerForm,
+  validateCustomerForm,
+} from "@/components/CustomerFormFields";
 
 const AdminCustomers = () => {
   const queryClient = useQueryClient();
   const [editing, setEditing] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
-  const [form, setForm] = useState(emptyCustomer);
+  const [form, setForm] = useState<CustomerFormData>(emptyCustomerForm);
+  const [errors, setErrors] = useState<CustomerFormErrors>({});
+  const [notes, setNotes] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
 
   const { data: customers, isLoading } = useQuery({
@@ -35,17 +32,32 @@ const AdminCustomers = () => {
     },
   });
 
+  const handleBlurValidate = (field: keyof CustomerFormErrors) => {
+    const allErrors = validateCustomerForm(form);
+    setErrors((prev) => ({ ...prev, [field]: allErrors[field] }));
+  };
+
   const saveMutation = useMutation({
     mutationFn: async () => {
+      const validationErrors = validateCustomerForm(form);
+      setErrors(validationErrors);
+      if (Object.keys(validationErrors).length > 0) throw new Error("Validation failed");
+
+      const fullName = [form.salutation, form.firstName, form.lastName].filter(Boolean).join(" ");
+      const phone = "+91" + form.mobile.replace(/\s/g, "");
+
       const customerData = {
-        name: form.name,
-        email: form.email || null,
-        phone: form.phone,
+        name: fullName,
+        salutation: form.salutation,
+        first_name: form.firstName.trim(),
+        last_name: form.lastName.trim() || null,
+        email: form.email.trim() || null,
+        phone,
         address: form.address || null,
         city: form.city || null,
         state: form.state || null,
         pincode: form.pincode || null,
-        notes: form.notes || null,
+        notes: notes || null,
       };
 
       if (editing) {
@@ -60,7 +72,8 @@ const AdminCustomers = () => {
       queryClient.invalidateQueries({ queryKey: ["admin-customers"] });
       setEditing(null);
       setShowForm(false);
-      setForm(emptyCustomer);
+      setForm(emptyCustomerForm);
+      setNotes("");
     },
   });
 
@@ -75,16 +88,34 @@ const AdminCustomers = () => {
   const startEdit = (c: any) => {
     setEditing(c.id);
     setShowForm(true);
+    // Parse existing name into parts
+    const nameParts = (c.name || "").split(" ");
+    let salutation = c.salutation || "";
+    let firstName = c.first_name || "";
+    let lastName = c.last_name || "";
+    if (!firstName && nameParts.length > 0) {
+      if (["Mr.", "Ms."].includes(nameParts[0])) {
+        salutation = nameParts[0];
+        firstName = nameParts[1] || "";
+        lastName = nameParts.slice(2).join(" ");
+      } else {
+        firstName = nameParts[0];
+        lastName = nameParts.slice(1).join(" ");
+      }
+    }
+    const phone = (c.phone || "").replace(/^\+91/, "");
     setForm({
-      name: c.name,
+      salutation: salutation || "Mr.",
+      firstName,
+      lastName,
       email: c.email || "",
-      phone: c.phone,
-      address: c.address || "",
+      mobile: phone,
       city: c.city || "",
       state: c.state || "",
       pincode: c.pincode || "",
-      notes: c.notes || "",
+      address: c.address || "",
     });
+    setNotes(c.notes || "");
   };
 
   const filtered = customers?.filter((c: any) => {
@@ -102,7 +133,7 @@ const AdminCustomers = () => {
             Customer Management
           </h1>
           <button
-            onClick={() => { setShowForm(true); setEditing(null); setForm(emptyCustomer); }}
+            onClick={() => { setShowForm(true); setEditing(null); setForm(emptyCustomerForm); setNotes(""); setErrors({}); }}
             className="bg-primary text-primary-foreground px-4 py-2 text-xs tracking-[0.15em] uppercase rounded-sm hover:opacity-90 inline-flex items-center gap-2"
           >
             <Plus className="w-3.5 h-3.5" /> Add Customer
@@ -128,61 +159,31 @@ const AdminCustomers = () => {
               <h2 className="text-sm tracking-[0.2em] uppercase text-muted-foreground">
                 {editing ? "Edit Customer" : "New Customer"}
               </h2>
-              <button onClick={() => { setShowForm(false); setEditing(null); setForm(emptyCustomer); }}><X className="w-4 h-4" /></button>
+              <button onClick={() => { setShowForm(false); setEditing(null); setForm(emptyCustomerForm); setErrors({}); }}><X className="w-4 h-4" /></button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-              <div>
-                <label className="text-xs tracking-widest uppercase text-muted-foreground block mb-1">Name *</label>
-                <input type="text" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  className="w-full border border-border bg-background px-3 py-2 text-sm rounded-sm focus:outline-none focus:ring-1 focus:ring-primary" />
-              </div>
-              <div>
-                <label className="text-xs tracking-widest uppercase text-muted-foreground block mb-1">Phone *</label>
-                <input type="text" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                  className="w-full border border-border bg-background px-3 py-2 text-sm rounded-sm focus:outline-none focus:ring-1 focus:ring-primary" />
-              </div>
-              <div>
-                <label className="text-xs tracking-widest uppercase text-muted-foreground block mb-1">Email</label>
-                <input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  className="w-full border border-border bg-background px-3 py-2 text-sm rounded-sm focus:outline-none focus:ring-1 focus:ring-primary" />
-              </div>
-              <div>
-                <label className="text-xs tracking-widest uppercase text-muted-foreground block mb-1">Pincode</label>
-                <input type="text" value={form.pincode} onChange={(e) => setForm({ ...form, pincode: e.target.value })}
-                  className="w-full border border-border bg-background px-3 py-2 text-sm rounded-sm focus:outline-none focus:ring-1 focus:ring-primary" />
-              </div>
-            </div>
+            <CustomerFormFields
+              form={form}
+              onChange={setForm}
+              errors={errors}
+              onBlurValidate={handleBlurValidate}
+              showAddress
+            />
 
-            <div className="mb-4">
-              <label className="text-xs tracking-widest uppercase text-muted-foreground block mb-1">Address</label>
-              <textarea value={form.address} onChange={(e) => setForm({ ...form, address: e.target.value })}
-                rows={2} className="w-full border border-border bg-background px-3 py-2 text-sm rounded-sm resize-none" />
-            </div>
-
-            <div className="grid grid-cols-2 gap-4 mb-4">
-              <div>
-                <label className="text-xs tracking-widest uppercase text-muted-foreground block mb-1">City</label>
-                <input type="text" value={form.city} onChange={(e) => setForm({ ...form, city: e.target.value })}
-                  className="w-full border border-border bg-background px-3 py-2 text-sm rounded-sm focus:outline-none focus:ring-1 focus:ring-primary" />
-              </div>
-              <div>
-                <label className="text-xs tracking-widest uppercase text-muted-foreground block mb-1">State</label>
-                <input type="text" value={form.state} onChange={(e) => setForm({ ...form, state: e.target.value })}
-                  className="w-full border border-border bg-background px-3 py-2 text-sm rounded-sm focus:outline-none focus:ring-1 focus:ring-primary" />
-              </div>
-            </div>
-
-            <div className="mb-4">
+            <div className="mt-4">
               <label className="text-xs tracking-widest uppercase text-muted-foreground block mb-1">Notes</label>
-              <textarea value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })}
-                rows={2} className="w-full border border-border bg-background px-3 py-2 text-sm rounded-sm resize-none" />
+              <textarea
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                rows={2}
+                className="w-full border border-border bg-background px-3 py-2 text-sm rounded-sm resize-none focus:outline-none focus:ring-1 focus:ring-primary"
+              />
             </div>
 
             <button
               onClick={() => saveMutation.mutate()}
-              disabled={saveMutation.isPending || !form.name || !form.phone}
-              className="bg-primary text-primary-foreground px-6 py-2.5 text-xs tracking-[0.15em] uppercase rounded-sm hover:opacity-90 disabled:opacity-50 inline-flex items-center gap-2"
+              disabled={saveMutation.isPending}
+              className="mt-4 bg-primary text-primary-foreground px-6 py-2.5 text-xs tracking-[0.15em] uppercase rounded-sm hover:opacity-90 disabled:opacity-50 inline-flex items-center gap-2"
             >
               <Save className="w-3.5 h-3.5" />
               {saveMutation.isPending ? "Saving..." : editing ? "Update" : "Add Customer"}

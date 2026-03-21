@@ -6,44 +6,31 @@ import { useCart } from "@/hooks/useCart";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Loader2, Copy } from "lucide-react";
+import CustomerFormFields, {
+  type CustomerFormData,
+  type CustomerFormErrors,
+  emptyCustomerForm,
+  validateCustomerForm,
+} from "@/components/CustomerFormFields";
 
 const SHIPPING_COST = 100;
 const FREE_SHIPPING_THRESHOLD = 800;
-
-const UPI_ID = "kavely@upi"; // Replace with actual UPI ID
-
-interface ShippingForm {
-  name: string;
-  email: string;
-  phone: string;
-  address: string;
-  city: string;
-  state: string;
-  pincode: string;
-}
-
-const emptyForm: ShippingForm = {
-  name: "",
-  email: "",
-  phone: "",
-  address: "",
-  city: "",
-  state: "",
-  pincode: "",
-};
+const UPI_ID = "kavely@upi";
 
 const Checkout = () => {
   const { items, subtotal, clearCart } = useCart();
   const navigate = useNavigate();
-  const [form, setForm] = useState<ShippingForm>(emptyForm);
+  const [form, setForm] = useState<CustomerFormData>({ ...emptyCustomerForm, salutation: "Mr." });
+  const [errors, setErrors] = useState<CustomerFormErrors>({});
   const [placing, setPlacing] = useState(false);
   const [upiCopied, setUpiCopied] = useState(false);
 
   const shipping = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_COST;
   const total = subtotal + shipping;
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const handleBlurValidate = (field: keyof CustomerFormErrors) => {
+    const allErrors = validateCustomerForm(form);
+    setErrors((prev) => ({ ...prev, [field]: allErrors[field] }));
   };
 
   const copyUPI = () => {
@@ -54,48 +41,50 @@ const Checkout = () => {
 
   const handlePlaceOrder = async (e: React.FormEvent) => {
     e.preventDefault();
+    const validationErrors = validateCustomerForm(form);
+    setErrors(validationErrors);
+    if (Object.keys(validationErrors).length > 0) return;
     if (items.length === 0) return;
     setPlacing(true);
 
+    const fullName = [form.salutation, form.firstName, form.lastName].filter(Boolean).join(" ");
+    const phone = "+91" + form.mobile.replace(/\s/g, "");
+
     try {
-      // 1. Create or find customer
       const { data: existingCustomer } = await supabase
         .from("customers")
         .select("id")
-        .eq("phone", form.phone)
+        .eq("phone", phone)
         .maybeSingle();
 
       let customerId: string;
+      const customerData = {
+        name: fullName,
+        salutation: form.salutation,
+        first_name: form.firstName.trim(),
+        last_name: form.lastName.trim() || null,
+        email: form.email.trim(),
+        phone,
+        address: form.address || null,
+        city: form.city || null,
+        state: form.state || null,
+        pincode: form.pincode || null,
+      };
+
       if (existingCustomer) {
         customerId = existingCustomer.id;
-        await supabase.from("customers").update({
-          name: form.name,
-          email: form.email,
-          address: form.address,
-          city: form.city,
-          state: form.state,
-          pincode: form.pincode,
-        }).eq("id", customerId);
+        await supabase.from("customers").update(customerData).eq("id", customerId);
       } else {
         const { data: newCustomer, error: custErr } = await supabase
           .from("customers")
-          .insert({
-            name: form.name,
-            email: form.email,
-            phone: form.phone,
-            address: form.address,
-            city: form.city,
-            state: form.state,
-            pincode: form.pincode,
-          })
+          .insert(customerData)
           .select("id")
           .single();
         if (custErr || !newCustomer) throw new Error("Could not create customer");
         customerId = newCustomer.id;
       }
 
-      // 2. Create order (UPI only)
-      const shippingAddress = `${form.address}, ${form.city}, ${form.state} - ${form.pincode}`;
+      const shippingAddress = [form.address, form.city, form.state, form.pincode].filter(Boolean).join(", ");
       const { data: order, error: orderErr } = await supabase
         .from("orders")
         .insert({
@@ -107,14 +96,13 @@ const Checkout = () => {
           payment_method: "upi",
           payment_status: "pending",
           shipping_address: shippingAddress,
-          notes: `Customer: ${form.name}, Phone: ${form.phone}, Email: ${form.email}`,
+          notes: `Customer: ${fullName}, Phone: ${phone}, Email: ${form.email}`,
         })
         .select("id, order_number")
         .single();
 
       if (orderErr || !order) throw new Error("Could not create order");
 
-      // 3. Insert order items
       const orderItems = items.map((item) => ({
         order_id: order.id,
         product_id: item.product_id,
@@ -127,28 +115,22 @@ const Checkout = () => {
       const { error: itemsErr } = await supabase.from("order_items").insert(orderItems);
       if (itemsErr) throw new Error("Could not save order items");
 
-      // 4. Send notification email (non-blocking, never throw)
       supabase.functions.invoke("send-order-notification", {
         body: {
           type: "order",
           order_number: order.order_number,
-          customer_name: form.name,
+          customer_name: fullName,
           customer_email: form.email,
-          customer_phone: form.phone,
+          customer_phone: phone,
           shipping_address: shippingAddress,
           payment_method: "upi",
-          items: items.map((i) => ({
-            name: i.product.name,
-            quantity: i.quantity,
-            price: i.product.price,
-          })),
+          items: items.map((i) => ({ name: i.product.name, quantity: i.quantity, price: i.product.price })),
           subtotal,
           shipping,
           total,
         },
       }).catch(() => {});
 
-      // 5. Clear cart & redirect to thank you page
       await clearCart();
       navigate(`/thank-you?order=${encodeURIComponent(order.order_number)}&total=${total}&shipping=${shipping}&items=${items.length}`);
     } catch (err: any) {
@@ -182,68 +164,21 @@ const Checkout = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-1 max-w-5xl mx-auto px-4 md:px-6 py-12 w-full">
-        <h1
-          className="text-2xl md:text-3xl font-light text-foreground mb-8"
-          style={{ fontFamily: "'Cormorant Garamond', serif" }}
-        >
+        <h1 className="text-2xl md:text-3xl font-light text-foreground mb-8" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
           Checkout
         </h1>
 
         <form onSubmit={handlePlaceOrder} className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Left: Shipping + Payment */}
           <div className="space-y-6">
-            {/* Shipping */}
             <div>
               <h2 className="text-sm tracking-[0.2em] uppercase text-foreground mb-4">Shipping Details</h2>
-              <div className="space-y-3">
-                {[
-                  { name: "name", label: "Full Name", type: "text", required: true },
-                  { name: "email", label: "Email", type: "email", required: true },
-                  { name: "phone", label: "Phone", type: "tel", required: true },
-                ].map((f) => (
-                  <div key={f.name}>
-                    <label className="text-xs tracking-widest uppercase text-muted-foreground block mb-1">{f.label}</label>
-                    <input
-                      name={f.name}
-                      type={f.type}
-                      required={f.required}
-                      value={form[f.name as keyof ShippingForm]}
-                      onChange={handleChange}
-                      className="w-full border border-border bg-background px-3 py-2.5 text-sm text-foreground rounded-sm focus:outline-none focus:ring-1 focus:ring-primary"
-                    />
-                  </div>
-                ))}
-                <div>
-                  <label className="text-xs tracking-widest uppercase text-muted-foreground block mb-1">Address</label>
-                  <textarea
-                    name="address"
-                    required
-                    rows={2}
-                    value={form.address}
-                    onChange={handleChange}
-                    className="w-full border border-border bg-background px-3 py-2.5 text-sm text-foreground rounded-sm focus:outline-none focus:ring-1 focus:ring-primary resize-none"
-                  />
-                </div>
-                <div className="grid grid-cols-3 gap-2">
-                  {[
-                    { name: "city", label: "City" },
-                    { name: "state", label: "State" },
-                    { name: "pincode", label: "Pincode" },
-                  ].map((f) => (
-                    <div key={f.name}>
-                      <label className="text-xs tracking-widest uppercase text-muted-foreground block mb-1">{f.label}</label>
-                      <input
-                        name={f.name}
-                        type="text"
-                        required
-                        value={form[f.name as keyof ShippingForm]}
-                        onChange={handleChange}
-                        className="w-full border border-border bg-background px-3 py-2.5 text-sm text-foreground rounded-sm focus:outline-none focus:ring-1 focus:ring-primary"
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
+              <CustomerFormFields
+                form={form}
+                onChange={setForm}
+                errors={errors}
+                onBlurValidate={handleBlurValidate}
+                showAddress
+              />
             </div>
 
             {/* Payment - UPI Only */}
@@ -253,7 +188,6 @@ const Checkout = () => {
                 <p className="text-sm text-foreground font-medium">UPI Payment</p>
                 <p className="text-xs text-muted-foreground">Pay via Google Pay, PhonePe, Paytm, etc.</p>
               </div>
-
               <div className="mt-3 border border-border rounded-sm p-4 bg-card">
                 <p className="text-xs text-muted-foreground mb-2">Send payment to this UPI ID:</p>
                 <div className="flex items-center gap-2">
@@ -277,11 +211,7 @@ const Checkout = () => {
               <div className="space-y-3 mb-4">
                 {items.map((item) => (
                   <div key={item.id} className="flex gap-3">
-                    <img
-                      src={item.product.image_url}
-                      alt={item.product.name}
-                      className="w-14 h-14 object-cover rounded-sm border border-border"
-                    />
+                    <img src={item.product.image_url} alt={item.product.name} className="w-14 h-14 object-cover rounded-sm border border-border" />
                     <div className="flex-1 min-w-0">
                       <p className="text-sm text-foreground truncate">{item.product.name}</p>
                       <p className="text-xs text-muted-foreground">Qty: {item.quantity}</p>
@@ -290,7 +220,6 @@ const Checkout = () => {
                   </div>
                 ))}
               </div>
-
               <div className="border-t border-border pt-3 space-y-1">
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Sub-Total</span>
@@ -298,26 +227,15 @@ const Checkout = () => {
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Shipping</span>
-                  <span className="text-foreground">
-                    {shipping === 0 ? "Free" : `₹${shipping}`}
-                  </span>
+                  <span className="text-foreground">{shipping === 0 ? "Free" : `₹${shipping}`}</span>
                 </div>
-                {shipping > 0 && (
-                  <p className="text-xs text-muted-foreground">
-                    Free shipping on orders ₹{FREE_SHIPPING_THRESHOLD}+
-                  </p>
-                )}
-                {shipping === 0 && (
-                  <p className="text-xs text-green-600">
-                    ✓ Free shipping applied
-                  </p>
-                )}
+                {shipping > 0 && <p className="text-xs text-muted-foreground">Free shipping on orders ₹{FREE_SHIPPING_THRESHOLD}+</p>}
+                {shipping === 0 && <p className="text-xs text-green-600">✓ Free shipping applied</p>}
                 <div className="flex justify-between text-sm font-medium pt-2 border-t border-border mt-2">
                   <span className="text-foreground">Total</span>
                   <span className="text-foreground">₹{total.toLocaleString("en-IN")}</span>
                 </div>
               </div>
-
               <button
                 type="submit"
                 disabled={placing}
