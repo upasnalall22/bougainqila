@@ -6,6 +6,7 @@ import { useAllHomepageContent, useAllCategoryContent, useJournalPosts, useAllIn
 import { useOurStorySections } from "@/hooks/useOurStory";
 import { useHeroBanners } from "@/hooks/useHeroBanners";
 import Navbar from "@/components/Navbar";
+import SEOHead from "@/components/SEOHead";
 import Footer from "@/components/Footer";
 import CmsImageUpload from "@/components/CmsImageUpload";
 import { Save, Plus, Trash2, Edit, LogOut } from "lucide-react";
