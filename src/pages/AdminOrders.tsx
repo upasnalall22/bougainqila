@@ -200,6 +200,7 @@ const AdminOrders = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <SEOHead title="Orders — Admin" noindex />
       <Navbar />
       <main className="flex-1 max-w-6xl mx-auto px-4 md:px-6 py-10 w-full">
         <div className="flex items-center justify-between mb-8">
