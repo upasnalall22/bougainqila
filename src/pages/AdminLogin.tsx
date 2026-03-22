@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { Navigate } from "react-router-dom";
+import SEOHead from "@/components/SEOHead";
 
 const AdminLogin = () => {
   const { user, isAdmin, loading, signIn, signUp } = useAuth();
