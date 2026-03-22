@@ -91,6 +91,7 @@ const Checkout = () => {
         .from("orders")
         .insert({
           customer_id: customerId,
+          user_id: user?.id || null,
           subtotal,
           shipping_cost: shipping,
           shipping_fee: shipping,
