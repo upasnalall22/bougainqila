@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SEOHead from "@/components/SEOHead";
 import { useCart } from "@/hooks/useCart";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Loader2, Copy } from "lucide-react";
+import { trackBeginCheckout } from "@/lib/analytics";
 import CustomerFormFields, {
   type CustomerFormData,
   type CustomerFormErrors,
@@ -29,6 +31,16 @@ const Checkout = () => {
 
   const shipping = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_COST;
   const total = subtotal + shipping;
+
+  // Issue 16: fire trackBeginCheckout when checkout page loads
+  useEffect(() => {
+    if (items.length > 0) {
+      trackBeginCheckout(
+        total,
+        items.map((i) => ({ id: i.product_id, name: i.product.name, price: i.product.price, quantity: i.quantity }))
+      );
+    }
+  }, []);
 
   const handleBlurValidate = (field: keyof CustomerFormErrors) => {
     const allErrors = validateCustomerForm(form);
@@ -135,7 +147,8 @@ const Checkout = () => {
       }).catch(() => {});
 
       await clearCart();
-      navigate(`/thank-you?order=${encodeURIComponent(order.order_number)}&total=${total}&shipping=${shipping}&items=${items.length}`);
+      const itemsParam = encodeURIComponent(JSON.stringify(items.map((i) => ({ id: i.product_id, name: i.product.name, price: i.product.price, quantity: i.quantity }))));
+      navigate(`/thank-you?order=${encodeURIComponent(order.order_number)}&total=${total}&shipping=${shipping}&items=${items.length}&itemsData=${itemsParam}`);
     } catch (err: any) {
       toast.error(err.message || "Failed to place order");
     } finally {
@@ -165,6 +178,7 @@ const Checkout = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <SEOHead title="Checkout | BougainQila" description="Complete your order at BougainQila." noindex />
       <Navbar />
       <main className="flex-1 max-w-5xl mx-auto px-4 md:px-6 py-12 w-full">
         <h1 className="text-2xl md:text-3xl font-light text-foreground mb-8" style={{ fontFamily: "'Cormorant Garamond', serif" }}>

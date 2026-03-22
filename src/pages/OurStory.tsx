@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import NewsletterBar from "@/components/NewsletterBar";
+import SEOHead from "@/components/SEOHead";
 import { useOurStorySections } from "@/hooks/useOurStory";
 import { Link } from "react-router-dom";
 
@@ -21,6 +22,7 @@ const OurStory = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <SEOHead title="Our Story | BougainQila" description="Discover the story behind BougainQila — handcrafted clay home decor inspired by art, nature and everyday beauty." canonical="/our-story" />
       <Navbar />
       <main className="flex-1">
         {/* Brand Story */}

@@ -1,6 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
-const NOTIFY_EMAIL = "M4marcons@gmail.com";
+const NOTIFY_EMAIL = "upasna.lall22@gmail.com";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -80,7 +80,7 @@ serve(async (req) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: "Kavely <onboarding@resend.dev>",
+        from: "BougainQila <onboarding@resend.dev>",
         to: [NOTIFY_EMAIL],
         subject,
         html,

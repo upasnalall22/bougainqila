@@ -1,6 +1,7 @@
 import { Heart } from "lucide-react";
 import { useCart } from "@/hooks/useCart";
 import { useWishlist } from "@/hooks/useWishlist";
+import { trackAddToCart } from "@/lib/analytics";
 
 interface ProductCardProps {
   product: {
@@ -55,7 +56,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
       {/* Button */}
       <button
-        onClick={(e) => { e.preventDefault(); addToCart(product.id); }}
+        onClick={(e) => { e.preventDefault(); addToCart(product.id); trackAddToCart({ id: product.id, name: product.name, category: product.category, price: product.price, quantity: 1 }); }}
         className="w-full mt-auto border border-border text-foreground text-[10px] tracking-[0.1em] uppercase py-2.5 rounded-sm hover:bg-muted transition-colors"
       >
         Add to Cart

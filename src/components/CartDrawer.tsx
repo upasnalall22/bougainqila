@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useRef, useState, useEffect } from "react";
+import { trackAddToCart } from "@/lib/analytics";
 
 const FREE_SHIPPING_THRESHOLD = 800;
 const SHIPPING_COST = 100;
@@ -105,7 +106,7 @@ function RecommendationStrip({ cartProductIds }: { cartProductIds: string[] }) {
               <span className="text-xs font-medium text-foreground">₹{rec.price.toLocaleString("en-IN")}</span>
             </div>
             <button
-              onClick={() => addToCart(rec.id)}
+              onClick={() => { addToCart(rec.id); trackAddToCart({ id: rec.id, name: rec.name, price: rec.price, quantity: 1 }); }}
               className="w-full mt-auto bg-primary text-primary-foreground text-[9px] tracking-[0.1em] uppercase py-1.5 rounded-sm hover:opacity-90 transition-opacity"
             >
               Add

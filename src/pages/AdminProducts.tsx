@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Plus, Trash2, Edit, Upload, X, Save, FileUp, Download } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SEOHead from "@/components/SEOHead";
 import type { Tables } from "@/integrations/supabase/types";
 
 type Product = Tables<"products">;
@@ -254,6 +255,7 @@ const AdminProducts = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <SEOHead title="Products — Admin" noindex />
       <Navbar />
       <main className="flex-1 max-w-5xl mx-auto px-4 md:px-6 py-10 w-full">
         <h1 className="text-2xl md:text-3xl font-light text-foreground mb-8" style={{ fontFamily: "'Cormorant Garamond', serif" }}>

@@ -14,31 +14,37 @@ const ThankYou = () => {
   const total = parseFloat(searchParams.get("total") || "0");
   const itemCount = parseInt(searchParams.get("items") || "0", 10);
   const shipping = parseFloat(searchParams.get("shipping") || "0");
+  const itemsDataRaw = searchParams.get("itemsData");
 
-  // Fire conversion tracking on mount
+  // Issue 17: fire trackPurchase with real product data
   useEffect(() => {
     if (orderNumber && total > 0) {
+      let purchaseItems: Array<{ id: string; name: string; price: number; quantity: number }> = [];
+      if (itemsDataRaw) {
+        try {
+          purchaseItems = JSON.parse(decodeURIComponent(itemsDataRaw));
+        } catch {
+          // fallback
+        }
+      }
+      if (purchaseItems.length === 0) {
+        purchaseItems = [{ id: "unknown", name: `Order ${orderNumber}`, price: total - shipping, quantity: itemCount || 1 }];
+      }
       trackPurchase({
         id: orderNumber,
         value: total,
         shipping,
-        items: [
-          {
-            id: orderNumber,
-            name: `Order ${orderNumber}`,
-            price: total - shipping,
-            quantity: itemCount || 1,
-          },
-        ],
+        items: purchaseItems,
       });
     }
-  }, [orderNumber, total, shipping, itemCount]);
+  }, [orderNumber, total, shipping, itemCount, itemsDataRaw]);
 
   return (
     <div className="min-h-screen flex flex-col">
       <SEOHead
         title="Thank You | BougainQila"
         description="Your order has been placed successfully."
+        noindex
       />
       <Navbar />
       <main className="flex-1 flex items-center justify-center px-6 py-20">

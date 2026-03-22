@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useProducts } from "@/hooks/useProducts";
 import { useCart } from "@/hooks/useCart";
 import { useEffect, useRef, useState } from "react";
+import { trackAddToCart } from "@/lib/analytics";
 
 const FeaturedProducts = () => {
   const { data: products, isLoading } = useProducts();
@@ -95,7 +96,7 @@ const FeaturedProducts = () => {
                   MRP ₹{Number(product.price).toLocaleString("en-IN")}.00
                 </p>
                 <button
-                  onClick={() => addToCart(product.id)}
+                  onClick={() => { addToCart(product.id); trackAddToCart({ id: product.id, name: product.name, category: product.category, price: Number(product.price), quantity: 1 }); }}
                   className="w-full mt-auto border border-border text-foreground text-[10px] tracking-[0.1em] uppercase py-2 rounded-sm hover:bg-muted transition-colors whitespace-nowrap"
                 >
                   Add to Cart

@@ -7,6 +7,7 @@ import { useRef, useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
+import { trackAddToCart } from "@/lib/analytics";
 
 const FREE_SHIPPING_THRESHOLD = 800;
 const SHIPPING_COST = 100;
@@ -137,7 +138,7 @@ function RecommendationStrip({ cartProductIds }: { cartProductIds: string[] }) {
             </Link>
             <p className="text-xs font-medium text-foreground mb-2">₹{rec.price.toLocaleString("en-IN")}.00</p>
             <button
-              onClick={() => addToCart(rec.id)}
+              onClick={() => { addToCart(rec.id); trackAddToCart({ id: rec.id, name: rec.name, price: rec.price, quantity: 1 }); }}
               className="w-full mt-auto border border-border text-foreground text-[10px] tracking-[0.1em] uppercase py-2 rounded-sm hover:bg-muted transition-colors"
             >
               Add to Cart
@@ -223,7 +224,7 @@ function FrequentlyBoughtTogether({ cartProductIds }: { cartProductIds: string[]
             </Link>
             <p className="text-xs font-medium text-foreground mb-2">MRP ₹{p.price.toLocaleString("en-IN")}.00</p>
             <button
-              onClick={() => addToCart(p.id)}
+              onClick={() => { addToCart(p.id); trackAddToCart({ id: p.id, name: p.name, price: p.price, quantity: 1 }); }}
               className="w-full mt-auto border border-border text-foreground text-[10px] tracking-[0.1em] uppercase py-2.5 rounded-sm hover:bg-muted transition-colors"
             >
               Add to Cart
@@ -244,7 +245,7 @@ const Cart = () => {
 
   return (
     <>
-      <SEOHead title="Your Cart | Khanakk" description="Review your cart and proceed to checkout." canonical="/cart" />
+      <SEOHead title="Your Cart | BougainQila" description="Review your cart and proceed to checkout." canonical="/cart" />
       <Navbar />
       <main className="min-h-screen bg-background pt-6 pb-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">

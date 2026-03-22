@@ -7,6 +7,7 @@ import SortDropdown, { sortProducts, type SortOption } from "@/components/SortDr
 import { useProducts } from "@/hooks/useProducts";
 import { useHomepageContent } from "@/hooks/useCMS";
 import { Link } from "react-router-dom";
+import SEOHead from "@/components/SEOHead";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import CustomerFormFields, {
@@ -97,6 +98,7 @@ const GiftShop = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <SEOHead title="Gift Shop | BougainQila" description="Thoughtfully curated gift sets for every occasion — housewarming, weddings, festivals and more." canonical="/gift-shop" />
       <Navbar />
       <main className="flex-1 w-full">
         {/* Hero */}
