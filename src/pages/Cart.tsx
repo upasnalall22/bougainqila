@@ -138,7 +138,7 @@ function RecommendationStrip({ cartProductIds }: { cartProductIds: string[] }) {
             </Link>
             <p className="text-xs font-medium text-foreground mb-2">₹{rec.price.toLocaleString("en-IN")}.00</p>
             <button
-              onClick={() => addToCart(rec.id)}
+              onClick={() => { addToCart(rec.id); trackAddToCart({ id: rec.id, name: rec.name, price: rec.price, quantity: 1 }); }}
               className="w-full mt-auto border border-border text-foreground text-[10px] tracking-[0.1em] uppercase py-2 rounded-sm hover:bg-muted transition-colors"
             >
               Add to Cart
