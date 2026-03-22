@@ -126,7 +126,7 @@ const AccountProfile = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <SEOHead title="My Profile | BougenQila" description="Manage your BougenQila account profile and delivery address." />
+      <SEOHead title="My Profile | BougainQila" description="Manage your BougainQila account profile and delivery address." />
       <Navbar />
       <main className="flex-1 max-w-2xl mx-auto px-4 md:px-6 py-12 w-full">
         {/* Account Nav */}

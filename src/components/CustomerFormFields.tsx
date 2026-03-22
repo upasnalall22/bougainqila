@@ -56,7 +56,7 @@ export function validateCustomerForm(form: CustomerFormData): CustomerFormErrors
 
 const WHATSAPP_NUMBER = "919999999999";
 const PHONE_NUMBER = "+919999999999";
-const EMAIL_ADDRESS = "hello@bougenqila.com";
+const EMAIL_ADDRESS = "hello@bougainqila.com";
 
 const inputClass =
   "w-full border border-border bg-background px-3 py-2.5 text-sm text-foreground rounded-sm focus:outline-none focus:ring-1 focus:ring-primary";

@@ -71,7 +71,7 @@ const AccountLogin = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <SEOHead title="My Account | BougenQila" description="Sign in or create your BougenQila account to track orders and manage your profile." />
+      <SEOHead title="My Account | BougainQila" description="Sign in or create your BougainQila account to track orders and manage your profile." />
       <Navbar />
       <main className="flex-1 flex items-center justify-center px-4 py-16">
         <div className="w-full max-w-sm">

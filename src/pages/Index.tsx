@@ -17,7 +17,7 @@ const Index = () => {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "BougenQila",
+    name: "BougainQila",
     url: window.location.origin,
     description: heroContent?.meta_description || "Handcrafted clay home decor & accessories.",
     potentialAction: {
@@ -30,7 +30,7 @@ const Index = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <SEOHead
-        title={heroContent?.meta_title || "BougenQila — Handcrafted Clay Home Decor"}
+        title={heroContent?.meta_title || "BougainQila — Handcrafted Clay Home Decor"}
         description={heroContent?.meta_description || "Handcrafted clay home decor & accessories. Every piece is one of a kind."}
         canonical={window.location.origin}
         jsonLd={jsonLd}

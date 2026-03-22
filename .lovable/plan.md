@@ -4,7 +4,7 @@
 
 ## Summary
 
-Adapt all website copy to match the BougenQila brand guidebook voice (unhurried, tactile, honest, intimate, story-led). Replace the logo with the uploaded master logo file. Update the newsletter popup to use session-based (not localStorage) display logic and store subscriber data in the database.
+Adapt all website copy to match the BougainQila brand guidebook voice (unhurried, tactile, honest, intimate, story-led). Replace the logo with the uploaded master logo file. Update the newsletter popup to use session-based (not localStorage) display logic and store subscriber data in the database.
 
 ---
 

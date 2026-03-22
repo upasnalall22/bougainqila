@@ -10,14 +10,14 @@ interface SEOHeadProps {
 }
 
 const SEOHead = ({
-  title = "BougenQila — Handcrafted Clay Home Decor",
-  description = "BougenQila — Handcrafted clay home decor & accessories. Every piece is one of a kind.",
+  title = "BougainQila — Handcrafted Clay Home Decor",
+  description = "BougainQila — Handcrafted clay home decor & accessories. Every piece is one of a kind.",
   canonical,
   ogImage = "https://lovable.dev/opengraph-image-p98pqg.png",
   type = "website",
   jsonLd,
 }: SEOHeadProps) => {
-  const fullTitle = title.includes("BougenQila") ? title : `${title} — BougenQila`;
+  const fullTitle = title.includes("BougainQila") ? title : `${title} — BougainQila`;
 
   return (
     <Helmet>

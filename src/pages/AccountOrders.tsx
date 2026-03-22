@@ -64,7 +64,7 @@ const AccountOrders = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <SEOHead title="My Orders | BougenQila" description="View your order history and track delivery status." />
+      <SEOHead title="My Orders | BougainQila" description="View your order history and track delivery status." />
       <Navbar />
       <main className="flex-1 max-w-2xl mx-auto px-4 md:px-6 py-12 w-full">
         <h1
