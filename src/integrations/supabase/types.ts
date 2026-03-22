@@ -496,6 +496,7 @@ export type Database = {
           total: number
           tracking_number: string | null
           updated_at: string
+          user_id: string | null
         }
         Insert: {
           created_at?: string
@@ -513,6 +514,7 @@ export type Database = {
           total?: number
           tracking_number?: string | null
           updated_at?: string
+          user_id?: string | null
         }
         Update: {
           created_at?: string
@@ -530,6 +532,7 @@ export type Database = {
           total?: number
           tracking_number?: string | null
           updated_at?: string
+          user_id?: string | null
         }
         Relationships: [
           {
@@ -725,6 +728,54 @@ export type Database = {
           stock_quantity?: number
           tag?: string | null
           updated_at?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          address: string | null
+          city: string | null
+          created_at: string
+          email: string | null
+          first_name: string | null
+          id: string
+          last_name: string | null
+          phone: string | null
+          pincode: string | null
+          salutation: string | null
+          state: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          address?: string | null
+          city?: string | null
+          created_at?: string
+          email?: string | null
+          first_name?: string | null
+          id?: string
+          last_name?: string | null
+          phone?: string | null
+          pincode?: string | null
+          salutation?: string | null
+          state?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          address?: string | null
+          city?: string | null
+          created_at?: string
+          email?: string | null
+          first_name?: string | null
+          id?: string
+          last_name?: string | null
+          phone?: string | null
+          pincode?: string | null
+          salutation?: string | null
+          state?: string | null
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
