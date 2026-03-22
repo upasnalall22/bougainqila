@@ -20,6 +20,7 @@ const UPI_ID = "kavely@upi";
 
 const Checkout = () => {
   const { items, subtotal, clearCart } = useCart();
+  const { user } = useAuth();
   const navigate = useNavigate();
   const [form, setForm] = useState<CustomerFormData>({ ...emptyCustomerForm, salutation: "Mr." });
   const [errors, setErrors] = useState<CustomerFormErrors>({});
