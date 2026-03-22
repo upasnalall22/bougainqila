@@ -28,6 +28,7 @@ const Navbar = () => {
   const megaRef = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const { totalItems, openCart } = useCart();
+  const navigate = useNavigate();
 
   const handleMegaEnter = () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
