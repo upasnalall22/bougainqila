@@ -58,6 +58,7 @@ const Connect = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <SEOHead title="Contact Us | BougainQila" description="Get in touch with BougainQila. We'd love to hear from you — questions, custom orders and collaborations welcome." canonical="/connect" />
       <Navbar />
       <main className="flex-1 max-w-2xl mx-auto px-6 py-20 w-full">
         <p className="text-sm tracking-[0.3em] uppercase text-muted-foreground mb-3">Say Hello</p>

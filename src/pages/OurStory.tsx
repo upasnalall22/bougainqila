@@ -22,6 +22,7 @@ const OurStory = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <SEOHead title="Our Story | BougainQila" description="Discover the story behind BougainQila — handcrafted clay home decor inspired by art, nature and everyday beauty." canonical="/our-story" />
       <Navbar />
       <main className="flex-1">
         {/* Brand Story */}

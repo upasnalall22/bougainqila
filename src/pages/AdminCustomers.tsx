@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Plus, Edit, Trash2, X, Save, Search } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SEOHead from "@/components/SEOHead";
 import CustomerFormFields, {
   type CustomerFormData,
   type CustomerFormErrors,

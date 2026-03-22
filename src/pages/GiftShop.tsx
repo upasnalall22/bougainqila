@@ -98,6 +98,7 @@ const GiftShop = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <SEOHead title="Gift Shop | BougainQila" description="Thoughtfully curated gift sets for every occasion — housewarming, weddings, festivals and more." canonical="/gift-shop" />
       <Navbar />
       <main className="flex-1 w-full">
         {/* Hero */}

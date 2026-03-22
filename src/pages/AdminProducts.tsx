@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Plus, Trash2, Edit, Upload, X, Save, FileUp, Download } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SEOHead from "@/components/SEOHead";
 import type { Tables } from "@/integrations/supabase/types";
 
 type Product = Tables<"products">;

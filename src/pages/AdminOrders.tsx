@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Plus, Eye, X, Package, Search, Truck } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SEOHead from "@/components/SEOHead";
 
 const ORDER_STATUSES = [
   { value: "pending", label: "Pending", color: "bg-yellow-100 text-yellow-800" },

@@ -1,8 +1,10 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SEOHead from "@/components/SEOHead";
 
 const CookiePolicy = () => (
   <div className="min-h-screen flex flex-col">
+    <SEOHead title="Cookie Policy | BougainQila" description="Learn about how BougainQila uses cookies on our website." canonical="/cookie-policy" />
     <Navbar />
     <main className="flex-1 max-w-3xl mx-auto px-6 py-16 w-full">
       <p className="text-sm tracking-[0.3em] uppercase text-muted-foreground mb-3">Legal</p>
