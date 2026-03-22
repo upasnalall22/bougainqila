@@ -31,6 +31,9 @@ import AdminDashboard from "./pages/AdminDashboard.tsx";
 import AdminOrders from "./pages/AdminOrders.tsx";
 import AdminCustomers from "./pages/AdminCustomers.tsx";
 import AdminLogin from "./pages/AdminLogin.tsx";
+import AccountLogin from "./pages/AccountLogin.tsx";
+import AccountProfile from "./pages/AccountProfile.tsx";
+import AccountOrders from "./pages/AccountOrders.tsx";
 import CookiePolicy from "./pages/CookiePolicy.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
@@ -63,6 +66,9 @@ const App = () => (
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/thank-you" element={<ThankYou />} />
+                <Route path="/account/login" element={<AccountLogin />} />
+                <Route path="/account" element={<AccountProfile />} />
+                <Route path="/account/orders" element={<AccountOrders />} />
                 <Route path="/admin/login" element={<AdminLogin />} />
                 <Route path="/admin/products" element={<AdminRoute><AdminProducts /></AdminRoute>} />
                 <Route path="/admin/orders" element={<AdminRoute><AdminOrders /></AdminRoute>} />

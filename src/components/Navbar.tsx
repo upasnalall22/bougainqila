@@ -1,6 +1,6 @@
 import { ShoppingBag, User, Menu, X, Search, ChevronDown } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "@/assets/logo.png";
 import { useCart } from "@/hooks/useCart";
 import AnnouncementTicker from "@/components/AnnouncementTicker";
@@ -28,6 +28,7 @@ const Navbar = () => {
   const megaRef = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const { totalItems, openCart } = useCart();
+  const navigate = useNavigate();
 
   const handleMegaEnter = () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -112,7 +113,7 @@ const Navbar = () => {
           <button onClick={() => setSearchOpen(true)} className="text-foreground hover:text-primary transition-colors" aria-label="Search">
             <Search className="w-4 h-4" />
           </button>
-          <button className="text-foreground hover:text-primary transition-colors" aria-label="Account">
+          <button onClick={() => navigate("/account/login")} className="text-foreground hover:text-primary transition-colors" aria-label="Account">
             <User className="w-4 h-4" />
           </button>
           <button onClick={openCart} className="text-foreground hover:text-primary transition-colors relative" aria-label="Cart">

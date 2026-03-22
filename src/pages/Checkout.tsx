@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useCart } from "@/hooks/useCart";
+import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Loader2, Copy } from "lucide-react";
@@ -19,6 +20,7 @@ const UPI_ID = "kavely@upi";
 
 const Checkout = () => {
   const { items, subtotal, clearCart } = useCart();
+  const { user } = useAuth();
   const navigate = useNavigate();
   const [form, setForm] = useState<CustomerFormData>({ ...emptyCustomerForm, salutation: "Mr." });
   const [errors, setErrors] = useState<CustomerFormErrors>({});
@@ -89,6 +91,7 @@ const Checkout = () => {
         .from("orders")
         .insert({
           customer_id: customerId,
+          user_id: user?.id || null,
           subtotal,
           shipping_cost: shipping,
           shipping_fee: shipping,
