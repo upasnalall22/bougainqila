@@ -147,7 +147,8 @@ const Checkout = () => {
       }).catch(() => {});
 
       await clearCart();
-      navigate(`/thank-you?order=${encodeURIComponent(order.order_number)}&total=${total}&shipping=${shipping}&items=${items.length}`);
+      const itemsParam = encodeURIComponent(JSON.stringify(items.map((i) => ({ id: i.product_id, name: i.product.name, price: i.product.price, quantity: i.quantity }))));
+      navigate(`/thank-you?order=${encodeURIComponent(order.order_number)}&total=${total}&shipping=${shipping}&items=${items.length}&itemsData=${itemsParam}`);
     } catch (err: any) {
       toast.error(err.message || "Failed to place order");
     } finally {
