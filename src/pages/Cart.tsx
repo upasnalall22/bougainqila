@@ -7,6 +7,7 @@ import { useRef, useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
+import { trackAddToCart } from "@/lib/analytics";
 
 const FREE_SHIPPING_THRESHOLD = 800;
 const SHIPPING_COST = 100;
