@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useProducts } from "@/hooks/useProducts";
 import { useCart } from "@/hooks/useCart";
 import { useEffect, useRef, useState } from "react";
+import { trackAddToCart } from "@/lib/analytics";
 
 const FeaturedProducts = () => {
   const { data: products, isLoading } = useProducts();
