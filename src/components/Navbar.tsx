@@ -1,7 +1,7 @@
 import { ShoppingBag, User, Menu, X, Search, ChevronDown } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import logo from "@/assets/logo.png";
+import logo from "@/assets/logo.svg";
 import { useCart } from "@/hooks/useCart";
 import AnnouncementTicker from "@/components/AnnouncementTicker";
 import SearchOverlay from "@/components/SearchOverlay";
