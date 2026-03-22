@@ -32,6 +32,16 @@ const Checkout = () => {
   const shipping = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_COST;
   const total = subtotal + shipping;
 
+  // Issue 16: fire trackBeginCheckout when checkout page loads
+  useEffect(() => {
+    if (items.length > 0) {
+      trackBeginCheckout(
+        total,
+        items.map((i) => ({ id: i.product_id, name: i.product.name, price: i.product.price, quantity: i.quantity }))
+      );
+    }
+  }, []);
+
   const handleBlurValidate = (field: keyof CustomerFormErrors) => {
     const allErrors = validateCustomerForm(form);
     setErrors((prev) => ({ ...prev, [field]: allErrors[field] }));
