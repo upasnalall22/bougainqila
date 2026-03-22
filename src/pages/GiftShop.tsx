@@ -7,6 +7,7 @@ import SortDropdown, { sortProducts, type SortOption } from "@/components/SortDr
 import { useProducts } from "@/hooks/useProducts";
 import { useHomepageContent } from "@/hooks/useCMS";
 import { Link } from "react-router-dom";
+import SEOHead from "@/components/SEOHead";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import CustomerFormFields, {
