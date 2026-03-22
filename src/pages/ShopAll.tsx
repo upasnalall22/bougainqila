@@ -28,7 +28,7 @@ const ShopAll = () => {
     <div className="min-h-screen flex flex-col">
       <SEOHead
         title="Shop All — Our Collection"
-        description="Browse the full BougenQila collection of handcrafted clay home decor, windchimes, lettering, and accessories."
+        description="Browse the full BougainQila collection of handcrafted clay home decor, windchimes, lettering, and accessories."
         canonical={`${window.location.origin}/shop`}
       />
       <Navbar />

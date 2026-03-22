@@ -11,7 +11,7 @@ Deno.serve(async () => {
     Deno.env.get("SUPABASE_ANON_KEY")!
   );
 
-  const baseUrl = "https://bougenqila.com";
+  const baseUrl = "https://bougainqila.com";
 
   // Fetch all products, journal posts, and categories in parallel
   const [productsRes, journalRes, categoriesRes] = await Promise.all([

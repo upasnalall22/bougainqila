@@ -37,7 +37,7 @@ const ThankYou = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <SEOHead
-        title="Thank You | BougenQila"
+        title="Thank You | BougainQila"
         description="Your order has been placed successfully."
       />
       <Navbar />

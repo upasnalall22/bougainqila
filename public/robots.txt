@@ -13,4 +13,4 @@ Allow: /
 User-agent: *
 Allow: /
 
-Sitemap: https://bougenqila.com/sitemap.xml
+Sitemap: https://bougainqila.com/sitemap.xml

@@ -10,13 +10,13 @@ const Terms = () => (
         Terms & Conditions
       </h1>
       <div className="prose prose-sm text-muted-foreground space-y-4">
-        <p>By using the BougenQila website and purchasing our products, you agree to the following terms and conditions.</p>
+        <p>By using the BougainQila website and purchasing our products, you agree to the following terms and conditions.</p>
         <h3 className="text-foreground font-medium text-base">Products</h3>
         <p>All products are handmade and may have slight variations in colour, size, and texture. These are not defects but characteristics of handcrafted items.</p>
         <h3 className="text-foreground font-medium text-base">Pricing</h3>
         <p>All prices are listed in INR and are inclusive of applicable taxes unless stated otherwise. Shipping charges may apply based on your location.</p>
         <h3 className="text-foreground font-medium text-base">Intellectual Property</h3>
-        <p>All content, designs, and images on this website are the property of BougenQila and may not be reproduced without permission.</p>
+        <p>All content, designs, and images on this website are the property of BougainQila and may not be reproduced without permission.</p>
         <h3 className="text-foreground font-medium text-base">Contact</h3>
         <p>For questions regarding these terms, reach us at <a href="mailto:kavanika@gmail.com" className="text-primary hover:underline">kavanika@gmail.com</a>.</p>
       </div>

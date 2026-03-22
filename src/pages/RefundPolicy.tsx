@@ -10,7 +10,7 @@ const RefundPolicy = () => (
         Refund Policy
       </h1>
       <div className="prose prose-sm text-muted-foreground space-y-4">
-        <p>At BougenQila, we take great pride in the quality of our handcrafted products. Since each piece is made to order, we have a limited refund policy.</p>
+        <p>At BougainQila, we take great pride in the quality of our handcrafted products. Since each piece is made to order, we have a limited refund policy.</p>
         <h3 className="text-foreground font-medium text-base">Returns</h3>
         <p>If you receive a damaged or defective item, please contact us within 48 hours of delivery with photos of the issue. We will arrange a replacement or full refund.</p>
         <h3 className="text-foreground font-medium text-base">Cancellations</h3>

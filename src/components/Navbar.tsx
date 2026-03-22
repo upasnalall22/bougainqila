@@ -52,7 +52,7 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex-shrink-0">
-          <img src={logo} alt="BougenQila" className="h-14 md:h-16 w-auto object-contain" />
+          <img src={logo} alt="BougainQila" className="h-14 md:h-16 w-auto object-contain" />
         </Link>
 
         {/* Desktop Nav */}

@@ -12,7 +12,7 @@ const Journal = () => {
     <div className="min-h-screen flex flex-col">
       <SEOHead
         title="Journal — Stories & Inspiration"
-        description="Read stories, styling tips, and behind-the-scenes insights from BougenQila's handcrafted clay studio."
+        description="Read stories, styling tips, and behind-the-scenes insights from BougainQila's handcrafted clay studio."
         canonical={`${window.location.origin}/journal`}
       />
       <Navbar />

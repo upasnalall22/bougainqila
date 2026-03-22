@@ -128,7 +128,7 @@ const JournalPost = () => {
     description: post.excerpt || post.meta_description,
     datePublished: post.published_at,
     image: post.cover_image_url,
-    author: { "@type": "Organization", name: "BougenQila" },
+    author: { "@type": "Organization", name: "BougainQila" },
   };
 
   return (

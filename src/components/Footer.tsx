@@ -7,7 +7,7 @@ const Footer = () => {
   const { data: contactContent } = useHomepageContent("footer-contact");
   const { data: socialContent } = useHomepageContent("footer-social");
 
-  const brandName = footerContent?.title || "BougenQila";
+  const brandName = footerContent?.title || "BougainQila";
   const brandDesc = footerContent?.description || "Handmade home decor shaped one piece at a time on a terrace in Gurugram. No two are the same.";
   const email = contactContent?.subtitle || "kavanika@gmail.com";
   const phone = contactContent?.description || "+91 98103 74919";
