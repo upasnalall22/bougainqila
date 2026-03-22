@@ -244,7 +244,7 @@ const Cart = () => {
 
   return (
     <>
-      <SEOHead title="Your Cart | Khanakk" description="Review your cart and proceed to checkout." canonical="/cart" />
+      <SEOHead title="Your Cart | BougainQila" description="Review your cart and proceed to checkout." canonical="/cart" />
       <Navbar />
       <main className="min-h-screen bg-background pt-6 pb-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
