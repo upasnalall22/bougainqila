@@ -31,6 +31,9 @@ import AdminDashboard from "./pages/AdminDashboard.tsx";
 import AdminOrders from "./pages/AdminOrders.tsx";
 import AdminCustomers from "./pages/AdminCustomers.tsx";
 import AdminLogin from "./pages/AdminLogin.tsx";
+import AccountLogin from "./pages/AccountLogin.tsx";
+import AccountProfile from "./pages/AccountProfile.tsx";
+import AccountOrders from "./pages/AccountOrders.tsx";
 import CookiePolicy from "./pages/CookiePolicy.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
