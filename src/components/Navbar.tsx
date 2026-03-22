@@ -1,6 +1,6 @@
 import { ShoppingBag, User, Menu, X, Search, ChevronDown } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "@/assets/logo.png";
 import { useCart } from "@/hooks/useCart";
 import AnnouncementTicker from "@/components/AnnouncementTicker";
