@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useRef, useState, useEffect } from "react";
+import { trackAddToCart } from "@/lib/analytics";
 
 const FREE_SHIPPING_THRESHOLD = 800;
 const SHIPPING_COST = 100;
