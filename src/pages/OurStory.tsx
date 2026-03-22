@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import NewsletterBar from "@/components/NewsletterBar";
+import SEOHead from "@/components/SEOHead";
 import { useOurStorySections } from "@/hooks/useOurStory";
 import { Link } from "react-router-dom";
 
