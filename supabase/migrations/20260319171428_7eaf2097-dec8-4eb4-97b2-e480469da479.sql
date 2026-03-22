@@ -94,9 +94,9 @@ ON CONFLICT (section) DO NOTHING;
 
 -- Seed default category content
 INSERT INTO public.category_content (slug, name, description, meta_title, meta_description) VALUES
-('windchimes', 'Clay Windchimes', 'Handcrafted clay windchimes that bring melodic charm to your living spaces.', 'Clay Windchimes — BougenQila', 'Shop handcrafted clay windchimes. Each piece is unique and made with love.'),
-('letterings', 'Clay Lettering', 'Personalised clay lettering for your walls and spaces.', 'Clay Lettering — BougenQila', 'Custom clay lettering, hand-shaped to order. Perfect for home decor and gifts.'),
-('containers', 'Clay Containers', 'Handmade clay planters, bowls and trinket containers.', 'Clay Containers — BougenQila', 'Unique handmade clay containers, planters and bowls for your home.'),
-('hair-accents', 'Hair Accessories', 'One-of-a-kind clay hair accessories and jooda sticks.', 'Clay Hair Accessories — BougenQila', 'Handcrafted clay hair accessories. Unique jooda sticks and hair pins.'),
-('gift-set', 'Gift Sets', 'Curated gift sets of handcrafted clay pieces.', 'Gift Sets — BougenQila', 'Thoughtful handmade clay gift sets for every occasion.')
+('windchimes', 'Clay Windchimes', 'Handcrafted clay windchimes that bring melodic charm to your living spaces.', 'Clay Windchimes — BougainQila', 'Shop handcrafted clay windchimes. Each piece is unique and made with love.'),
+('letterings', 'Clay Lettering', 'Personalised clay lettering for your walls and spaces.', 'Clay Lettering — BougainQila', 'Custom clay lettering, hand-shaped to order. Perfect for home decor and gifts.'),
+('containers', 'Clay Containers', 'Handmade clay planters, bowls and trinket containers.', 'Clay Containers — BougainQila', 'Unique handmade clay containers, planters and bowls for your home.'),
+('hair-accents', 'Hair Accessories', 'One-of-a-kind hair accessories and Hair-Bun sticks.', 'Hair Accessories — BougainQila', 'Handcrafted clay hair accessories. Unique hair-bun sticks and hair pins.'),
+('gift-set', 'Gift Sets', 'Curated gift sets of handcrafted clay pieces.', 'Gift Sets — BougainQila', 'Thoughtful handmade clay gift sets for every occasion.')
 ON CONFLICT (slug) DO NOTHING;
