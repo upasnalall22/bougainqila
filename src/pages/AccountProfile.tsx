@@ -7,7 +7,7 @@ import SEOHead from "@/components/SEOHead";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Loader2, Package, LogOut, User } from "lucide-react";
-import { indianCities } from "@/data/indianCities";
+import { INDIAN_CITIES } from "@/data/indianCities";
 
 interface Profile {
   salutation: string;
