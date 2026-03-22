@@ -86,7 +86,7 @@ const AccountProfile = () => {
   if (!user) return <Navigate to="/account/login" replace />;
 
   const filteredCities = citySearch.length >= 2
-    ? indianCities.filter((c) => c.city.toLowerCase().includes(citySearch.toLowerCase())).slice(0, 8)
+    ? INDIAN_CITIES.filter((c) => c.city.toLowerCase().includes(citySearch.toLowerCase())).slice(0, 8)
     : [];
 
   const selectCity = (city: { city: string; state: string }) => {
