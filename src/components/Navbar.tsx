@@ -113,7 +113,7 @@ const Navbar = () => {
           <button onClick={() => setSearchOpen(true)} className="text-foreground hover:text-primary transition-colors" aria-label="Search">
             <Search className="w-4 h-4" />
           </button>
-          <button className="text-foreground hover:text-primary transition-colors" aria-label="Account">
+          <button onClick={() => navigate("/account/login")} className="text-foreground hover:text-primary transition-colors" aria-label="Account">
             <User className="w-4 h-4" />
           </button>
           <button onClick={openCart} className="text-foreground hover:text-primary transition-colors relative" aria-label="Cart">
