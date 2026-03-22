@@ -1,6 +1,7 @@
 import { Heart } from "lucide-react";
 import { useCart } from "@/hooks/useCart";
 import { useWishlist } from "@/hooks/useWishlist";
+import { trackAddToCart } from "@/lib/analytics";
 
 interface ProductCardProps {
   product: {
