@@ -224,7 +224,7 @@ function FrequentlyBoughtTogether({ cartProductIds }: { cartProductIds: string[]
             </Link>
             <p className="text-xs font-medium text-foreground mb-2">MRP ₹{p.price.toLocaleString("en-IN")}.00</p>
             <button
-              onClick={() => addToCart(p.id)}
+              onClick={() => { addToCart(p.id); trackAddToCart({ id: p.id, name: p.name, price: p.price, quantity: 1 }); }}
               className="w-full mt-auto border border-border text-foreground text-[10px] tracking-[0.1em] uppercase py-2.5 rounded-sm hover:bg-muted transition-colors"
             >
               Add to Cart

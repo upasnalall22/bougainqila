@@ -80,7 +80,7 @@ serve(async (req) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: "Kavely <onboarding@resend.dev>",
+        from: "BougainQila <onboarding@resend.dev>",
         to: [NOTIFY_EMAIL],
         subject,
         html,
