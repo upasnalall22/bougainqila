@@ -31,7 +31,7 @@ const RefundPolicy = () => (
         <p>
           For any refund-related queries, please email us at{" "}
           <a href="studio@bougainqila.com" className="text-primary hover:underline">
-            kavanika@gmail.com
+            studio@bougainqila.com
           </a>
           .
         </p>
