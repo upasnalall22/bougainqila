@@ -40,8 +40,8 @@ const Index = () => {
         <HeroBanner />
         <TrustBadges />
         <CategoryGrid />
-        <AboutSection />
         <FeaturedProducts />
+        <AboutSection />
         <JournalSection />
         <NewsletterBar />
       </main>
