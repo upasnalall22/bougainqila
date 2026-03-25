@@ -11,7 +11,7 @@ interface SEOHeadProps {
   noindex?: boolean;
 }
 
-const SITE_URL = "https://bougenqila.lovable.app";
+const SITE_URL = "https://www.bougainqila.com";
 const OG_IMAGE = "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/4ecc4159-a0a2-434d-9f8b-1cf6ab4d756d/id-preview-ee2c3921--bff7b52e-cfe1-4a42-a7eb-3e3c0d7fc884.lovable.app-1773989906928.png";
 
 const SEOHead = ({
