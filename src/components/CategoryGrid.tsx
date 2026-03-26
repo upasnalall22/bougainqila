@@ -69,7 +69,7 @@ const CategoryGrid = () => {
           className="text-2xl sm:text-3xl md:text-4xl font-light text-foreground"
           style={{ fontFamily: "'Cormorant Garamond', serif" }}
         >
-          Made by hand, meant to last
+          Where slow things live.
         </h2>
       </div>
 

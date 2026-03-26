@@ -89,7 +89,7 @@ ALTER TABLE public.products ADD COLUMN IF NOT EXISTS meta_description text;
 -- Seed default homepage content
 INSERT INTO public.homepage_content (section, title, subtitle, description, button_text, button_link, meta_title, meta_description) VALUES
 ('hero', 'One of a Kind Clay Creations', 'Handcrafted with Love', 'Unique handmade home decor & accessories, crafted piece by piece with intention.', 'Explore More', '/shop', 'BougainQila — Handcrafted Clay Home Decor', 'BougainQila — Handcrafted clay home decor & accessories. Every piece is one of a kind.'),
-('about', 'Made by Hand, Made with Heart', 'Our Story', 'Every piece in our collection is shaped by hand from natural clay — no molds, no mass production. Each windchime, letter, container, and hair accessory carries the subtle imperfections that make handmade art truly special.', 'Learn More About Us →', '/our-story', NULL, NULL)
+('about', 'Where slow things live.', 'Our Story', 'Every piece in our collection is shaped by hand from natural clay — no molds, no mass production. Each windchime, letter, container, and hair accessory carries the subtle imperfections that make handmade art truly special.', 'Learn More About Us →', '/our-story', NULL, NULL)
 ON CONFLICT (section) DO NOTHING;
 
 -- Seed default category content
