@@ -75,7 +75,7 @@ const NewsletterPopup = () => {
                 type="submit"
                 className="w-full bg-primary text-primary-foreground py-3 text-sm tracking-wide rounded-full hover:opacity-90 transition-opacity font-medium"
               >
-                Join the Waitlist
+                Let the Clay shape
               </button>
             </form>
           )}
