@@ -80,9 +80,7 @@ const NewsletterPopup = () => {
             </form>
           )}
 
-          <p className="text-[11px] text-muted-foreground mt-4">
-            No spam, ever. Just soulful updates.
-          </p>
+          <p className="text-[11px] text-muted-foreground mt-4">Just a story. When the light is right.</p>
           <p className="text-[10px] text-muted-foreground/60 mt-2">
             By subscribing, you agree to our{" "}
             <Link to="/terms" onClick={close} className="underline hover:text-foreground transition-colors">
