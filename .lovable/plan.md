@@ -46,7 +46,7 @@ Apply brand guidebook voice throughout. Key vocabulary shifts: "handcrafted" not
 **FeaturedProducts.tsx**
 
 - subtitle: "Curated" → "From the Studio"
-- title: "Featured Pieces" (keep — "pieces" is brand vocabulary)
+- title: "A favorite story" (keep — "favorite story" is brand vocabulary)
 - "Add to Cart" → "Bring Home"
 
 **JournalSection.tsx**
