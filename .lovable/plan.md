@@ -33,7 +33,7 @@ Apply brand guidebook voice throughout. Key vocabulary shifts: "handcrafted" not
 **CategoryGrid.tsx**
 
 - Section subtitle: "Collections" (keep)
-- Section title: "Shop by Category" → "Made by hand, meant to last"
+- Section title: "Shop by Category" → "Where slow things breathe"
 - CTA text: "Explore More →" → "Explore →"
 
 **AboutSection.tsx** (fallback text)
