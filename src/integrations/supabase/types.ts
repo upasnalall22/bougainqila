@@ -950,6 +950,12 @@ export type Database = {
         Args: { payload: Json; queue_name: string }
         Returns: number
       }
+      find_customer_by_phone: {
+        Args: { _phone: string }
+        Returns: {
+          id: string
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
