@@ -83,7 +83,7 @@ function HomepageTab() {
 
   const saveMutation = useMutation({
     mutationFn: async () => {
-      const { error } = await supabase.from("homepage_content").update(form).eq("section", editing!);
+      const { error } = await supabase.from("homepage_content").update(form as any).eq("section", editing!);
       if (error) throw error;
     },
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["homepage-content"] }); setEditing(null); },
@@ -157,7 +157,7 @@ function CategoriesTab() {
 
   const saveMutation = useMutation({
     mutationFn: async () => {
-      const { error } = await supabase.from("category_content").update(form).eq("slug", editing!);
+      const { error } = await supabase.from("category_content").update(form as any).eq("slug", editing!);
       if (error) throw error;
     },
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["all-category-content"] }); setEditing(null); },
@@ -417,7 +417,7 @@ function OurStoryTab() {
 
   const saveMutation = useMutation({
     mutationFn: async () => {
-      const { error } = await supabase.from("our_story_sections").update(form).eq("section_key", editing!);
+      const { error } = await supabase.from("our_story_sections").update(form as any).eq("section_key", editing!);
       if (error) throw error;
     },
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["our-story-sections"] }); setEditing(null); },
