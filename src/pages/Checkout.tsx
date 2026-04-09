@@ -65,11 +65,11 @@ const Checkout = () => {
     const phone = "+91" + form.mobile.replace(/\s/g, "");
 
     try {
-      const { data: existingCustomer } = await supabase
-        .from("customers")
-        .select("id")
-        .eq("phone", phone)
-        .maybeSingle();
+      const { data: existingCustomers } = await supabase
+        .rpc("find_customer_by_phone", { _phone: phone });
+      const existingCustomer = existingCustomers && existingCustomers.length > 0
+        ? existingCustomers[0]
+        : null;
 
       let customerId: string;
       const customerData = {
