@@ -20,6 +20,7 @@ const posts = [
 
 const InstaFeed = () => (
   <div className="min-h-screen flex flex-col">
+    <SEOHead title="InstaFeed | BougainQila" description="Follow BougainQila on Instagram — handcrafted clay home decor inspiration." canonical="/insta-feed" />
     <Navbar />
     <main className="flex-1">
       <section className="max-w-7xl mx-auto px-6 py-20">
