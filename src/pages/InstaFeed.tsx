@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SEOHead from "@/components/SEOHead";
 import { Instagram } from "lucide-react";
 import journal1 from "@/assets/journal-1.jpg";
 import journal2 from "@/assets/journal-2.jpg";
@@ -19,6 +20,7 @@ const posts = [
 
 const InstaFeed = () => (
   <div className="min-h-screen flex flex-col">
+    <SEOHead title="InstaFeed | BougainQila" description="Follow BougainQila on Instagram — handcrafted clay home decor inspiration." canonical="/insta-feed" />
     <Navbar />
     <main className="flex-1">
       <section className="max-w-7xl mx-auto px-6 py-20">

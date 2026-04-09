@@ -1,8 +1,10 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SEOHead from "@/components/SEOHead";
 
 const RefundPolicy = () => (
   <div className="min-h-screen flex flex-col">
+    <SEOHead title="Refund Policy | BougainQila" description="BougainQila refund and return policy for handcrafted clay home decor products." canonical="/refund-policy" />
     <Navbar />
     <main className="flex-1 max-w-3xl mx-auto px-6 py-20 w-full">
       <p className="text-sm tracking-[0.3em] uppercase text-muted-foreground mb-3">Policies</p>
