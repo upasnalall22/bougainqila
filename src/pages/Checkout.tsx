@@ -4,7 +4,6 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
 import { useCart } from "@/hooks/useCart";
-import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Loader2, Copy } from "lucide-react";
@@ -22,7 +21,6 @@ const UPI_ID = "kavely@upi";
 
 const Checkout = () => {
   const { items, subtotal, clearCart } = useCart();
-  const { user } = useAuth();
   const navigate = useNavigate();
   const [form, setForm] = useState<CustomerFormData>({ ...emptyCustomerForm, salutation: "Mr." });
   const [errors, setErrors] = useState<CustomerFormErrors>({});
@@ -32,7 +30,6 @@ const Checkout = () => {
   const shipping = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_COST;
   const total = subtotal + shipping;
 
-  // Issue 16: fire trackBeginCheckout when checkout page loads
   useEffect(() => {
     if (items.length > 0) {
       trackBeginCheckout(
@@ -61,94 +58,36 @@ const Checkout = () => {
     if (items.length === 0) return;
     setPlacing(true);
 
-    const fullName = [form.salutation, form.firstName, form.lastName].filter(Boolean).join(" ");
-    const phone = "+91" + form.mobile.replace(/\s/g, "");
-
     try {
-      const { data: existingCustomers } = await supabase
-        .rpc("find_customer_by_phone", { _phone: phone });
-      const existingCustomer = existingCustomers && existingCustomers.length > 0
-        ? existingCustomers[0]
-        : null;
+      const { data, error } = await supabase.functions.invoke("create-order", {
+        body: {
+          salutation: form.salutation,
+          firstName: form.firstName,
+          lastName: form.lastName,
+          email: form.email,
+          mobile: form.mobile.replace(/\s/g, ""),
+          address: form.address,
+          city: form.city,
+          state: form.state,
+          pincode: form.pincode,
+          items: items.map((i) => ({
+            product_id: i.product_id,
+            quantity: i.quantity,
+          })),
+        },
+      });
 
-      let customerId: string;
-      const customerData = {
-        name: fullName,
-        salutation: form.salutation,
-        first_name: form.firstName.trim(),
-        last_name: form.lastName.trim() || null,
-        email: form.email.trim(),
-        phone,
-        address: form.address || null,
-        city: form.city || null,
-        state: form.state || null,
-        pincode: form.pincode || null,
-      };
-
-      if (existingCustomer) {
-        customerId = existingCustomer.id;
-        await supabase.from("customers").update(customerData).eq("id", customerId);
-      } else {
-        const { data: newCustomer, error: custErr } = await supabase
-          .from("customers")
-          .insert(customerData)
-          .select("id")
-          .single();
-        if (custErr || !newCustomer) throw new Error("Could not create customer");
-        customerId = newCustomer.id;
+      if (error || !data?.success) {
+        throw new Error(data?.error || error?.message || "Failed to place order");
       }
 
-      const shippingAddress = [form.address, form.city, form.state, form.pincode].filter(Boolean).join(", ");
-      const { data: order, error: orderErr } = await supabase
-        .from("orders")
-        .insert({
-          customer_id: customerId,
-          user_id: user?.id || null,
-          subtotal,
-          shipping_cost: shipping,
-          shipping_fee: shipping,
-          total,
-          payment_method: "upi",
-          payment_status: "pending",
-          shipping_address: shippingAddress,
-          notes: `Customer: ${fullName}, Phone: ${phone}, Email: ${form.email}`,
-        })
-        .select("id, order_number")
-        .single();
-
-      if (orderErr || !order) throw new Error("Could not create order");
-
-      const orderItems = items.map((item) => ({
-        order_id: order.id,
-        product_id: item.product_id,
-        product_name: item.product.name,
-        quantity: item.quantity,
-        unit_price: item.product.price,
-        total_price: item.product.price * item.quantity,
-      }));
-
-      const { error: itemsErr } = await supabase.from("order_items").insert(orderItems);
-      if (itemsErr) throw new Error("Could not save order items");
-
-      supabase.functions.invoke("send-order-notification", {
-        body: {
-          type: "order",
-          order_number: order.order_number,
-          customer_name: fullName,
-          customer_email: form.email,
-          customer_phone: phone,
-          shipping_address: shippingAddress,
-          payment_method: "upi",
-          items: items.map((i) => ({ name: i.product.name, quantity: i.quantity, price: i.product.price })),
-          subtotal,
-          shipping,
-          total,
-        },
-      }).catch(() => {});
-
       await clearCart();
-      const itemsParam = encodeURIComponent(JSON.stringify(items.map((i) => ({ id: i.product_id, name: i.product.name, price: i.product.price, quantity: i.quantity }))));
-      navigate(`/thank-you?order=${encodeURIComponent(order.order_number)}&total=${total}&shipping=${shipping}&items=${items.length}&itemsData=${itemsParam}`);
+      const itemsParam = encodeURIComponent(
+        JSON.stringify(data.items)
+      );
+      navigate(
+        `/thank-you?order=${encodeURIComponent(data.order_number)}&total=${data.total}&shipping=${data.shipping}&items=${data.items_count}&itemsData=${itemsParam}`
+      );
     } catch (err: any) {
       toast.error(err.message || "Failed to place order");
     } finally {
