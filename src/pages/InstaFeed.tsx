@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SEOHead from "@/components/SEOHead";
 import { Instagram } from "lucide-react";
 import journal1 from "@/assets/journal-1.jpg";
 import journal2 from "@/assets/journal-2.jpg";

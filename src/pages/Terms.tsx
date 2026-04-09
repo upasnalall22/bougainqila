@@ -1,8 +1,10 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SEOHead from "@/components/SEOHead";
 
 const Terms = () => (
   <div className="min-h-screen flex flex-col">
+    <SEOHead title="Terms & Conditions | BougainQila" description="Terms and conditions for using the BougainQila website and purchasing handcrafted clay home decor." canonical="/terms" />
     <Navbar />
     <main className="flex-1 max-w-3xl mx-auto px-6 py-20 w-full">
       <p className="text-sm tracking-[0.3em] uppercase text-muted-foreground mb-3">Legal</p>
