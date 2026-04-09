@@ -8,7 +8,7 @@ import ProductCard from "@/components/ProductCard";
 import SEOHead from "@/components/SEOHead";
 import { useProduct, useRelatedProducts } from "@/hooks/useProducts";
 import { useCart } from "@/hooks/useCart";
-import { trackViewItem, trackMetaViewContent } from "@/lib/analytics";
+import { trackViewItem, trackMetaViewContent, trackAddToCart } from "@/lib/analytics";
 
 const trustBadges = [
   { icon: Truck, label: "Hassle-free Shipping" },
@@ -253,7 +253,7 @@ const ProductDetail = () => {
 
             {/* Add to Cart */}
             <button
-              onClick={() => addToCart(product.id, quantity)}
+              onClick={() => { addToCart(product.id, quantity); trackAddToCart({ id: product.id, name: product.name, category: product.category, price: Number(product.price), quantity }); }}
               disabled={!product.in_stock}
               className="w-full bg-primary text-primary-foreground py-3.5 text-xs tracking-[0.2em] uppercase rounded-sm hover:opacity-90 transition-opacity mb-3 disabled:opacity-50 disabled:cursor-not-allowed"
             >
