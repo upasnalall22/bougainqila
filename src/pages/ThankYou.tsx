@@ -52,7 +52,7 @@ const ThankYou = () => {
           <CheckCircle2 className="w-16 h-16 text-green-600 mx-auto mb-4" />
           <h1
             className="text-2xl md:text-3xl font-light text-foreground mb-3"
-            style={{ fontFamily: "'Cormorant Garamond', serif" }}
+            style={{ fontFamily: "var(--font-heading)" }}
           >
             Thank You for Your Order!
           </h1>

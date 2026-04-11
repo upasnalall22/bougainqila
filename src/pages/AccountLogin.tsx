@@ -77,7 +77,7 @@ const AccountLogin = () => {
         <div className="w-full max-w-sm">
           <h1
             className="text-2xl md:text-3xl font-light text-foreground mb-2 text-center"
-            style={{ fontFamily: "'Cormorant Garamond', serif" }}
+            style={{ fontFamily: "var(--font-heading)" }}
           >
             {mode === "login" ? "Welcome Back" : "Create Account"}
           </h1>

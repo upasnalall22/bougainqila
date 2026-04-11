@@ -62,13 +62,13 @@ const Connect = () => {
       <Navbar />
       <main className="flex-1 max-w-2xl mx-auto px-6 py-20 w-full">
         <p className="text-sm tracking-[0.3em] uppercase text-muted-foreground mb-3">Say Hello</p>
-        <h1 className="text-3xl md:text-4xl font-light text-foreground mb-8" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
+        <h1 className="text-3xl md:text-4xl font-light text-foreground mb-8" style={{ fontFamily: "var(--font-heading)" }}>
           We would love to hear from you
         </h1>
 
         {submitted ? (
           <div className="bg-card border border-border rounded-sm p-8 text-center">
-            <p className="text-foreground text-lg mb-2" style={{ fontFamily: "'Cormorant Garamond', serif" }}>Thank you!</p>
+            <p className="text-foreground text-lg mb-2" style={{ fontFamily: "var(--font-heading)" }}>Thank you!</p>
             <p className="text-muted-foreground text-sm">Thank you. We will write back soon.</p>
           </div>
         ) : (

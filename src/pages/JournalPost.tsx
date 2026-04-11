@@ -209,7 +209,7 @@ const JournalPost = () => {
           {/* Title */}
           <h1
             className="text-2xl md:text-4xl font-light text-foreground mb-8"
-            style={{ fontFamily: "'Cormorant Garamond', serif" }}
+            style={{ fontFamily: "var(--font-heading)" }}
           >
             {post.title}
           </h1>

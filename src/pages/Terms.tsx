@@ -10,7 +10,7 @@ const Terms = () => (
       <p className="text-sm tracking-[0.3em] uppercase text-muted-foreground mb-3">Legal</p>
       <h1
         className="text-3xl md:text-4xl font-light text-foreground mb-8"
-        style={{ fontFamily: "'Cormorant Garamond', serif" }}
+        style={{ fontFamily: "var(--font-heading)" }}
       >
         Terms & Conditions
       </h1>

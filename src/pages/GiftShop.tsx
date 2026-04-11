@@ -104,7 +104,7 @@ const GiftShop = () => {
         {/* Hero */}
         <div className="max-w-7xl mx-auto px-6 py-16 text-center">
           <p className="text-sm tracking-[0.3em] uppercase text-muted-foreground mb-3">Curated with Love</p>
-          <h1 className="text-3xl md:text-4xl font-light text-foreground" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
+          <h1 className="text-3xl md:text-4xl font-light text-foreground" style={{ fontFamily: "var(--font-heading)" }}>
             The Gift Shop
           </h1>
           <p className="text-sm text-muted-foreground mt-4 max-w-lg mx-auto">
@@ -124,7 +124,7 @@ const GiftShop = () => {
                     <span className="text-muted-foreground text-xs tracking-widest uppercase">Coming Soon</span>
                   )}
                 </div>
-                <h3 className="text-lg font-light text-foreground mb-1" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
+                <h3 className="text-lg font-light text-foreground mb-1" style={{ fontFamily: "var(--font-heading)" }}>
                   {set.title}
                 </h3>
                 <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2">{set.description}</p>
@@ -136,7 +136,7 @@ const GiftShop = () => {
         {/* Contact Form */}
         <section className="bg-muted py-12 md:py-16">
           <div className="max-w-lg mx-auto px-6">
-            <h2 className="text-xl md:text-2xl font-light text-foreground text-center mb-2 italic" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
+            <h2 className="text-xl md:text-2xl font-light text-foreground text-center mb-2 italic" style={{ fontFamily: "var(--font-heading)" }}>
               Let's Connect
             </h2>
             <p className="text-xs text-muted-foreground tracking-wide text-center mb-8">
@@ -224,7 +224,7 @@ const GiftShop = () => {
         ) : sortedProducts.length > 0 ? (
           <div className="max-w-7xl mx-auto px-6 py-16">
             <div className="flex items-center justify-between mb-10">
-              <h2 className="text-xl md:text-2xl font-light text-foreground" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
+              <h2 className="text-xl md:text-2xl font-light text-foreground" style={{ fontFamily: "var(--font-heading)" }}>
                 Gift Sets
               </h2>
               <SortDropdown sort={sort} onSortChange={setSort} />

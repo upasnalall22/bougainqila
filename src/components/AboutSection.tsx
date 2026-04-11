@@ -24,7 +24,7 @@ const AboutSection = () => {
 
         <div className="max-w-lg">
           <p className="text-sm tracking-[0.3em] uppercase text-muted-foreground mb-3">{subtitle}</p>
-          <h2 className="text-3xl md:text-4xl font-light text-foreground mb-6" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
+          <h2 className="text-3xl md:text-4xl font-light text-foreground mb-6" style={{ fontFamily: "var(--font-heading)" }}>
             {title.split("\n").map((line, i) => (
               <span key={i}>{line}{i === 0 && <br />}</span>
             ))}

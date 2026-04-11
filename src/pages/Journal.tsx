@@ -30,7 +30,7 @@ const Journal = () => {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-4 pb-10">
           <h1
             className="text-3xl md:text-4xl font-light text-foreground"
-            style={{ fontFamily: "'Cormorant Garamond', serif" }}
+            style={{ fontFamily: "var(--font-heading)" }}
           >
             Stories & Inspiration
           </h1>
@@ -74,7 +74,7 @@ const Journal = () => {
                     </p>
                     <h2
                       className="text-lg font-light text-foreground mb-2 group-hover:text-primary transition-colors leading-snug"
-                      style={{ fontFamily: "'Cormorant Garamond', serif" }}
+                      style={{ fontFamily: "var(--font-heading)" }}
                     >
                       {article.title}
                     </h2>

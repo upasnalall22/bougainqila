@@ -42,7 +42,7 @@ const AdminLogin = () => {
     <SEOHead title="Admin Login" noindex />
     <div className="min-h-screen flex items-center justify-center bg-background px-4">
       <div className="w-full max-w-sm">
-        <h1 className="text-2xl font-light text-foreground mb-8 text-center" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
+        <h1 className="text-2xl font-light text-foreground mb-8 text-center" style={{ fontFamily: "var(--font-heading)" }}>
           {mode === "login" ? "Admin Login" : "Create Admin Account"}
         </h1>
         <form onSubmit={handleSubmit} className="space-y-4">

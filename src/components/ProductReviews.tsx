@@ -57,7 +57,7 @@ const ProductReviews = ({ productId }: ProductReviewsProps) => {
     <div className="mt-16 border-t border-border pt-12">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h2 className="text-xl font-light text-foreground mb-1" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
+          <h2 className="text-xl font-light text-foreground mb-1" style={{ fontFamily: "var(--font-heading)" }}>
             Customer Reviews
           </h2>
           {avgRating && (

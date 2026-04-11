@@ -22,7 +22,7 @@ const NewsletterBar = () => {
       }setSubmitted(true);}};return <section className="bg-muted py-12 md:py-16">
       <div className="max-w-2xl mx-auto px-6 text-center">
         <h2 className="text-xl md:text-2xl font-light text-foreground mb-2 italic"
-      style={{ fontFamily: "'Cormorant Garamond', serif" }}>Join the Qila Tribe
+      style={{ fontFamily: "var(--font-heading)" }}>Join the Qila Tribe
 
 
       </h2>

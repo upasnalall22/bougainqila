@@ -258,7 +258,7 @@ const AdminProducts = () => {
       <SEOHead title="Products — Admin" noindex />
       <Navbar />
       <main className="flex-1 max-w-5xl mx-auto px-4 md:px-6 py-10 w-full">
-        <h1 className="text-2xl md:text-3xl font-light text-foreground mb-8" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
+        <h1 className="text-2xl md:text-3xl font-light text-foreground mb-8" style={{ fontFamily: "var(--font-heading)" }}>
           Product Management
         </h1>
 

@@ -61,7 +61,7 @@ const HeroBanner = () => {
           <h1
             className="text-[31px] md:text-[53px] lg:text-[64px] font-light leading-tight text-background mb-4"
             style={{
-              fontFamily: "'Cormorant Garamond', serif",
+              fontFamily: "var(--font-heading)",
               fontStyle: (slide as any)?.title_italic ? "italic" : "normal",
               color: (slide as any)?.title_color || undefined,
               fontSize: (slide as any)?.title_size || undefined,

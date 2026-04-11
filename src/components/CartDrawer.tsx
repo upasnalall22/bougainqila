@@ -67,7 +67,7 @@ function RecommendationStrip({ cartProductIds }: { cartProductIds: string[] }) {
       <div className="flex items-center justify-between mb-3 px-1">
         <h3
           className="text-base font-medium text-foreground"
-          style={{ fontFamily: "'Cormorant Garamond', serif" }}
+          style={{ fontFamily: "var(--font-heading)" }}
         >
           Don't Miss These Essentials
         </h3>
@@ -131,7 +131,7 @@ function CartItemRow({ item }: { item: CartItem }) {
       <div className="flex-1 min-w-0">
         <div className="flex items-start justify-between gap-2">
           <Link to={`/product/${item.product.slug}`}>
-            <h4 className="text-sm text-foreground leading-snug line-clamp-2" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
+            <h4 className="text-sm text-foreground leading-snug line-clamp-2" style={{ fontFamily: "var(--font-heading)" }}>
               {item.product.name}
             </h4>
           </Link>
@@ -185,7 +185,7 @@ const CartDrawer = () => {
         <div className="flex items-center justify-between px-5 py-4 border-b border-border">
           <h2
             className="text-lg tracking-[0.1em] uppercase text-foreground"
-            style={{ fontFamily: "'Cormorant Garamond', serif" }}
+            style={{ fontFamily: "var(--font-heading)" }}
           >
             Cart
           </h2>
