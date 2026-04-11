@@ -24,7 +24,7 @@ const Footer = () => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
           {/* Brand */}
           <div>
-            <h3 className="text-xl font-semibold mb-4" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
+            <h3 className="text-xl font-semibold mb-4" style={{ fontFamily: "var(--font-heading)" }}>
               {brandName}
             </h3>
             <p className="text-sm opacity-70 leading-relaxed">{brandDesc}</p>
