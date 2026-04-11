@@ -51,7 +51,7 @@ const NewsletterPopup = () => {
           <p className="text-xs tracking-[0.2em] uppercase text-primary mb-2">Join the</p>
           <h2
             className="text-2xl font-light text-foreground mb-3"
-            style={{ fontFamily: "'Cormorant Garamond', serif" }}
+            style={{ fontFamily: "var(--font-heading)" }}
           >
             Qila Tribe
           </h2>

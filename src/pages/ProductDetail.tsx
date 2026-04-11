@@ -161,7 +161,7 @@ const ProductDetail = () => {
           <div>
             <h1
               className="text-2xl md:text-3xl font-light text-foreground mb-3"
-              style={{ fontFamily: "'Cormorant Garamond', serif" }}
+              style={{ fontFamily: "var(--font-heading)" }}
             >
               {product.name}
             </h1>
@@ -328,7 +328,7 @@ const ProductDetail = () => {
           <div className="mt-20">
             <h2
               className="text-center text-2xl font-light text-foreground mb-10"
-              style={{ fontFamily: "'Cormorant Garamond', serif" }}
+              style={{ fontFamily: "var(--font-heading)" }}
             >
               You might also like
             </h2>

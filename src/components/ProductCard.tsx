@@ -44,7 +44,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
       </div>
 
       {/* Info */}
-      <h3 className="text-sm text-foreground mb-0.5" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
+      <h3 className="text-sm text-foreground mb-0.5" style={{ fontFamily: "var(--font-heading)" }}>
         {product.name}
       </h3>
       <p className="text-[11px] text-muted-foreground leading-snug mb-1.5 line-clamp-1">

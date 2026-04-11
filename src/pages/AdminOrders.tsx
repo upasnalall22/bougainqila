@@ -204,7 +204,7 @@ const AdminOrders = () => {
       <Navbar />
       <main className="flex-1 max-w-6xl mx-auto px-4 md:px-6 py-10 w-full">
         <div className="flex items-center justify-between mb-8">
-          <h1 className="text-2xl md:text-3xl font-light text-foreground" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
+          <h1 className="text-2xl md:text-3xl font-light text-foreground" style={{ fontFamily: "var(--font-heading)" }}>
             Order Management
           </h1>
           <button

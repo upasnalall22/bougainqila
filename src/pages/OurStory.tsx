@@ -48,7 +48,7 @@ const OurStory = () => {
           <div className="max-w-4xl mx-auto px-6 py-16 md:py-24 text-center">
             <h3
               className="text-xl md:text-3xl font-light text-foreground mb-8 leading-relaxed"
-              style={{ fontFamily: "'Cormorant Garamond', serif" }}
+              style={{ fontFamily: "var(--font-heading)" }}
             >
               {philosophy?.title || "Taking inspiration from the world around us, our offerings are thoughtfully crafted and curated."}
             </h3>
@@ -82,7 +82,7 @@ const OurStory = () => {
                 {founder1.quote && (
                   <blockquote
                     className="text-lg md:text-xl font-light text-foreground mb-6 leading-relaxed italic"
-                    style={{ fontFamily: "'Cormorant Garamond', serif" }}
+                    style={{ fontFamily: "var(--font-heading)" }}
                   >
                     "{founder1.quote}"
                   </blockquote>
@@ -121,7 +121,7 @@ const OurStory = () => {
                 </div>
                 <h4
                   className="text-lg font-light text-foreground mb-1"
-                  style={{ fontFamily: "'Cormorant Garamond', serif" }}
+                  style={{ fontFamily: "var(--font-heading)" }}
                 >
                   {card.title}
                 </h4>

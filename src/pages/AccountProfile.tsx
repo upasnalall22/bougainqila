@@ -133,7 +133,7 @@ const AccountProfile = () => {
         <div className="flex items-center justify-between mb-8">
           <h1
             className="text-2xl md:text-3xl font-light text-foreground"
-            style={{ fontFamily: "'Cormorant Garamond', serif" }}
+            style={{ fontFamily: "var(--font-heading)" }}
           >
             My Account
           </h1>

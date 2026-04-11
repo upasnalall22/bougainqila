@@ -16,7 +16,7 @@ const JournalSection = () => {
         <p className="text-sm tracking-[0.3em] uppercase text-muted-foreground mb-3">{subtitle}</p>
         <h2
           className="text-3xl md:text-4xl font-light text-foreground"
-          style={{ fontFamily: "'Cormorant Garamond', serif" }}
+          style={{ fontFamily: "var(--font-heading)" }}
         >
           {title}
         </h2>

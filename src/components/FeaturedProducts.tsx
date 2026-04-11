@@ -49,7 +49,7 @@ const FeaturedProducts = () => {
           <p className="text-xs tracking-[0.3em] uppercase text-muted-foreground mb-2">From the Studio</p>
           <h2
             className="text-2xl sm:text-3xl md:text-4xl font-light text-foreground"
-            style={{ fontFamily: "'Cormorant Garamond', serif" }}
+            style={{ fontFamily: "var(--font-heading)" }}
           >
             Featured Pieces
           </h2>

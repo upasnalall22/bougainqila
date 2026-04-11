@@ -26,7 +26,7 @@ const InstaFeed = () => (
       <section className="max-w-7xl mx-auto px-6 py-20">
         <div className="text-center mb-12">
           <p className="text-sm tracking-[0.3em] uppercase text-muted-foreground mb-3">Instagram</p>
-          <h1 className="text-3xl md:text-4xl font-light text-foreground" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
+          <h1 className="text-3xl md:text-4xl font-light text-foreground" style={{ fontFamily: "var(--font-heading)" }}>
             Follow Our Story
           </h1>
           <a

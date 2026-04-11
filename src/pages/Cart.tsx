@@ -28,7 +28,7 @@ function CartItemRow({ item }: { item: CartItem }) {
         <div>
           <div className="flex items-start justify-between gap-2">
             <Link to={`/product/${item.product.slug}`}>
-              <h3 className="text-sm sm:text-base text-foreground leading-snug line-clamp-2" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
+              <h3 className="text-sm sm:text-base text-foreground leading-snug line-clamp-2" style={{ fontFamily: "var(--font-heading)" }}>
                 {item.product.name}
               </h3>
             </Link>
@@ -115,7 +115,7 @@ function RecommendationStrip({ cartProductIds }: { cartProductIds: string[] }) {
   return (
     <div className="mt-10">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg sm:text-xl text-foreground tracking-[0.05em]" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
+        <h2 className="text-lg sm:text-xl text-foreground tracking-[0.05em]" style={{ fontFamily: "var(--font-heading)" }}>
           Don't Miss These Essentials
         </h2>
         <div className="flex gap-1.5">
@@ -134,7 +134,7 @@ function RecommendationStrip({ cartProductIds }: { cartProductIds: string[] }) {
               <div className="aspect-square rounded-sm overflow-hidden bg-muted mb-2">
                 <img src={rec.image_url} alt={rec.name} className="w-full h-full object-cover" />
               </div>
-              <p className="text-xs text-foreground leading-tight line-clamp-2 mb-1" style={{ fontFamily: "'Cormorant Garamond', serif" }}>{rec.name}</p>
+              <p className="text-xs text-foreground leading-tight line-clamp-2 mb-1" style={{ fontFamily: "var(--font-heading)" }}>{rec.name}</p>
             </Link>
             <p className="text-xs font-medium text-foreground mb-2">₹{rec.price.toLocaleString("en-IN")}.00</p>
             <button
@@ -201,7 +201,7 @@ function FrequentlyBoughtTogether({ cartProductIds }: { cartProductIds: string[]
   return (
     <div className="mt-12 border-t border-border pt-10">
       <div className="flex items-center justify-between mb-5">
-        <h2 className="text-xl sm:text-2xl text-foreground tracking-[0.05em] uppercase" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
+        <h2 className="text-xl sm:text-2xl text-foreground tracking-[0.05em] uppercase" style={{ fontFamily: "var(--font-heading)" }}>
           Frequently Bought Together
         </h2>
         <div className="flex gap-1.5">
@@ -220,7 +220,7 @@ function FrequentlyBoughtTogether({ cartProductIds }: { cartProductIds: string[]
               <div className="aspect-square rounded-sm overflow-hidden bg-muted mb-2">
                 <img src={p.image_url} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
               </div>
-              <p className="text-xs sm:text-sm text-foreground leading-tight line-clamp-2 mb-1" style={{ fontFamily: "'Cormorant Garamond', serif" }}>{p.name}</p>
+              <p className="text-xs sm:text-sm text-foreground leading-tight line-clamp-2 mb-1" style={{ fontFamily: "var(--font-heading)" }}>{p.name}</p>
             </Link>
             <p className="text-xs font-medium text-foreground mb-2">MRP ₹{p.price.toLocaleString("en-IN")}.00</p>
             <button
@@ -256,7 +256,7 @@ const Cart = () => {
             <span className="text-foreground">Cart</span>
           </nav>
 
-          <h1 className="text-2xl sm:text-3xl text-foreground tracking-[0.05em] uppercase mb-8" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
+          <h1 className="text-2xl sm:text-3xl text-foreground tracking-[0.05em] uppercase mb-8" style={{ fontFamily: "var(--font-heading)" }}>
             Your Cart
           </h1>
 
@@ -303,7 +303,7 @@ const Cart = () => {
               {/* Right: Order Summary */}
               <div className="lg:col-span-1">
                 <div className="border border-border rounded-sm p-5 sm:p-6 sticky top-24">
-                  <h2 className="text-base tracking-[0.1em] uppercase text-foreground mb-5" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
+                  <h2 className="text-base tracking-[0.1em] uppercase text-foreground mb-5" style={{ fontFamily: "var(--font-heading)" }}>
                     Order Summary
                   </h2>
 

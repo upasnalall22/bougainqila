@@ -67,7 +67,7 @@ const CategoryGrid = () => {
         <p className="text-xs tracking-[0.3em] uppercase text-muted-foreground mb-2">Collections</p>
         <h2
           className="text-2xl sm:text-3xl md:text-4xl font-light text-foreground"
-          style={{ fontFamily: "'Cormorant Garamond', serif" }}
+          style={{ fontFamily: "var(--font-heading)" }}
         >
           Where slow things live.
         </h2>
@@ -94,7 +94,7 @@ const CategoryGrid = () => {
             <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10">
               <h3
                 className="text-sm sm:text-base font-medium text-foreground whitespace-nowrap tracking-[0.15em] uppercase bg-background/80 px-4 py-2 rounded-md group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300"
-                style={{ fontFamily: "'Cormorant Garamond', serif" }}
+                style={{ fontFamily: "var(--font-heading)" }}
               >
                 {cat.name}
               </h3>
