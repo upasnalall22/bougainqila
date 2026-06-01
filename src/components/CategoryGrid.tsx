@@ -10,14 +10,12 @@ const fallbackImages: Record<string, string> = {
   windchimes: catWindchimes,
   letterings: catLettering,
   containers: catContainers,
-  "hair-accents": catHair,
 };
 
 const categoryRoutes: Record<string, string> = {
   windchimes: "/home-living/windchimes",
   letterings: "/home-living/letterings",
   containers: "/home-living/containers",
-  "hair-accents": "/home-living/hair-accents",
 };
 
 const CategoryGrid = () => {
@@ -36,8 +34,7 @@ const CategoryGrid = () => {
       : [
           { name: "Clay Windchimes", image: catWindchimes, to: "/home-living/windchimes" },
           { name: "Clay Lettering", image: catLettering, to: "/home-living/letterings" },
-          { name: "Clay Containers", image: catContainers, to: "/home-living/containers" },
-          { name: "Hair Accents", image: catHair, to: "/home-living/hair-accents" },
+          { name: "Mix Bag", image: catContainers, to: "/home-living/containers" },
         ];
 
   // Auto-scroll carousel with 3-second interval
