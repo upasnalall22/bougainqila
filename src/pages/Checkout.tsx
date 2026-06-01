@@ -143,14 +143,21 @@ const Checkout = () => {
                 <p className="text-xs text-muted-foreground">Pay via Google Pay, PhonePe, Paytm, etc.</p>
               </div>
               <div className="mt-3 border border-border rounded-sm p-4 bg-card">
-                <p className="text-xs text-muted-foreground mb-2">Send payment to this UPI ID:</p>
-                <div className="flex items-center gap-2">
-                  <span className="text-sm font-medium text-foreground">{UPI_ID}</span>
-                  <button type="button" onClick={copyUPI} className="text-primary hover:opacity-70">
-                    <Copy className="w-4 h-4" />
-                  </button>
-                  {upiCopied && <span className="text-xs text-green-600">Copied!</span>}
-                </div>
+                <p className="text-xs text-muted-foreground mb-2">
+                  Contact us on WhatsApp to receive the UPI payment details:
+                </p>
+                <a
+                  href={`https://wa.me/${PAYMENT_WHATSAPP_NUMBER}?text=${encodeURIComponent(
+                    `Hi! I'd like to complete my UPI payment of ₹${total.toLocaleString("en-IN")} for my BougainQila order.`
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:opacity-80 select-none"
+                  aria-label="Contact us on WhatsApp for UPI payment"
+                >
+                  <MessageCircle className="w-4 h-4" />
+                  <span>{PAYMENT_CONTACT_MASKED}</span>
+                </a>
                 <p className="text-xs text-muted-foreground mt-2">
                   Amount: <span className="font-medium text-foreground">₹{total.toLocaleString("en-IN")}</span>
                 </p>
