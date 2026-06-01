@@ -9,6 +9,16 @@ const corsHeaders = {
 const SHIPPING_COST = 100;
 const FREE_SHIPPING_THRESHOLD = 800;
 
+function escapeHtml(value: unknown): string {
+  const s = value == null ? "" : String(value);
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -176,19 +186,19 @@ Deno.serve(async (req) => {
       if (RESEND_API_KEY) {
         const itemsHtml = orderItemsData
           .map((i: any) =>
-            `<tr><td style="padding:6px 8px;border-bottom:1px solid #eee">${i.product_name}</td><td style="padding:6px 8px;border-bottom:1px solid #eee;text-align:center">${i.quantity}</td><td style="padding:6px 8px;border-bottom:1px solid #eee;text-align:right">₹${i.unit_price.toLocaleString("en-IN")}</td></tr>`
+            `<tr><td style="padding:6px 8px;border-bottom:1px solid #eee">${escapeHtml(i.product_name)}</td><td style="padding:6px 8px;border-bottom:1px solid #eee;text-align:center">${i.quantity}</td><td style="padding:6px 8px;border-bottom:1px solid #eee;text-align:right">₹${i.unit_price.toLocaleString("en-IN")}</td></tr>`
           )
           .join("");
 
         const html = `
           <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px">
             <h2 style="color:#333;border-bottom:2px solid #c17f59;padding-bottom:8px">🛒 New Order Received</h2>
-            <p><strong>Order:</strong> ${order.order_number}</p>
-            <p><strong>Customer:</strong> ${fullName}</p>
-            <p><strong>Email:</strong> ${email}</p>
-            <p><strong>Phone:</strong> ${phone}</p>
+            <p><strong>Order:</strong> ${escapeHtml(order.order_number)}</p>
+            <p><strong>Customer:</strong> ${escapeHtml(fullName)}</p>
+            <p><strong>Email:</strong> ${escapeHtml(email)}</p>
+            <p><strong>Phone:</strong> ${escapeHtml(phone)}</p>
             <p><strong>Payment:</strong> UPI</p>
-            <p><strong>Ship To:</strong> ${shippingAddress}</p>
+            <p><strong>Ship To:</strong> ${escapeHtml(shippingAddress)}</p>
             <table style="width:100%;border-collapse:collapse;margin:16px 0">
               <thead><tr style="background:#f5f0eb"><th style="padding:6px 8px;text-align:left">Item</th><th style="padding:6px 8px;text-align:center">Qty</th><th style="padding:6px 8px;text-align:right">Price</th></tr></thead>
               <tbody>${itemsHtml}</tbody>
