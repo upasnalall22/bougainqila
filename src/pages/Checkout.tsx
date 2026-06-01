@@ -17,7 +17,8 @@ import CustomerFormFields, {
 
 const SHIPPING_COST = 100;
 const FREE_SHIPPING_THRESHOLD = 800;
-const UPI_ID = "kavely@upi";
+const PAYMENT_WHATSAPP_NUMBER = "919810374919";
+const PAYMENT_CONTACT_MASKED = "+91 98•••• 4919";
 
 const Checkout = () => {
   const { items, subtotal, clearCart } = useCart();
