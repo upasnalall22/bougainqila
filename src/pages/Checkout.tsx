@@ -45,11 +45,8 @@ const Checkout = () => {
     setErrors((prev) => ({ ...prev, [field]: allErrors[field] }));
   };
 
-  const copyUPI = () => {
-    navigator.clipboard.writeText(UPI_ID);
-    setUpiCopied(true);
-    setTimeout(() => setUpiCopied(false), 2000);
-  };
+
+
 
   const handlePlaceOrder = async (e: React.FormEvent) => {
     e.preventDefault();
