@@ -26,7 +26,7 @@ const Checkout = () => {
   const [form, setForm] = useState<CustomerFormData>({ ...emptyCustomerForm, salutation: "Mr." });
   const [errors, setErrors] = useState<CustomerFormErrors>({});
   const [placing, setPlacing] = useState(false);
-  const [upiCopied, setUpiCopied] = useState(false);
+  
 
   const shipping = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_COST;
   const total = subtotal + shipping;
