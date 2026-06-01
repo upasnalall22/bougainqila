@@ -27,6 +27,12 @@ const OurStory = () => {
       <main className="flex-1">
         {/* Brand Story */}
         <section className="max-w-6xl mx-auto px-6 py-16 md:py-24">
+          <h1
+            className="text-3xl md:text-5xl font-light text-foreground text-center mb-12 md:mb-16"
+            style={{ fontFamily: "var(--font-heading)" }}
+          >
+            {hero?.title || "Our Story"}
+          </h1>
           <div className="grid md:grid-cols-2 gap-10 items-center">
             <div className="order-2 md:order-1">
               <p className="text-muted-foreground leading-relaxed text-base md:text-lg">
