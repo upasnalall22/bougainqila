@@ -13,11 +13,10 @@ const subCategories = [
   { label: "All", slug: "" },
   { label: "Windchimes", slug: "windchimes" },
   { label: "Letterings", slug: "letterings" },
-  { label: "Containers", slug: "containers" },
-  { label: "Hair Accents", slug: "hair-accents" },
+  { label: "Mix Bag", slug: "containers" },
 ];
 
-const homeLivingCategories = ["windchimes", "letterings", "containers", "hair-accents"];
+const homeLivingCategories = ["windchimes", "letterings", "containers"];
 
 const HomeLiving = () => {
   const { category } = useParams<{ category?: string }>();

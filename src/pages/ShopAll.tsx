@@ -12,8 +12,7 @@ const filters = [
   { label: "All", value: "" },
   { label: "Windchimes", value: "windchimes" },
   { label: "Letterings", value: "letterings" },
-  { label: "Containers", value: "containers" },
-  { label: "Hair Accents", value: "hair-accents" },
+  { label: "Mix Bag", value: "containers" },
   { label: "Gift Sets", value: "gift-set" },
 ];
 
