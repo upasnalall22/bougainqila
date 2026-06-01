@@ -12,5 +12,10 @@ Allow: /
 
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /account/
+Disallow: /checkout
+Disallow: /cart
+Disallow: /thank-you
 
-Sitemap: https://www.bougainqila.com/sitemap.xml
+Sitemap: https://bougainqila.com/sitemap.xml
