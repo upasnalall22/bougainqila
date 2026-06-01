@@ -6,7 +6,7 @@ import SEOHead from "@/components/SEOHead";
 import { useCart } from "@/hooks/useCart";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Loader2, Copy } from "lucide-react";
+import { Loader2, MessageCircle } from "lucide-react";
 import { trackBeginCheckout } from "@/lib/analytics";
 import CustomerFormFields, {
   type CustomerFormData,
