@@ -42,13 +42,14 @@ const JournalSection = () => {
                   <span className="text-xs text-muted-foreground">No image</span>
                 </div>
               )}
-              <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/40 transition-colors duration-300 flex items-end justify-center">
-                <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-center px-2 pb-3">
-                  <p className="text-[11px] text-background leading-tight line-clamp-2 font-medium">
-                    {post.title}
-                  </p>
-                </div>
+              {/* Constant bottom gradient + always-visible title for legibility */}
+              <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-foreground/85 via-foreground/40 to-transparent pointer-events-none" />
+              <div className="absolute inset-x-0 bottom-0 p-3 text-center">
+                <p className="text-[11px] sm:text-xs text-background leading-tight line-clamp-2 font-medium tracking-wide [text-shadow:0_1px_6px_rgba(0,0,0,0.6)]">
+                  {post.title}
+                </p>
               </div>
+
             </Link>
           ))}
         </div>
