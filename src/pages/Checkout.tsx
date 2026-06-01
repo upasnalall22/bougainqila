@@ -6,7 +6,7 @@ import SEOHead from "@/components/SEOHead";
 import { useCart } from "@/hooks/useCart";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Loader2, Copy } from "lucide-react";
+import { Loader2, MessageCircle } from "lucide-react";
 import { trackBeginCheckout } from "@/lib/analytics";
 import CustomerFormFields, {
   type CustomerFormData,
@@ -17,7 +17,8 @@ import CustomerFormFields, {
 
 const SHIPPING_COST = 100;
 const FREE_SHIPPING_THRESHOLD = 800;
-const UPI_ID = "kavely@upi";
+const PAYMENT_WHATSAPP_NUMBER = "919810374919";
+const PAYMENT_CONTACT_MASKED = "+91 98•••• 4919";
 
 const Checkout = () => {
   const { items, subtotal, clearCart } = useCart();
@@ -25,7 +26,7 @@ const Checkout = () => {
   const [form, setForm] = useState<CustomerFormData>({ ...emptyCustomerForm, salutation: "Mr." });
   const [errors, setErrors] = useState<CustomerFormErrors>({});
   const [placing, setPlacing] = useState(false);
-  const [upiCopied, setUpiCopied] = useState(false);
+  
 
   const shipping = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_COST;
   const total = subtotal + shipping;
@@ -44,11 +45,8 @@ const Checkout = () => {
     setErrors((prev) => ({ ...prev, [field]: allErrors[field] }));
   };
 
-  const copyUPI = () => {
-    navigator.clipboard.writeText(UPI_ID);
-    setUpiCopied(true);
-    setTimeout(() => setUpiCopied(false), 2000);
-  };
+
+
 
   const handlePlaceOrder = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -145,14 +143,21 @@ const Checkout = () => {
                 <p className="text-xs text-muted-foreground">Pay via Google Pay, PhonePe, Paytm, etc.</p>
               </div>
               <div className="mt-3 border border-border rounded-sm p-4 bg-card">
-                <p className="text-xs text-muted-foreground mb-2">Send payment to this UPI ID:</p>
-                <div className="flex items-center gap-2">
-                  <span className="text-sm font-medium text-foreground">{UPI_ID}</span>
-                  <button type="button" onClick={copyUPI} className="text-primary hover:opacity-70">
-                    <Copy className="w-4 h-4" />
-                  </button>
-                  {upiCopied && <span className="text-xs text-green-600">Copied!</span>}
-                </div>
+                <p className="text-xs text-muted-foreground mb-2">
+                  Contact us on WhatsApp to receive the UPI payment details:
+                </p>
+                <a
+                  href={`https://wa.me/${PAYMENT_WHATSAPP_NUMBER}?text=${encodeURIComponent(
+                    `Hi! I'd like to complete my UPI payment of ₹${total.toLocaleString("en-IN")} for my BougainQila order.`
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:opacity-80 select-none"
+                  aria-label="Contact us on WhatsApp for UPI payment"
+                >
+                  <MessageCircle className="w-4 h-4" />
+                  <span>{PAYMENT_CONTACT_MASKED}</span>
+                </a>
                 <p className="text-xs text-muted-foreground mt-2">
                   Amount: <span className="font-medium text-foreground">₹{total.toLocaleString("en-IN")}</span>
                 </p>
