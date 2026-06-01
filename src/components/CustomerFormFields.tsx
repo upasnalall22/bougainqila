@@ -108,8 +108,9 @@ export default function CustomerFormFields({ form, onChange, errors, onBlurValid
       {/* NAME */}
       <div className="grid grid-cols-[100px_1fr_1fr] gap-2">
         <div>
-          <label className={labelClass}>Title</label>
+          <label htmlFor="cf-salutation" className={labelClass}>Title</label>
           <select
+            id="cf-salutation"
             value={form.salutation}
             onChange={(e) => set("salutation", e.target.value)}
             className={inputClass}
@@ -119,8 +120,9 @@ export default function CustomerFormFields({ form, onChange, errors, onBlurValid
           </select>
         </div>
         <div>
-          <label className={labelClass}>First Name *</label>
+          <label htmlFor="cf-first-name" className={labelClass}>First Name *</label>
           <input
+            id="cf-first-name"
             type="text"
             value={form.firstName}
             onChange={(e) => set("firstName", e.target.value)}
@@ -132,8 +134,9 @@ export default function CustomerFormFields({ form, onChange, errors, onBlurValid
           {errors.firstName && <p className={errorClass}>{errors.firstName}</p>}
         </div>
         <div>
-          <label className={labelClass}>Last Name</label>
+          <label htmlFor="cf-last-name" className={labelClass}>Last Name</label>
           <input
+            id="cf-last-name"
             type="text"
             value={form.lastName}
             onChange={(e) => set("lastName", e.target.value)}
@@ -146,13 +149,14 @@ export default function CustomerFormFields({ form, onChange, errors, onBlurValid
 
       {/* CONTACT */}
       <div>
-        <label className={labelClass}>Mobile *</label>
+        <label htmlFor="cf-mobile" className={labelClass}>Mobile *</label>
         <div className="flex gap-2">
           <div className="border border-border bg-muted px-3 py-2.5 text-sm text-muted-foreground rounded-sm flex items-center gap-1 flex-shrink-0 select-none">
             <span>🇮🇳</span>
             <span>+91</span>
           </div>
           <input
+            id="cf-mobile"
             type="tel"
             value={form.mobile}
             onChange={(e) => set("mobile", e.target.value.replace(/[^\d\s]/g, "").slice(0, 12))}
@@ -180,8 +184,9 @@ export default function CustomerFormFields({ form, onChange, errors, onBlurValid
       </div>
 
       <div>
-        <label className={labelClass}>Email *</label>
+        <label htmlFor="cf-email" className={labelClass}>Email *</label>
         <input
+          id="cf-email"
           type="email"
           value={form.email}
           onChange={(e) => set("email", e.target.value)}
@@ -196,8 +201,9 @@ export default function CustomerFormFields({ form, onChange, errors, onBlurValid
       {/* LOCATION */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <div ref={cityRef} className="relative">
-          <label className={labelClass}>City</label>
+          <label htmlFor="cf-city" className={labelClass}>City</label>
           <input
+            id="cf-city"
             type="text"
             value={form.city}
             onChange={(e) => handleCityInput(e.target.value)}
@@ -228,8 +234,9 @@ export default function CustomerFormFields({ form, onChange, errors, onBlurValid
           )}
         </div>
         <div>
-          <label className={labelClass}>State</label>
+          <label htmlFor="cf-state" className={labelClass}>State</label>
           <input
+            id="cf-state"
             type="text"
             value={form.state}
             readOnly
@@ -239,8 +246,9 @@ export default function CustomerFormFields({ form, onChange, errors, onBlurValid
           />
         </div>
         <div>
-          <label className={labelClass}>Pincode *</label>
+          <label htmlFor="cf-pincode" className={labelClass}>Pincode *</label>
           <input
+            id="cf-pincode"
             type="text"
             value={form.pincode}
             onChange={(e) => set("pincode", e.target.value.replace(/\D/g, "").slice(0, 6))}
@@ -256,8 +264,9 @@ export default function CustomerFormFields({ form, onChange, errors, onBlurValid
       {/* ADDRESS (optional, shown for checkout) */}
       {showAddress && (
         <div>
-          <label className={labelClass}>Address</label>
+          <label htmlFor="cf-address" className={labelClass}>Address</label>
           <textarea
+            id="cf-address"
             value={form.address}
             onChange={(e) => set("address", e.target.value)}
             rows={2}
