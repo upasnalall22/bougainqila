@@ -88,14 +88,17 @@ const CategoryGrid = () => {
               className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               loading="lazy"
             />
+            {/* Bottom gradient for label legibility */}
+            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-foreground/55 to-transparent pointer-events-none" />
             <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10">
               <h3
-                className="text-sm sm:text-base font-medium text-foreground whitespace-nowrap tracking-[0.15em] uppercase bg-background/80 px-4 py-2 rounded-md group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300"
+                className="text-sm sm:text-base font-medium text-foreground whitespace-nowrap tracking-[0.15em] uppercase bg-background/90 backdrop-blur-sm px-4 py-2 rounded-md shadow-sm group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300"
                 style={{ fontFamily: "var(--font-heading)" }}
               >
                 {cat.name}
               </h3>
             </div>
+
           </Link>
         ))}
       </div>

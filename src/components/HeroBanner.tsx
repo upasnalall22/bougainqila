@@ -54,12 +54,14 @@ const HeroBanner = () => {
           loading={i === 0 ? "eager" : "lazy"}
         />
       ))}
-      <div className="absolute inset-0 bg-foreground/30" />
+      {/* Legibility overlays: full dim + stronger bottom gradient where text sits */}
+      <div className="absolute inset-0 bg-foreground/35" />
+      <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-foreground/80 via-foreground/45 to-transparent" />
 
       <div className="relative z-10 w-full px-8 md:px-16 pb-10 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
         <div className="text-left max-w-2xl">
           <h1
-            className="text-[31px] md:text-[53px] lg:text-[64px] font-light leading-tight text-background mb-4"
+            className="text-[31px] md:text-[53px] lg:text-[64px] font-light leading-tight text-background mb-4 [text-shadow:0_2px_18px_rgba(0,0,0,0.55)]"
             style={{
               fontFamily: "var(--font-heading)",
               fontStyle: (slide as any)?.title_italic ? "italic" : "normal",
@@ -71,10 +73,11 @@ const HeroBanner = () => {
               <span key={i}>{line}{i === 0 && <br />}</span>
             ))}
           </h1>
-          <p className="text-background/90 text-base md:text-lg max-w-md">
+          <p className="text-background text-base md:text-lg max-w-md [text-shadow:0_1px_10px_rgba(0,0,0,0.55)]">
             {slide?.description}
           </p>
         </div>
+
 
         <div className="flex flex-col items-start md:items-end gap-4 self-start md:self-end">
           <Link
