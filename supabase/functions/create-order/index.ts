@@ -9,6 +9,16 @@ const corsHeaders = {
 const SHIPPING_COST = 100;
 const FREE_SHIPPING_THRESHOLD = 800;
 
+function escapeHtml(value: unknown): string {
+  const s = value == null ? "" : String(value);
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
