@@ -12,11 +12,10 @@ import { useParams, Link } from "react-router-dom";
 const subCategories = [
   { label: "All", slug: "" },
   { label: "Windchimes", slug: "windchimes" },
-  { label: "Letterings", slug: "letterings" },
   { label: "Mix Bag", slug: "containers" },
 ];
 
-const homeLivingCategories = ["windchimes", "letterings", "containers"];
+const homeLivingCategories = ["windchimes", "containers"];
 
 const HomeLiving = () => {
   const { category } = useParams<{ category?: string }>();

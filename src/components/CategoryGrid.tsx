@@ -2,19 +2,15 @@ import { Link } from "react-router-dom";
 import { useAllCategoryContent } from "@/hooks/useCMS";
 import { useRef, useEffect } from "react";
 import catWindchimes from "@/assets/cat-windchimes.jpg";
-import catLettering from "@/assets/cat-lettering.jpg";
 import catContainers from "@/assets/cat-containers.jpg";
-import catHair from "@/assets/cat-hair.jpg";
 
 const fallbackImages: Record<string, string> = {
   windchimes: catWindchimes,
-  letterings: catLettering,
   containers: catContainers,
 };
 
 const categoryRoutes: Record<string, string> = {
   windchimes: "/home-living/windchimes",
-  letterings: "/home-living/letterings",
   containers: "/home-living/containers",
 };
 
@@ -33,7 +29,6 @@ const CategoryGrid = () => {
           }))
       : [
           { name: "Clay Windchimes", image: catWindchimes, to: "/home-living/windchimes" },
-          { name: "Clay Lettering", image: catLettering, to: "/home-living/letterings" },
           { name: "Mix Bag", image: catContainers, to: "/home-living/containers" },
         ];
 

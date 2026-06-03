@@ -11,7 +11,6 @@ import { Link } from "react-router-dom";
 const filters = [
   { label: "All", value: "" },
   { label: "Windchimes", value: "windchimes" },
-  { label: "Letterings", value: "letterings" },
   { label: "Mix Bag", value: "containers" },
   { label: "Gift Sets", value: "gift-set" },
 ];
@@ -27,7 +26,7 @@ const ShopAll = () => {
     <div className="min-h-screen flex flex-col">
       <SEOHead
         title="Shop All — Our Collection"
-        description="Browse the full BougainQila collection of handcrafted clay home decor, windchimes, lettering, and accessories."
+        description="Browse the full BougainQila collection of handcrafted clay home decor, windchimes, and accessories."
         canonical={`${window.location.origin}/shop`}
       />
       <Navbar />

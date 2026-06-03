@@ -11,9 +11,7 @@ type Product = Tables<"products">;
 
 const categories = [
   { label: "Windchimes", value: "windchimes" },
-  { label: "Letterings", value: "letterings" },
   { label: "Mix Bag", value: "containers" },
-  { label: "Hair Accents", value: "hair-accents" },
   { label: "Gift Set", value: "gift-set" },
 ];
 
