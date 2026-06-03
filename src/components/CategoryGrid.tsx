@@ -72,7 +72,6 @@ const CategoryGrid = () => {
         ))}
       </div>
     </section>
-    </section>
   );
 };
 
