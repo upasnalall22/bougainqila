@@ -32,26 +32,6 @@ const CategoryGrid = () => {
           { name: "Mix Bag", image: catContainers, to: "/home-living/containers" },
         ];
 
-  // Auto-scroll carousel with 3-second interval
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-
-    const interval = setInterval(() => {
-      const maxScroll = el.scrollWidth - el.clientWidth;
-      if (maxScroll <= 0) return;
-
-      if (el.scrollLeft >= maxScroll - 2) {
-        el.scrollTo({ left: 0, behavior: "smooth" });
-      } else {
-        const cardWidth = el.querySelector("a")?.clientWidth ?? 280;
-        el.scrollBy({ left: cardWidth + 12, behavior: "smooth" });
-      }
-    }, 3000);
-
-    return () => clearInterval(interval);
-  }, [displayCategories]);
-
   return (
     <section className="py-16">
       {/* Header */}
@@ -65,17 +45,13 @@ const CategoryGrid = () => {
         </h2>
       </div>
 
-      {/* Single-line auto-scrolling carousel for all screen sizes */}
-      <div
-        ref={scrollRef}
-        className="flex gap-3 overflow-x-auto snap-x snap-mandatory px-4 pb-4"
-        style={{ scrollbarWidth: "none", msOverflowStyle: "none", WebkitOverflowScrolling: "touch" }}
-      >
+      {/* Edge-to-edge 2-up grid, responsive across all devices */}
+      <div ref={scrollRef} className="grid grid-cols-2 gap-0 w-full">
         {displayCategories.map((cat) => (
           <Link
             key={cat.name}
             to={cat.to}
-            className="group relative flex-shrink-0 w-[70vw] sm:w-[45vw] md:w-[30vw] lg:w-[23vw] aspect-[3/4] rounded-sm overflow-hidden snap-start"
+            className="group relative aspect-[3/4] sm:aspect-[4/5] md:aspect-[16/10] overflow-hidden"
           >
             <img
               src={cat.image}
@@ -83,7 +59,6 @@ const CategoryGrid = () => {
               className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               loading="lazy"
             />
-            {/* Bottom gradient for label legibility */}
             <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-foreground/55 to-transparent pointer-events-none" />
             <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10">
               <h3
@@ -93,10 +68,10 @@ const CategoryGrid = () => {
                 {cat.name}
               </h3>
             </div>
-
           </Link>
         ))}
       </div>
+    </section>
     </section>
   );
 };
