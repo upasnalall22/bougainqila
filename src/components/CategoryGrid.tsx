@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useAllCategoryContent } from "@/hooks/useCMS";
-import { useRef, useEffect } from "react";
+import { useRef } from "react";
 import catWindchimes from "@/assets/cat-windchimes.jpg";
 import catContainers from "@/assets/cat-containers.jpg";
 
