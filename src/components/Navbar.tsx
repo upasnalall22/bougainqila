@@ -8,7 +8,7 @@ import SearchOverlay from "@/components/SearchOverlay";
 
 const subCategories = [
   { label: "Windchimes", to: "/home-living/windchimes" },
-  { label: "Letterings", to: "/home-living/letterings" },
+  { label: "Mix Bag", to: "/home-living/containers" },
 ];
 
 const navLinks = [
